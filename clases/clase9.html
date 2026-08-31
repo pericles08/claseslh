@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 9: Encapsulación de datos y MTU</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase9">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+  <main class="contenedor" id="contenido" tabindex="-1">
+
+    <a class="volver" href="../index.html">Volver al índice</a>
+
+    <section class="portada">
+      <h1>Clase 9: Encapsulación de datos y Unidad Máxima de Transmisión</h1>
+      <p>
+        En esta clase se estudia cómo los datos se preparan para viajar por una red, qué información agrega cada capa
+        del modelo de comunicación y por qué la MTU condiciona el tamaño máximo de los paquetes que pueden transmitirse
+        sin fragmentación.
+      </p>
+
+      <div class="etiquetas">
+        <span class="etiqueta">Encapsulación</span>
+        <span class="etiqueta">Modelo OSI</span>
+        <span class="etiqueta">TCP/IP</span>
+        <span class="etiqueta">Trama Ethernet</span>
+        <span class="etiqueta">MTU</span>
+        <span class="etiqueta">Fragmentación</span>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>Objetivos de aprendizaje</h2>
+
+      <ul>
+        <li>Comprender qué significa encapsular datos para transmitirlos por una red.</li>
+        <li>Relacionar cada capa del modelo OSI o TCP/IP con su unidad de datos.</li>
+        <li>Reconocer la estructura básica de una trama Ethernet.</li>
+        <li>Explicar qué es la MTU y por qué su tamaño influye en el rendimiento de una red.</li>
+        <li>Interpretar el proceso de fragmentación y sus posibles inconvenientes.</li>
+        <li>Realizar pruebas de consola en Windows para estimar la MTU efectiva.</li>
+      </ul>
+
+      <div class="pregunta">
+        <strong>Pregunta inicial para pensar:</strong>
+        cuando enviamos un mensaje por internet, ¿viaja solamente el texto que escribimos o también viaja información agregada por la red?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>1. ¿Qué es la encapsulación de datos?</h2>
+
+      <p class="lead">
+        La <strong>encapsulación</strong> es el proceso mediante el cual los datos generados por una aplicación
+        se preparan para su transmisión por la red. A medida que el mensaje baja por las capas del modelo OSI
+        o TCP/IP, cada capa agrega información de control llamada <strong>encabezado</strong> o <strong>header</strong>.
+      </p>
+
+      <p>
+        Por ejemplo, cuando una persona abre una página web, el navegador genera una solicitud. Esa información
+        no se envía sola: cada capa agrega datos necesarios para que el mensaje pueda salir del equipo, circular por
+        la red, llegar al destino correcto y ser interpretado por el receptor.
+      </p>
+
+      <h3>Relación entre capas, unidades de datos y encabezados</h3>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Capa del modelo OSI</th>
+            <th>Unidad de datos</th>
+            <th>Ejemplo de encabezado o información agregada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Aplicación</td>
+            <td>Datos</td>
+            <td>HTTP, FTP, DNS, SMTP.</td>
+          </tr>
+          <tr>
+            <td>Transporte</td>
+            <td>Segmento o datagrama</td>
+            <td>TCP o UDP. Incluye puertos de origen y destino.</td>
+          </tr>
+          <tr>
+            <td>Red</td>
+            <td>Paquete</td>
+            <td>IP. Incluye direcciones IP de origen y destino.</td>
+          </tr>
+          <tr>
+            <td>Enlace de datos</td>
+            <td>Trama</td>
+            <td>Ethernet. Incluye direcciones MAC y tipo de protocolo.</td>
+          </tr>
+          <tr>
+            <td>Física</td>
+            <td>Bits</td>
+            <td>Señales eléctricas, ópticas o de radiofrecuencia.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1050 560" role="img" aria-label="Proceso de encapsulación de datos">
+          <rect class="diagram-style-1" width="1050" height="560"/>
+
+          <text class="diagram-style-2" x="525" y="42">
+            Encapsulación: cada capa agrega información
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-14" x="90" y="80" width="870" height="70" rx="14"/>
+            <text class="diagram-style-91" x="145" y="122">Aplicación</text>
+            <rect class="diagram-style-92" x="320" y="98" width="420" height="34" rx="8"/>
+            <text class="diagram-style-93" x="530" y="121">Datos de la aplicación</text>
+
+            <rect class="diagram-style-14" x="90" y="170" width="870" height="70" rx="14"/>
+            <text class="diagram-style-91" x="145" y="212">Transporte</text>
+            <rect class="diagram-style-94" x="260" y="188" width="150" height="34" rx="8"/>
+            <text class="diagram-style-95" x="335" y="211">TCP/UDP</text>
+            <rect class="diagram-style-92" x="415" y="188" width="420" height="34" rx="8"/>
+            <text class="diagram-style-93" x="625" y="211">Datos</text>
+
+            <rect class="diagram-style-14" x="90" y="260" width="870" height="70" rx="14"/>
+            <text class="diagram-style-91" x="145" y="302">Red</text>
+            <rect class="diagram-style-89" x="220" y="278" width="150" height="34" rx="8"/>
+            <text class="diagram-style-96" x="295" y="301">IP</text>
+            <rect class="diagram-style-94" x="375" y="278" width="150" height="34" rx="8"/>
+            <text class="diagram-style-95" x="450" y="301">TCP/UDP</text>
+            <rect class="diagram-style-92" x="530" y="278" width="305" height="34" rx="8"/>
+            <text class="diagram-style-93" x="682" y="301">Datos</text>
+
+            <rect class="diagram-style-14" x="90" y="350" width="870" height="80" rx="14"/>
+            <text class="diagram-style-91" x="145" y="397">Enlace</text>
+            <rect class="diagram-style-97" x="170" y="372" width="150" height="34" rx="8"/>
+            <text class="diagram-style-98" x="245" y="395">Ethernet</text>
+            <rect class="diagram-style-89" x="325" y="372" width="120" height="34" rx="8"/>
+            <text class="diagram-style-96" x="385" y="395">IP</text>
+            <rect class="diagram-style-94" x="450" y="372" width="130" height="34" rx="8"/>
+            <text class="diagram-style-95" x="515" y="395">TCP/UDP</text>
+            <rect class="diagram-style-92" x="585" y="372" width="250" height="34" rx="8"/>
+            <text class="diagram-style-93" x="710" y="395">Datos</text>
+
+            <rect class="diagram-style-99" x="90" y="455" width="870" height="56" rx="14"/>
+            <text class="diagram-style-100" x="145" y="490">Física</text>
+            <text class="diagram-style-101" x="525" y="490">Los datos se convierten en bits y señales</text>
+          </g>
+        </svg>
+        <figcaption>
+          Durante la encapsulación, cada capa agrega su propia información de control para permitir la comunicación.
+        </figcaption>
+      </figure>
+
+      <div class="destacado">
+        <strong>Idea clave:</strong> el dato original queda “envuelto” por información adicional. Esa información
+        permite indicar puertos, direcciones IP, direcciones MAC, tipo de protocolo y controles de transmisión.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>2. Analogía: enviar una carta por correo postal</h2>
+
+      <p>
+        Para comprender la encapsulación, puede pensarse en el envío de una carta. La carta no viaja sola: se coloca
+        en un sobre, luego puede incluirse en una bolsa o paquete de distribución, y finalmente es transportada por
+        un medio físico.
+      </p>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Analogía postal</th>
+            <th>Equivalencia en redes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carta escrita</td>
+            <td>Datos de la aplicación.</td>
+          </tr>
+          <tr>
+            <td>Sobre con nombre y dirección</td>
+            <td>Encabezado de capa de red con direcciones IP.</td>
+          </tr>
+          <tr>
+            <td>Paquete de envío con instrucciones postales</td>
+            <td>Trama Ethernet con direcciones MAC y control de enlace.</td>
+          </tr>
+          <tr>
+            <td>Camión, avión o transporte real</td>
+            <td>Capa física: cable, fibra óptica o señal inalámbrica.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <div class="pregunta">
+        <strong>Para debatir:</strong> si una dirección postal está mal escrita, ¿el problema se parece más a un error de IP,
+        a un error de MAC o a un error de datos de aplicación?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>3. Formato de una trama Ethernet</h2>
+
+      <p>
+        En una red local, los datos suelen transmitirse mediante <strong>tramas Ethernet</strong>. La trama contiene
+        información necesaria para entregar el mensaje dentro de la LAN y para verificar si hubo errores de transmisión.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1080 300" role="img" aria-label="Formato de una trama Ethernet">
+          <rect class="diagram-style-1" width="1080" height="300"/>
+          <text class="diagram-style-2" x="540" y="42">
+            Formato simplificado de una trama Ethernet
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-4" x="45" y="105" width="190" height="88" rx="10"/>
+            <text class="diagram-style-102" x="140" y="140">MAC destino</text>
+            <text class="diagram-style-77" x="140" y="168">Dispositivo receptor</text>
+
+            <rect class="diagram-style-7" x="245" y="105" width="190" height="88" rx="10"/>
+            <text class="diagram-style-103" x="340" y="140">MAC origen</text>
+            <text class="diagram-style-77" x="340" y="168">Dispositivo emisor</text>
+
+            <rect class="diagram-style-9" x="445" y="105" width="120" height="88" rx="10"/>
+            <text class="diagram-style-90" x="505" y="140">Tipo</text>
+            <text class="diagram-style-77" x="505" y="168">IPv4, IPv6, ARP</text>
+
+            <rect class="diagram-style-29" x="575" y="105" width="310" height="88" rx="10"/>
+            <text class="diagram-style-104" x="730" y="140">Datos o carga útil</text>
+            <text class="diagram-style-77" x="730" y="168">Paquete IP + segmento TCP/UDP</text>
+
+            <rect class="diagram-style-81" x="895" y="105" width="140" height="88" rx="10"/>
+            <text class="diagram-style-105" x="965" y="140">CRC / FCS</text>
+            <text class="diagram-style-77" x="965" y="168">Control de error</text>
+
+            <text class="diagram-style-83" x="540" y="245">
+              La trama Ethernet no solo transporta datos: también agrega información para entregar y verificar la transmisión.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          Representación didáctica de una trama Ethernet: MAC destino, MAC origen, tipo, datos y control de errores.
+        </figcaption>
+      </figure>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>MAC destino y MAC origen</h3>
+          <p>
+            Permiten identificar qué interfaz de red envía la trama y qué interfaz debe recibirla dentro de la red local.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Tipo</h3>
+          <p>
+            Indica qué protocolo se transporta dentro de la trama, por ejemplo IPv4, IPv6 o ARP.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Datos</h3>
+          <p>
+            Contiene el paquete IP, que a su vez puede contener un segmento TCP o un datagrama UDP.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>CRC / FCS</h3>
+          <p>
+            Permite detectar errores de transmisión. Si la verificación falla, la trama se descarta.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>4. ¿Qué es la MTU?</h2>
+
+      <p class="lead">
+        La <strong>MTU</strong>, sigla de <em>Maximum Transmission Unit</em>, es la <strong>Unidad Máxima de Transmisión</strong>.
+        Indica el tamaño máximo que puede tener una unidad de datos, usualmente un paquete IP, para circular por una red
+        sin necesidad de fragmentarse.
+      </p>
+
+      <p>
+        En redes Ethernet estándar, la MTU más común es de <strong>1500 bytes</strong>. Esto significa que el paquete IP
+        transportado como carga útil de la trama Ethernet no debería superar ese tamaño.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1080 360" role="img" aria-label="Representación de MTU Ethernet">
+          <rect class="diagram-style-1" width="1080" height="360"/>
+          <text class="diagram-style-2" x="540" y="42">
+            MTU típica en Ethernet estándar
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-29" x="110" y="110" width="860" height="105" rx="16"/>
+            <rect class="diagram-style-4" x="135" y="138" width="690" height="50" rx="10"/>
+            <text class="diagram-style-106" x="480" y="169">Paquete IP: hasta 1500 bytes</text>
+            <rect class="diagram-style-81" x="835" y="138" width="110" height="50" rx="10"/>
+            <text class="diagram-style-105" x="890" y="169">FCS</text>
+
+            <line class="diagram-style-86" x1="135" y1="245" x2="825" y2="245"/>
+            <line class="diagram-style-86" x1="135" y1="235" x2="135" y2="255"/>
+            <line class="diagram-style-86" x1="825" y1="235" x2="825" y2="255"/>
+            <text class="diagram-style-74" x="480" y="282">
+              MTU = tamaño máximo del paquete IP sin fragmentación
+            </text>
+
+            <text class="diagram-style-6" x="540" y="320">
+              La MTU no cuenta todos los campos de la trama Ethernet; se refiere al tamaño máximo de la carga de red que se transporta.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          En Ethernet estándar, el valor típico de MTU es 1500 bytes para el paquete IP.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="bloque">
+      <h2>5. ¿Qué pasa si un paquete excede la MTU?</h2>
+
+      <p>
+        Si un paquete supera la MTU del enlace, pueden ocurrir dos situaciones principales.
+      </p>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>Fragmentación</h3>
+          <p>
+            El paquete se divide en partes más pequeñas para poder transmitirse. Cada fragmento necesita su propia
+            información de control, por lo que aumenta la cantidad de datos transmitidos.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Error o descarte</h3>
+          <p>
+            Si el paquete tiene activada la opción <strong>Don’t Fragment</strong> y supera la MTU, no puede dividirse.
+            En ese caso, se genera un error y el paquete puede descartarse.
+          </p>
+        </div>
+      </div>
+
+      <h3>¿Por qué conviene evitar la fragmentación?</h3>
+
+      <ul>
+        <li>Incrementa el tráfico, porque cada fragmento requiere encabezados.</li>
+        <li>Aumenta el procesamiento en dispositivos intermedios y en el receptor.</li>
+        <li>Si se pierde un fragmento, puede fallar la reconstrucción completa del paquete.</li>
+        <li>Puede afectar el rendimiento de aplicaciones sensibles a latencia o pérdida.</li>
+      </ul>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1050 420" role="img" aria-label="Fragmentación de un paquete al superar la MTU">
+          <rect class="diagram-style-1" width="1050" height="420"/>
+          <text class="diagram-style-2" x="525" y="42">
+            Ejemplo de fragmentación
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-9" x="90" y="95" width="870" height="70" rx="16"/>
+            <text class="diagram-style-10" x="525" y="137">
+              Paquete de 4500 bytes
+            </text>
+
+            <line class="diagram-style-11" x1="525" y1="178" x2="525" y2="230"/>
+            <polygon class="diagram-style-12" points="525,230 512,210 538,210"/>
+
+            <rect class="diagram-style-4" x="95" y="250" width="270" height="72" rx="14"/>
+            <text class="diagram-style-107" x="230" y="292">Fragmento 1</text>
+
+            <rect class="diagram-style-4" x="390" y="250" width="270" height="72" rx="14"/>
+            <text class="diagram-style-107" x="525" y="292">Fragmento 2</text>
+
+            <rect class="diagram-style-4" x="685" y="250" width="270" height="72" rx="14"/>
+            <text class="diagram-style-107" x="820" y="292">Fragmento 3</text>
+
+            <text class="diagram-style-17" x="525" y="370">
+              Cada fragmento necesita información adicional para poder circular y reconstruirse en destino.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          Si una imagen o archivo supera el tamaño permitido por la MTU, puede dividirse en varios fragmentos.
+        </figcaption>
+      </figure>
+
+      <div class="destacado">
+        <strong>Mecanismo relacionado:</strong> muchas redes intentan evitar la fragmentación mediante
+        <strong>Path MTU Discovery</strong>, un procedimiento que busca descubrir cuál es la MTU máxima posible
+        en el camino entre origen y destino.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>6. Ejemplo práctico del impacto de la MTU</h2>
+
+      <p>
+        Supongamos que se envía una imagen de <strong>4500 bytes</strong> por una red Ethernet con MTU de
+        <strong>1500 bytes</strong>.
+      </p>
+
+      <ol class="pasos">
+        <li>La aplicación genera los datos de la imagen.</li>
+        <li>Las capas inferiores agregan encabezados para poder transmitirlos.</li>
+        <li>Como el tamaño supera la MTU, el paquete puede necesitar fragmentarse.</li>
+        <li>Cada fragmento debe incluir su propia información de control.</li>
+        <li>Si la opción “Don’t Fragment” está activa y el paquete excede la MTU, el envío puede fallar.</li>
+      </ol>
+
+      <div class="pregunta">
+        <strong>Para analizar:</strong> ¿por qué un problema de MTU puede hacer que algunas páginas carguen,
+        pero otras queden incompletas o funcionen lentamente?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>7. Actividades en consola – Windows</h2>
+
+      <p class="lead">
+        Todas estas actividades pueden realizarse desde la línea de comandos de Windows sin instalar programas adicionales.
+        Para abrir la consola: presioná <strong>Windows + R</strong>, escribí <code>cmd</code> y presioná <strong>Enter</strong>.
+      </p>
+
+      <div class="advertencia">
+        <strong>Advertencia:</strong> estas pruebas no modifican la configuración del equipo, pero algunas dependen de la red,
+        del firewall, del proveedor de internet o de permisos institucionales. Si un comando no responde, registrá el resultado
+        y analizá la causa posible.
+      </div>
+
+      <article class="consola-lab">
+        <h3>Actividad 1 – Verificar la configuración de red actual</h3>
+
+        <p><strong>Objetivo:</strong> visualizar interfaces y confirmar conectividad antes de trabajar con MTU.</p>
+
+        <div class="paso-comando">
+          <h4>Comando</h4>
+          <pre><code>ipconfig</code></pre>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Dirección IPv4:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Puerta de enlace predeterminada:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Adaptador utilizado, Ethernet o Wi-Fi:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="destacado">
+          <strong>Relación con la clase:</strong> antes de probar MTU es necesario identificar desde qué interfaz
+          se está saliendo a la red.
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 2 – Probar conectividad básica en modo unicast</h3>
+
+        <p>
+          <strong>Objetivo:</strong> usar el comando <code>ping</code> para verificar si existe conexión con un host externo.
+        </p>
+
+        <div class="paso-comando">
+          <h4>Comando</h4>
+          <pre><code>ping google.com</code></pre>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Tiempo de respuesta observado:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Paquetes enviados:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Paquetes recibidos:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Pérdidas, si las hay:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="destacado">
+          <strong>Interpretación:</strong> se trata de una comunicación unicast porque el equipo envía solicitudes
+          ICMP a un destino específico.
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 3 – Medir la MTU efectiva con <code>ping -f -l</code></h3>
+
+        <p>
+          <strong>Objetivo:</strong> determinar el tamaño máximo de paquete que puede enviarse sin fragmentación.
+          El parámetro <code>-f</code> indica que no se permite fragmentar el paquete. El parámetro <code>-l</code>,
+          letra L minúscula, indica el tamaño del paquete en bytes.
+        </p>
+
+        <div class="paso-comando">
+          <h4>Ejemplo de comando</h4>
+          <pre><code>ping 8.8.8.8 -f -l 1472</code></pre>
+        </div>
+
+        <div class="destacado">
+          <strong>¿Por qué 1472 y no 1500?</strong>
+          Porque el encabezado IP más el encabezado ICMP ocupan 28 bytes. Entonces:
+          <code>1500 - 28 = 1472</code>. En una red Ethernet estándar, 1472 bytes suele ser el mayor tamaño de carga ICMP
+          que no debería fragmentarse.
+        </div>
+
+        <h4>Paso a paso sugerido</h4>
+
+        <ol class="pasos">
+          <li>Probar con un tamaño seguro.</li>
+          <li>Probar el límite típico.</li>
+          <li>Probar un valor que exceda el límite.</li>
+        </ol>
+
+        <pre><code>ping 8.8.8.8 -f -l 1000
+
+ping 8.8.8.8 -f -l 1472
+
+ping 8.8.8.8 -f -l 1473</code></pre>
+
+        <p>
+          Si se excede la MTU, puede aparecer un mensaje similar a:
+        </p>
+
+        <div class="salida-ejemplo">
+          <code>El paquete debe dividirse pero la opción DF está activada.</code>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Resultado con 1000 bytes:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Resultado con 1472 bytes:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Resultado con 1473 bytes:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Conclusión:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 4 – Determinar la MTU máxima por búsqueda binaria</h3>
+
+        <p>
+          <strong>Objetivo:</strong> encontrar el valor máximo exacto, entre 1400 y 1500, para tu red.
+          La búsqueda binaria consiste en probar valores intermedios para acercarse rápidamente al límite.
+        </p>
+
+        <div class="paso-comando">
+          <h4>Método de prueba progresiva</h4>
+          <pre><code>ping 8.8.8.8 -f -l 1450
+ping 8.8.8.8 -f -l 1460
+ping 8.8.8.8 -f -l 1470
+ping 8.8.8.8 -f -l 1472
+ping 8.8.8.8 -f -l 1473</code></pre>
+        </div>
+
+        <p>
+          Cuando empiecen a fallar los pings con el mensaje de fragmentación, el valor anterior corresponde al
+          máximo útil para la carga ICMP. Para estimar la MTU, se deben sumar 28 bytes.
+        </p>
+
+        <div class="campo-respuesta">
+          <p><strong>Mayor valor que respondió correctamente:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Primer valor que falló por fragmentación:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>MTU estimada, valor correcto + 28:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="pregunta">
+          <strong>Pregunta de análisis:</strong> si el valor máximo encontrado fuera 1464, ¿cuál sería la MTU estimada?
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 5 – Ver el resultado resumido de pruebas</h3>
+
+        <p>
+          <strong>Objetivo:</strong> analizar la estabilidad y el rendimiento de la red al enviar paquetes grandes.
+        </p>
+
+        <div class="paso-comando">
+          <h4>Comando</h4>
+          <pre><code>ping 8.8.8.8 -n 10 -l 1400</code></pre>
+        </div>
+
+        <p>
+          Este comando envía 10 paquetes de 1400 bytes. Luego muestra estadísticas de paquetes enviados, recibidos,
+          perdidos y tiempos de respuesta.
+        </p>
+
+        <div class="campo-respuesta">
+          <p><strong>Tiempo mínimo:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Tiempo máximo:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Tiempo promedio:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Pérdidas de paquetes:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+      </article>
+
+      <h3>Resumen de comandos clave</h3>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table class="tabla-comandos">
+        <thead>
+          <tr>
+            <th>Comando</th>
+            <th>Función</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ipconfig</td>
+            <td>Muestra interfaces, direcciones IP, máscara y puerta de enlace.</td>
+          </tr>
+          <tr>
+            <td>ping [host]</td>
+            <td>Prueba conectividad básica con un destino específico.</td>
+          </tr>
+          <tr>
+            <td>ping -f -l [tamaño] [host]</td>
+            <td>Prueba MTU sin fragmentar y ayuda a descubrir el máximo permitido.</td>
+          </tr>
+          <tr>
+            <td>ping -n [número] -l [tamaño] [host]</td>
+            <td>Envía varios paquetes con un tamaño definido para observar estabilidad y pérdidas.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </section>
+
+    <section class="bloque">
+      <h2>8. Conclusión</h2>
+
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h3>Encapsulación</h3>
+          <p>
+            Permite preparar datos de forma ordenada para que puedan transmitirse por la red.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Trama Ethernet</h3>
+          <p>
+            Incluye direcciones MAC, tipo de protocolo, datos y control de errores.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>MTU</h3>
+          <p>
+            Determina cuánto puede enviarse de una vez sin fragmentación.
+          </p>
+        </div>
+      </div>
+
+      <div class="destacado">
+        <strong>Síntesis:</strong> cada capa agrega información para que la comunicación sea posible. Sin embargo,
+        esa información también ocupa espacio. Por eso, comprender la MTU permite analizar problemas de rendimiento,
+        fragmentación y conectividad.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>9. ¿Qué deberías recordar?</h2>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Clave de comprensión</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Encapsulación</td>
+            <td>Cada capa del modelo agrega un encabezado al mensaje.</td>
+          </tr>
+          <tr>
+            <td>Unidad de datos</td>
+            <td>Datos, segmento o datagrama, paquete, trama y bits.</td>
+          </tr>
+          <tr>
+            <td>MTU</td>
+            <td>Tamaño máximo de transmisión sin fragmentación. En Ethernet suele ser 1500 bytes.</td>
+          </tr>
+          <tr>
+            <td>Fragmentación</td>
+            <td>División del paquete IP cuando supera la MTU permitida.</td>
+          </tr>
+          <tr>
+            <td>Trama Ethernet</td>
+            <td>Incluye MAC de origen, MAC de destino, tipo de protocolo, datos y control de error.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </section>
+
+    <section class="bloque">
+      <h2>10. Preguntas de repaso</h2>
+
+      <ol>
+        <li>¿Qué significa encapsular datos?</li>
+        <li>¿Qué información agrega la capa de transporte?</li>
+        <li>¿Qué diferencia hay entre segmento, paquete y trama?</li>
+        <li>¿Para qué sirven las direcciones MAC dentro de una trama Ethernet?</li>
+        <li>¿Qué indica la MTU?</li>
+        <li>¿Por qué la MTU típica de Ethernet suele ser 1500 bytes?</li>
+        <li>¿Qué ocurre cuando un paquete supera la MTU?</li>
+        <li>¿Por qué la fragmentación puede afectar el rendimiento?</li>
+        <li>¿Qué significa que la opción DF esté activada?</li>
+        <li>¿Por qué en la prueba de ping se usa 1472 para representar una MTU de 1500?</li>
+      </ol>
+    </section>
+
+    <section class="bloque">
+      <h2>11. Glosario mínimo</h2>
+
+      <dl class="glosario">
+        <dt>Encapsulación</dt>
+        <dd>Proceso por el cual cada capa agrega información de control a los datos que serán transmitidos.</dd>
+
+        <dt>Header o encabezado</dt>
+        <dd>Información agregada por una capa para que el receptor pueda procesar correctamente los datos.</dd>
+
+        <dt>Segmento</dt>
+        <dd>Unidad de datos asociada habitualmente a la capa de transporte cuando se usa TCP.</dd>
+
+        <dt>Paquete</dt>
+        <dd>Unidad de datos de la capa de red, generalmente asociada al protocolo IP.</dd>
+
+        <dt>Trama</dt>
+        <dd>Unidad de datos de la capa de enlace, por ejemplo una trama Ethernet.</dd>
+
+        <dt>MTU</dt>
+        <dd>Unidad Máxima de Transmisión. Define el tamaño máximo que puede tener un paquete para transmitirse sin fragmentación.</dd>
+
+        <dt>Fragmentación</dt>
+        <dd>Proceso de división de un paquete en partes más pequeñas para poder atravesar una red con MTU menor.</dd>
+
+        <dt>DF</dt>
+        <dd>Don’t Fragment. Opción que indica que un paquete no debe fragmentarse.</dd>
+      </dl>
+    </section>
+
+  </main>
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

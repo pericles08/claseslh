@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 12 IP: direccionamiento IPv4 e IPv6, sistema binario, clases, máscaras, subredes, VLSM, CIDR, NAT, enrutamiento y ejercitación completa.">
+  <title>Clase 12 - Direccionamiento IP, subredes y enrutamiento</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase12">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 12</p>
+      <h1>Direccionamiento IP, subredes y enrutamiento</h1>
+      <p>
+        Clase integral para comprender el direccionamiento IPv4 desde sus fundamentos binarios hasta el diseño
+        de subredes, VLSM, CIDR, sumarización de rutas y una introducción aplicada a IPv6.
+        Cada núcleo conceptual incluye ejercitación específica y ejemplos resueltos.
+      </p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">Sistema binario</span>
+        <span class="hero-tag">IPv4</span>
+        <span class="hero-tag">Clases A-E</span>
+        <span class="hero-tag">Máscaras y CIDR</span>
+        <span class="hero-tag">Subnetting</span>
+        <span class="hero-tag">VLSM</span>
+        <span class="hero-tag">NAT</span>
+        <span class="hero-tag">Enrutamiento</span>
+        <span class="hero-tag">IPv6</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: /27, AND, broadcast, VLSM, IPv6">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Recorrido de contenidos</h2>
+      <nav>
+        <a href="#presentacion">Presentación</a>
+        <a href="#concepto-ip">1. Dirección IP y host</a>
+        <a href="#binario">2. Sistema binario</a>
+        <a href="#ipv4">3. Estructura de IPv4</a>
+        <a href="#red-host">4. Red, host y prefijo</a>
+        <a href="#clases">5. Clases A, B, C, D y E</a>
+        <a href="#especiales">6. Direcciones especiales</a>
+        <a href="#publica-privada">7. Públicas, privadas y NAT</a>
+        <a href="#mascaras">8. Máscaras y CIDR</a>
+        <a href="#and">9. Operación AND</a>
+        <a href="#misma-red">10. ¿Misma subred?</a>
+        <a href="#subnetting">11. Subnetting / FLSM</a>
+        <a href="#rangos">12. Rangos de subred</a>
+        <a href="#vlsm">13. VLSM</a>
+        <a href="#cidr">14. CIDR y superredes</a>
+        <a href="#routing">15. Tablas de enrutamiento</a>
+        <a href="#sumarizacion">16. Sumarización de rutas</a>
+        <a href="#servicios">17. Gateway, DHCP y DNS</a>
+        <a href="#windows">18. Aplicación en Windows</a>
+        <a href="#ipv6">19. Introducción a IPv6</a>
+        <a href="#banco">20. Banco de ejercitación</a>
+        <a href="#integrador">21. Desafío integrador</a>
+        <a href="#cierre">22. Cierre y autoevaluación</a>
+        <a href="#glosario">23. Glosario y fuentes</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso de actividades</strong>
+        <div class="progress-track">
+          <progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress>
+        </div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>
+        No se encontraron módulos que coincidan con la búsqueda.
+      </div>
+
+      <section class="module" id="presentacion" data-search="presentación objetivos recorrido ip subnetting vlsm cidr ipv6">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación y objetivos</h2>
+            <p class="module-subtitle">Del número binario a la planificación de redes y rutas.</p>
+          </div>
+        </div>
+
+        <p>
+          Una dirección IP no es solamente una secuencia de cuatro números. Es una herramienta de la capa de red
+          que permite identificar interfaces, distinguir redes y hosts, calcular destinos locales, seleccionar
+          puertas de enlace y construir esquemas de direccionamiento escalables.
+        </p>
+
+        <div class="objectives">
+          <article class="mini-card">
+            <h3>Al finalizar la clase podrás</h3>
+            <ul>
+              <li>convertir valores entre decimal y binario;</li>
+              <li>interpretar direcciones IPv4 de 32 bits;</li>
+              <li>identificar red, host, máscara, broadcast y rango asignable;</li>
+              <li>reconocer clases y direcciones especiales;</li>
+              <li>distinguir direcciones públicas y privadas;</li>
+              <li>calcular subredes con FLSM y VLSM;</li>
+              <li>interpretar prefijos CIDR y realizar agregación de rutas;</li>
+              <li>leer tablas de enrutamiento y una configuración real de Windows;</li>
+              <li>comprender la estructura básica de IPv6.</li>
+            </ul>
+          </article>
+          <article class="mini-card">
+            <h3>Criterio de integración</h3>
+            <p>
+              Los materiales combinan explicaciones actuales con ejercicios que utilizan convenciones históricas.
+              En esta clase se conserva esa perspectiva histórica, pero los cálculos principales utilizan
+              <strong>subnetting moderno</strong>: las subredes “todo ceros” y “todo unos” son utilizables.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout warning">
+          <strong>Importante.</strong>
+          El direccionamiento por clases se estudia como fundamento histórico y pedagógico. En redes actuales,
+          el tamaño de una red se expresa principalmente mediante prefijos CIDR, por ejemplo
+          <code>192.168.10.0/24</code>, <code>10.0.0.0/20</code> o <code>172.16.4.0/22</code>.
+        </div>
+      </section>
+
+      <section class="module" id="concepto-ip" data-search="ip internet protocol capa 3 lógica host interfaz mac">
+        <div class="level-tag">Fundamento 1</div>
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>¿Qué es una dirección IP?</h2>
+            <p class="module-subtitle">Identificación lógica en la capa de red.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>IP</strong> significa <strong>Internet Protocol</strong>. Una dirección IP es una dirección lógica
+          utilizada por una interfaz para participar en una red IP. Opera en la <strong>capa 3 (Red)</strong> del modelo OSI
+          y no debe confundirse con la dirección MAC, que pertenece a la capa de enlace.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card"><h4>Red</h4><p>Identifica el conjunto lógico al que pertenece el dispositivo.</p></article>
+          <article class="mini-card"><h4>Host</h4><p>Identifica una interfaz concreta dentro de esa red.</p></article>
+          <article class="mini-card"><h4>Router</h4><p>Utiliza prefijos IP para decidir cómo reenviar paquetes entre redes.</p></article>
+        </div>
+
+        <div class="callout">
+          <strong>Unicidad.</strong>
+          Dentro de una misma red, dos interfaces no deben utilizar simultáneamente la misma dirección IP:
+          se produciría un conflicto de direccionamiento.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-1" data-task>
+            <label for="act-1">Actividad 1. IP, MAC y función</label>
+          </div>
+          <ol class="exercise-list">
+            <li>Explicá por qué una IP es una dirección lógica y una MAC se considera una dirección de enlace.</li>
+            <li>Indicá qué dispositivo utilizaría principalmente direcciones IP para decidir el camino hacia otra red: switch o router.</li>
+            <li>¿Qué problema puede aparecer si dos computadoras de la misma LAN usan la misma IPv4?</li>
+          </ol>
+          <textarea class="response" data-response="act-1" placeholder="Respondé las tres consignas." aria-label="Respondé las tres consignas."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="binario" data-search="binario decimal conversión 128 64 32 16 8 4 2 1">
+        <div class="level-tag">Fundamento 2</div>
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>Sistema binario aplicado a redes</h2>
+            <p class="module-subtitle">Los cálculos de máscaras y subredes se comprenden mejor observando los bits.</p>
+          </div>
+        </div>
+
+        <p>
+          El sistema binario utiliza solamente <strong>0 y 1</strong>. Un octeto contiene ocho bits y cada posición
+          representa una potencia de 2.
+        </p>
+
+        <div class="weights">
+          <div class="weight"><strong>128</strong><span>2⁷</span></div>
+          <div class="weight"><strong>64</strong><span>2⁶</span></div>
+          <div class="weight"><strong>32</strong><span>2⁵</span></div>
+          <div class="weight"><strong>16</strong><span>2⁴</span></div>
+          <div class="weight"><strong>8</strong><span>2³</span></div>
+          <div class="weight"><strong>4</strong><span>2²</span></div>
+          <div class="weight"><strong>2</strong><span>2¹</span></div>
+          <div class="weight"><strong>1</strong><span>2⁰</span></div>
+        </div>
+
+        <h3>Ejemplo: decimal → binario</h3>
+        <p><code>192 = 128 + 64</code>, por lo tanto:</p>
+        <div class="command-block" data-label="CÁLCULO">
+          <pre><code>192 = 11000000</code></pre>
+        </div>
+
+        <h3>Ejemplo: binario → decimal</h3>
+        <div class="command-block" data-label="CÁLCULO">
+          <pre><code>10101010
+128 + 32 + 8 + 2 = 170</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-2a" data-task>
+            <label for="act-2a">Actividad 2A. Decimal a binario</label>
+          </div>
+          <p>Convertí a 8 bits: <code>24</code>, <code>26</code>, <code>34</code>, <code>119</code>, <code>200</code>, <code>224</code> y <code>255</code>.</p>
+          <textarea class="response" data-response="act-2a" placeholder="Ejemplo: 24 = 00011000" aria-label="Ejemplo: 24 = 00011000"></textarea>
+          <details><summary>Comprobar resultados</summary><div class="solution">
+            24=00011000 · 26=00011010 · 34=00100010 · 119=01110111 ·
+            200=11001000 · 224=11100000 · 255=11111111.
+          </div></details>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-2b" data-task>
+            <label for="act-2b">Actividad 2B. Binario a decimal</label>
+          </div>
+          <p>Convertí: <code>10010010</code>, <code>11110000</code>, <code>00111011</code>, <code>11111000</code> y <code>11000000</code>.</p>
+          <textarea class="response" data-response="act-2b" placeholder="Mostrá qué valores de 128-64-32-16-8-4-2-1 se suman." aria-label="Mostrá qué valores de 128-64-32-16-8-4-2-1 se suman."></textarea>
+          <details><summary>Comprobar resultados</summary><div class="solution">
+            146 · 240 · 59 · 248 · 192.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module" id="ipv4" data-search="ipv4 32 bits octetos decimal punteada 0 255 formato">
+        <div class="level-tag">Fundamento 3</div>
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Estructura de una dirección IPv4</h2>
+            <p class="module-subtitle">32 bits divididos en cuatro octetos.</p>
+          </div>
+        </div>
+
+        <p>
+          IPv4 utiliza <strong>32 bits</strong>, agrupados en cuatro octetos de 8 bits. Cada octeto puede representar
+          valores entre <strong>0 y 255</strong>. La forma habitual es la <strong>notación decimal punteada</strong>.
+        </p>
+
+        <div class="ip-demo">
+          <span class="octet">192</span><span class="dot">.</span>
+          <span class="octet">168</span><span class="dot">.</span>
+          <span class="octet">3</span><span class="dot">.</span>
+          <span class="octet">24</span>
+        </div>
+
+        <div class="command-block" data-label="MISMA DIRECCIÓN EN BINARIO">
+          <pre><code>11000000.10101000.00000011.00011000
+192      .168      .3       .24</code></pre>
+        </div>
+
+        <div class="formula-grid">
+          <div class="formula-card">1 octeto = 8 bits = 256 valores (0 a 255)</div>
+          <div class="formula-card">IPv4 = 32 bits = 2³² direcciones posibles</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Notación.</strong>
+          Es preferible escribir <code>192.168.1.1</code> y no <code>192.168.001.001</code>,
+          evitando ceros innecesarios a la izquierda.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-3" data-task>
+            <label for="act-3">Actividad 3. ¿Formato IPv4 correcto?</label>
+          </div>
+          <p>Indicá cuáles tienen cuatro octetos válidos y justificá las incorrectas:</p>
+          <ul>
+            <li><code>192.168.1.25</code></li>
+            <li><code>10.20.300.4</code></li>
+            <li><code>172.16.5</code></li>
+            <li><code>200.10.0.255</code></li>
+            <li><code>256.1.1.1</code></li>
+          </ul>
+          <textarea class="response" data-response="act-3" placeholder="Analizá cantidad de octetos y rango 0-255." aria-label="Analizá cantidad de octetos y rango 0-255."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="red-host" data-search="red host prefijo máscara network broadcast">
+        <div class="level-tag">Fundamento 4</div>
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>Parte de red, parte de host y prefijo</h2>
+            <p class="module-subtitle">La máscara determina dónde termina la red y dónde comienza el host.</p>
+          </div>
+        </div>
+
+        <p>
+          Toda dirección IPv4 puede interpretarse como una combinación de <strong>prefijo de red</strong> y
+          <strong>parte de host</strong>. El prefijo es común a los dispositivos de la misma subred;
+          los bits de host distinguen interfaces dentro de ella.
+        </p>
+
+        <div class="command-block" data-label="EJEMPLO /24">
+          <pre><code>IP:       192.168.1.25
+Máscara:  255.255.255.0
+Prefijo:  /24
+
+Red:      192.168.1.0
+Host:                 25</code></pre>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h4>Dirección de red</h4>
+            <p>Se obtiene colocando en 0 todos los bits de host. Identifica a la subred y no se asigna a un host normal.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Dirección de broadcast</h4>
+            <p>Se obtiene colocando en 1 todos los bits de host. Representa un envío hacia todos los hosts de esa subred IPv4.</p>
+          </article>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-4" data-task>
+            <label for="act-4">Actividad 4. Identificar red y host</label>
+          </div>
+          <p>Usando las máscaras tradicionales, señalá qué octetos representan red y cuáles host:</p>
+          <ul>
+            <li><code>10.250.1.1</code></li>
+            <li><code>150.10.15.25</code></li>
+            <li><code>192.14.2.90</code></li>
+          </ul>
+          <textarea class="response" data-response="act-4" placeholder="Ejemplo: Clase C → Red.Red.Red.Host" aria-label="Ejemplo: Clase C → Red.Red.Red.Host"></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="clases" data-search="clase a b c d e rango mascara redes hosts multicast experimental">
+        <div class="level-tag">Fundamento 5 · Histórico</div>
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>Clases tradicionales de direcciones IPv4</h2>
+            <p class="module-subtitle">Un modelo histórico útil para reconocer la estructura original de IPv4.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Clase</th><th>Bits iniciales</th><th>Primer octeto</th><th>Máscara</th>
+                <th>Red / Host</th><th>Capacidad histórica</th><th>Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>A</td><td><code>0</code></td><td>1-126</td><td><code>255.0.0.0 (/8)</code></td><td>8 / 24 bits</td><td>126 redes; 16.777.214 hosts/red</td><td>Redes muy grandes</td></tr>
+              <tr><td>B</td><td><code>10</code></td><td>128-191</td><td><code>255.255.0.0 (/16)</code></td><td>16 / 16 bits</td><td>16.384 redes; 65.534 hosts/red</td><td>Redes medianas</td></tr>
+              <tr><td>C</td><td><code>110</code></td><td>192-223</td><td><code>255.255.255.0 (/24)</code></td><td>24 / 8 bits</td><td>2.097.152 redes; 254 hosts/red</td><td>Redes pequeñas</td></tr>
+              <tr><td>D</td><td><code>1110</code></td><td>224-239</td><td>No corresponde</td><td>-</td><td>-</td><td>Multicast</td></tr>
+              <tr><td>E</td><td><code>1111</code></td><td>240-255</td><td>No corresponde</td><td>-</td><td>-</td><td>Reservada / experimental</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>127 no es una red Clase A utilizable.</strong>
+          El bloque <code>127.0.0.0/8</code> está reservado para loopback.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-5a" data-task>
+            <label for="act-5a">Actividad 5A. Identificación de clase</label>
+          </div>
+          <p>Clasificá: <code>10.250.1.1</code>, <code>150.10.15.0</code>, <code>192.14.2.0</code>,
+            <code>230.230.45.58</code>, <code>249.240.80.78</code>, <code>95.0.21.90</code>.</p>
+          <textarea class="response" data-response="act-5a" placeholder="Indicá A, B, C, D o E." aria-label="Indicá A, B, C, D o E."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">A · B · C · D · E · A.</div></details>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-5b" data-task>
+            <label for="act-5b">Actividad 5B. Máscaras por defecto</label>
+          </div>
+          <p>Escribí la máscara tradicional de: <code>177.100.18.4</code>, <code>119.18.45.0</code>,
+            <code>223.23.223.109</code>, <code>10.10.250.1</code> y <code>189.210.50.1</code>.</p>
+          <textarea class="response" data-response="act-5b" placeholder="Máscara decimal y prefijo." aria-label="Máscara decimal y prefijo."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="especiales" data-search="loopback 127 apipa 169.254 broadcast 255 multicast 224 experimental 240 0.0.0.0">
+        <div class="level-tag">Fundamento 6</div>
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>Direcciones y bloques especiales</h2>
+            <p class="module-subtitle">No toda IPv4 que “parece válida” puede asignarse a un host común.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Dirección / bloque</th><th>Función</th><th>Ejemplo de uso</th></tr></thead>
+            <tbody>
+              <tr><td><code>127.0.0.0/8</code></td><td>Loopback</td><td><code>127.0.0.1</code> apunta al propio host.</td></tr>
+              <tr><td><code>169.254.0.0/16</code></td><td>Enlace local IPv4</td><td>Autoconfiguración cuando no se obtiene dirección por DHCP.</td></tr>
+              <tr><td><code>224.0.0.0/4</code></td><td>Multicast</td><td>Comunicación hacia grupos de receptores.</td></tr>
+              <tr><td><code>240.0.0.0/4</code></td><td>Reservado</td><td>No se usa como direccionamiento unicast normal.</td></tr>
+              <tr><td><code>255.255.255.255</code></td><td>Broadcast limitado</td><td>Difusión en el enlace local.</td></tr>
+              <tr><td><code>0.0.0.0</code></td><td>Dirección no especificada</td><td>Su significado depende del contexto.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <h3>¿Qué es loopback?</h3>
+        <p>
+          El loopback permite que un sistema envíe tráfico hacia sí mismo sin salir a la red física.
+          Es útil para verificar la pila TCP/IP local y para comunicaciones internas entre procesos.
+        </p>
+
+        <div class="command-block" data-label="PRUEBA LOCAL">
+          <pre><code>ping 127.0.0.1</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-6" data-task>
+            <label for="act-6">Actividad 6. ¿Asignable, especial o reservada?</label>
+          </div>
+          <p>Analizá: <code>127.100.100.10</code>, <code>245.150.190.10</code>, <code>169.254.10.20</code>,
+            <code>230.1.1.1</code>, <code>192.10.10.1</code>.</p>
+          <textarea class="response" data-response="act-6" placeholder="Clasificá y justificá cada caso." aria-label="Clasificá y justificá cada caso."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="publica-privada" data-search="publica privada rfc1918 nat internet 10 172.16 192.168">
+        <div class="level-tag">Fundamento 7</div>
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>Direcciones públicas, privadas y NAT</h2>
+            <p class="module-subtitle">Separar el direccionamiento interno del direccionamiento global.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Dirección privada</h3>
+            <p>Se utiliza dentro de redes internas y no se enruta directamente por Internet. Puede reutilizarse en organizaciones distintas.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Dirección pública</h3>
+            <p>Es globalmente enrutable cuando forma parte de un bloque público asignado y debe ser única en su contexto global.</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Bloque privado</th><th>Rango</th><th>Prefijo</th></tr></thead>
+            <tbody>
+              <tr><td>10</td><td><code>10.0.0.0 - 10.255.255.255</code></td><td><code>/8</code></td></tr>
+              <tr><td>172</td><td><code>172.16.0.0 - 172.31.255.255</code></td><td><code>/12</code></td></tr>
+              <tr><td>192.168</td><td><code>192.168.0.0 - 192.168.255.255</code></td><td><code>/16</code></td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <h3>NAT</h3>
+        <p>
+          <strong>Network Address Translation</strong> permite traducir direcciones privadas al comunicarse con redes externas.
+          En una vivienda, varios equipos privados pueden compartir la conectividad pública del router.
+        </p>
+
+        <div class="route-diagram">
+          <span class="route-node">PC 192.168.1.20</span>
+          <span class="route-arrow">→</span>
+          <span class="route-node">Router / NAT</span>
+          <span class="route-arrow">→</span>
+          <span class="route-node">IP pública</span>
+          <span class="route-arrow">→</span>
+          <span class="route-node">Internet</span>
+        </div>
+
+        <div class="callout warning">
+          <strong>Conflictos de direccionamiento.</strong>
+          Utilizar internamente un bloque público que pertenece a otra organización puede generar problemas cuando
+          la red se conecta a Internet, porque las rutas globales conducen ese bloque hacia su propietario real.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-7" data-task>
+            <label for="act-7">Actividad 7. Pública, privada o especial</label>
+          </div>
+          <p>Clasificá: <code>10.1.2.3</code>, <code>172.15.1.1</code>, <code>172.20.8.5</code>,
+            <code>192.168.100.25</code>, <code>8.8.8.8</code>, <code>127.0.0.1</code>.</p>
+          <textarea class="response" data-response="act-7" placeholder="No confundas 172.15.x.x con el bloque privado 172.16/12." aria-label="No confundas 172.15.x.x con el bloque privado 172.16/12."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="mascaras" data-search="mascara cidr prefijo 128 192 224 240 248 252 254 255">
+        <div class="level-tag">Cálculo 1</div>
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>Máscaras de subred y notación CIDR</h2>
+            <p class="module-subtitle">Los 1 marcan el prefijo; los 0 dejan espacio para hosts.</p>
+          </div>
+        </div>
+
+        <p>
+          Una máscara IPv4 también posee 32 bits. Sus bits en <strong>1</strong> corresponden al prefijo de red
+          y los bits en <strong>0</strong> a la parte de host. Por eso los bits de una máscara válida son contiguos:
+          primero 1 y después 0.
+        </p>
+
+        <div class="mask-scale">
+          <div>0 bits<br><strong>0</strong></div><div>1 bit<br><strong>128</strong></div><div>2 bits<br><strong>192</strong></div>
+          <div>3 bits<br><strong>224</strong></div><div>4 bits<br><strong>240</strong></div><div>5 bits<br><strong>248</strong></div>
+          <div>6 bits<br><strong>252</strong></div><div>7 bits<br><strong>254</strong></div><div>8 bits<br><strong>255</strong></div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Prefijo</th><th>Máscara decimal</th><th>Bits de host</th><th>Direcciones por bloque</th><th>Hosts clásicos</th></tr></thead>
+            <tbody>
+              <tr><td>/24</td><td>255.255.255.0</td><td>8</td><td>256</td><td>254</td></tr>
+              <tr><td>/25</td><td>255.255.255.128</td><td>7</td><td>128</td><td>126</td></tr>
+              <tr><td>/26</td><td>255.255.255.192</td><td>6</td><td>64</td><td>62</td></tr>
+              <tr><td>/27</td><td>255.255.255.224</td><td>5</td><td>32</td><td>30</td></tr>
+              <tr><td>/28</td><td>255.255.255.240</td><td>4</td><td>16</td><td>14</td></tr>
+              <tr><td>/29</td><td>255.255.255.248</td><td>3</td><td>8</td><td>6</td></tr>
+              <tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>4</td><td>2</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="formula-grid">
+          <div class="formula-card">Direcciones por bloque = 2^(bits de host)</div>
+          <div class="formula-card">Hosts clásicos = 2^(bits de host) - 2</div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-8a" data-task>
+            <label for="act-8a">Actividad 8A. Decimal → CIDR</label>
+          </div>
+          <p>Convertí: <code>255.255.224.0</code>, <code>255.255.255.240</code>,
+            <code>255.255.254.0</code>, <code>255.255.255.192</code>.</p>
+          <textarea class="response" data-response="act-8a" placeholder="Contá los bits en 1." aria-label="Contá los bits en 1."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">/19 · /28 · /23 · /26.</div></details>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-8b" data-task>
+            <label for="act-8b">Actividad 8B. CIDR → decimal</label>
+          </div>
+          <p>Convertí: <code>/25</code>, <code>/27</code>, <code>/20</code>, <code>/30</code>.</p>
+          <textarea class="response" data-response="act-8b" placeholder="Construí los octetos de la máscara." aria-label="Construí los octetos de la máscara."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            255.255.255.128 · 255.255.255.224 · 255.255.240.0 · 255.255.255.252.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module" id="and" data-search="and booleana mascara dirección red 1 0">
+        <div class="level-tag">Cálculo 2</div>
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>Operación booleana AND</h2>
+            <p class="module-subtitle">El procedimiento binario que permite obtener la dirección de red.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table class="table-compact">
+            <thead><tr><th>A</th><th>B</th><th>A AND B</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>0</td></tr>
+              <tr><td>1</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td>1</td><td>1</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="command-block" data-label="EJEMPLO">
+          <pre><code>IP:       192.168.1.33   = 11000000.10101000.00000001.00100001
+Máscara:  255.255.255.240= 11111111.11111111.11111111.11110000
+AND:      192.168.1.32   = 11000000.10101000.00000001.00100000
+
+Resultado: red 192.168.1.32/28</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-9" data-task>
+            <label for="act-9">Actividad 9. Calcular la red con AND</label>
+          </div>
+          <p>Calculá la dirección de red de:</p>
+          <ol>
+            <li><code>192.168.10.77/26</code></li>
+            <li><code>172.16.35.140/20</code></li>
+            <li><code>10.213.100.34/16</code></li>
+          </ol>
+          <textarea class="response" data-response="act-9" placeholder="Mostrá al menos el octeto relevante en binario." aria-label="Mostrá al menos el octeto relevante en binario."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            192.168.10.64/26 · 172.16.32.0/20 · 10.213.0.0/16.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module" id="misma-red" data-search="misma subred comparar ips red and">
+        <div class="level-tag">Cálculo 3</div>
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>¿Dos hosts pertenecen a la misma subred?</h2>
+            <p class="module-subtitle">Se calcula la red de ambos con la misma máscara y se comparan los resultados.</p>
+          </div>
+        </div>
+
+        <ol class="steps">
+          <li>Tomar la primera IP y aplicar la máscara.</li>
+          <li>Obtener su dirección de red.</li>
+          <li>Repetir con la segunda IP.</li>
+          <li>Si ambas direcciones de red coinciden, pertenecen a la misma subred.</li>
+        </ol>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-10" data-task>
+            <label for="act-10">Actividad 10. Comparación de pares</label>
+          </div>
+          <p>Indicá si pertenecen a la misma subred:</p>
+          <ol>
+            <li><code>192.168.25.23</code> y <code>192.168.25.62</code> con <code>/27</code>.</li>
+            <li><code>10.213.4.56</code> y <code>10.213.100.25</code> con <code>/16</code>.</li>
+            <li><code>175.13.192.93</code> y <code>175.13.193.1</code> con <code>255.255.224.0</code>.</li>
+            <li><code>137.85.67.111</code> y <code>137.85.67.112</code> con <code>/30</code>.</li>
+          </ol>
+          <textarea class="response" data-response="act-10" placeholder="Calculá y compará las direcciones de red." aria-label="Calculá y compará las direcciones de red."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">No · Sí · Sí · No.</div></details>
+        </div>
+      </section>
+
+      <section class="module" id="subnetting" data-search="subnetting flsm bits prestados subredes hosts bloque incremento">
+        <div class="level-tag">Intermedio 1</div>
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Subnetting de tamaño fijo (FLSM)</h2>
+            <p class="module-subtitle">Tomar bits de host para crear varias subredes del mismo tamaño.</p>
+          </div>
+        </div>
+
+        <p>
+          El subnetting divide un bloque en redes menores. Si se “toman prestados” <strong>s bits</strong> de la parte
+          de host, se generan <strong>2ˢ subredes</strong>. Si quedan <strong>h bits</strong> para host, cada subred posee
+          <strong>2ʰ direcciones</strong> y, en el esquema IPv4 clásico con red y broadcast, <strong>2ʰ - 2 hosts</strong>.
+        </p>
+
+        <div class="formula-grid">
+          <div class="formula-card">Subredes modernas = 2^s</div>
+          <div class="formula-card">Hosts = 2^h - 2</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Convención histórica de algunos ejercicios.</strong>
+          Materiales antiguos restaban dos a la cantidad de subredes por considerar no utilizables la subred “todo 0”
+          y la subred “todo 1”. En redes CIDR modernas esas subredes pueden utilizarse. Cuando un ejercicio indique
+          explícitamente “subredes útiles” según la convención histórica, puede aparecer <code>2ˢ - 2</code>.
+        </div>
+
+        <h3>Ejemplo: 192.168.10.0/24 dividido en /27</h3>
+        <div class="command-block" data-label="CÁLCULO">
+          <pre><code>Prefijo original: /24
+Nuevo prefijo:    /27
+Bits prestados:   3
+Subredes:         2³ = 8
+Bits de host:     5
+Direcciones:      2⁵ = 32 por subred
+Hosts clásicos:   30 por subred
+Incremento:       32</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-11a" data-task>
+            <label for="act-11a">Actividad 11A. Elegir máscara por cantidad de hosts</label>
+          </div>
+          <p>Para una red <code>192.168.50.0/24</code>, elegí el prefijo mínimo que permita:</p>
+          <ul><li>100 hosts</li><li>60 hosts</li><li>30 hosts</li><li>14 hosts</li><li>6 hosts</li><li>2 hosts</li></ul>
+          <textarea class="response" data-response="act-11a" placeholder="Indicá /prefijo, máscara decimal y hosts disponibles." aria-label="Indicá /prefijo, máscara decimal y hosts disponibles."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            100→/25 · 60→/26 · 30→/27 · 14→/28 · 6→/29 · 2→/30.
+          </div></details>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-11b" data-task>
+            <label for="act-11b">Actividad 11B. Diseñar subredes iguales</label>
+          </div>
+          <p>Dividí <code>200.10.10.0/24</code> en al menos 6 subredes con 30 hosts como máximo por subred.
+            Indicá máscara, incremento, direcciones de red y broadcast.</p>
+          <textarea class="response" data-response="act-11b" placeholder="Pista: necesitás /27 e incrementos de 32." aria-label="Pista: necesitás /27 e incrementos de 32."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="rangos" data-search="rango subred incremento primera ultima host broadcast red">
+        <div class="level-tag">Intermedio 2</div>
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Rangos de subred: red, hosts y broadcast</h2>
+            <p class="module-subtitle">El tamaño del bloque permite recorrer sistemáticamente las subredes.</p>
+          </div>
+        </div>
+
+        <h3>Ejemplo /27</h3>
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Red</th><th>Primer host</th><th>Último host</th><th>Broadcast</th></tr></thead>
+            <tbody>
+              <tr><td>200.10.10.0</td><td>.1</td><td>.30</td><td>.31</td></tr>
+              <tr><td>200.10.10.32</td><td>.33</td><td>.62</td><td>.63</td></tr>
+              <tr><td>200.10.10.64</td><td>.65</td><td>.94</td><td>.95</td></tr>
+              <tr><td>200.10.10.96</td><td>.97</td><td>.126</td><td>.127</td></tr>
+              <tr><td>200.10.10.128</td><td>.129</td><td>.158</td><td>.159</td></tr>
+              <tr><td>200.10.10.160</td><td>.161</td><td>.190</td><td>.191</td></tr>
+              <tr><td>200.10.10.192</td><td>.193</td><td>.222</td><td>.223</td></tr>
+              <tr><td>200.10.10.224</td><td>.225</td><td>.254</td><td>.255</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-12" data-task>
+            <label for="act-12">Actividad 12. Posición dentro de las subredes</label>
+          </div>
+          <p>Para <code>200.10.10.0/27</code> respondé:</p>
+          <ol>
+            <li>¿Cuál es la red de la 4.ª subred contando desde 0?</li>
+            <li>¿Cuál es el broadcast de la subred que comienza en <code>200.10.10.160</code>?</li>
+            <li>¿Qué hosts son asignables dentro de <code>200.10.10.128/27</code>?</li>
+            <li>¿A qué subred pertenece <code>200.10.10.175</code>?</li>
+          </ol>
+          <textarea class="response" data-response="act-12" placeholder="Trabajá con incrementos de 32." aria-label="Trabajá con incrementos de 32."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            1) 200.10.10.128/27. 2) 200.10.10.191. 3) .129-.158.
+            4) 200.10.10.160/27 (175 es un host de esa subred).
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module advanced" id="vlsm" data-search="vlsm variable length subnet mask tamaño bloque potencia dos hosts">
+        <div class="level-tag">Avanzado 1</div>
+        <div class="module-header">
+          <div class="module-number">13</div>
+          <div>
+            <h2>VLSM: máscaras de longitud variable</h2>
+            <p class="module-subtitle">Asignar a cada segmento el bloque que realmente necesita.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>VLSM</strong> permite utilizar prefijos diferentes dentro de un mismo bloque global.
+          El objetivo es evitar que todas las subredes tengan que adoptar el tamaño de la más grande.
+        </p>
+
+        <h3>Reglas de un bloque VLSM</h3>
+        <ul>
+          <li>Su tamaño debe ser una potencia de 2.</li>
+          <li>Debe comenzar en una dirección alineada, múltiplo de su tamaño.</li>
+          <li>No debe solaparse con otro bloque.</li>
+          <li>Conviene asignar primero las redes de mayor tamaño.</li>
+        </ul>
+
+        <h3>Procedimiento</h3>
+        <ol class="steps">
+          <li>Ordenar las redes de mayor a menor cantidad de hosts.</li>
+          <li>Sumar dos direcciones para red y broadcast.</li>
+          <li>Redondear hacia arriba a la siguiente potencia de 2.</li>
+          <li>Calcular el prefijo: <code>32 - bits necesarios para el tamaño del bloque</code>.</li>
+          <li>Asignar la primera dirección de red y avanzar según el tamaño de bloque.</li>
+          <li>Calcular broadcast como <code>red + tamaño de bloque - 1</code>.</li>
+          <li>Asignar direcciones a interfaces, evitando red y broadcast.</li>
+        </ol>
+
+        <h3>Ejemplo completo desde 172.16.0.0/16</h3>
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Necesidad</th><th>Bloque</th><th>Prefijo</th><th>Red</th><th>Broadcast</th></tr></thead>
+            <tbody>
+              <tr><td>300 hosts</td><td>512</td><td>/23</td><td>172.16.0.0</td><td>172.16.1.255</td></tr>
+              <tr><td>128 hosts</td><td>256</td><td>/24</td><td>172.16.2.0</td><td>172.16.2.255</td></tr>
+              <tr><td>35 hosts</td><td>64</td><td>/26</td><td>172.16.3.0</td><td>172.16.3.63</td></tr>
+              <tr><td>2 hosts</td><td>4</td><td>/30</td><td>172.16.3.64</td><td>172.16.3.67</td></tr>
+              <tr><td>2 hosts</td><td>4</td><td>/30</td><td>172.16.3.68</td><td>172.16.3.71</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-13" data-task>
+            <label for="act-13">Actividad 13. Diseñar con VLSM</label>
+          </div>
+          <p>
+            Desde <code>192.168.50.0/24</code>, asigná bloques para cuatro segmentos con
+            <strong>60, 30, 12 y 2 hosts</strong>. Indicá prefijo, red, primer host, último host y broadcast.
+          </p>
+          <textarea class="response" data-response="act-13" placeholder="Ordená de mayor a menor y asigná bloques contiguos." aria-label="Ordená de mayor a menor y asigná bloques contiguos."></textarea>
+          <details><summary>Comprobar una solución válida</summary><div class="solution">
+            60→192.168.50.0/26 (.1-.62, bcast .63) ·
+            30→192.168.50.64/27 (.65-.94, bcast .95) ·
+            12→192.168.50.96/28 (.97-.110, bcast .111) ·
+            2→192.168.50.112/30 (.113-.114, bcast .115).
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module advanced" id="cidr" data-search="cidr classless superred supernetting agregacion prefijo">
+        <div class="level-tag">Avanzado 2</div>
+        <div class="module-header">
+          <div class="module-number">14</div>
+          <div>
+            <h2>CIDR, direccionamiento sin clases y superredes</h2>
+            <p class="module-subtitle">Prefijos flexibles para asignar y agrupar bloques de direcciones.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>CIDR</strong> reemplaza el reparto rígido por clases y permite utilizar prefijos de longitud adecuada
+          a la necesidad real. También posibilita representar varias redes contiguas mediante un prefijo más corto.
+        </p>
+
+        <h3>Ejemplo de superred</h3>
+        <div class="command-block" data-label="AGRUPACIÓN">
+          <pre><code>220.78.168.0/24
+220.78.169.0/24
+220.78.170.0/24
+...
+220.78.175.0/24
+
+Prefijo común: /21
+Superred: 220.78.168.0/21
+Máscara: 255.255.248.0</code></pre>
+        </div>
+
+        <div class="callout">
+          <strong>Alineación.</strong>
+          No basta con que varias redes sean consecutivas: el bloque agregado debe comenzar en una frontera válida
+          para el tamaño del prefijo.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-14" data-task>
+            <label for="act-14">Actividad 14. Agregar redes</label>
+          </div>
+          <ol>
+            <li>¿Qué prefijo resume <code>192.168.0.0/24</code>, <code>192.168.1.0/24</code>,
+              <code>192.168.2.0/24</code> y <code>192.168.3.0/24</code>?</li>
+            <li>¿Puede resumirse exactamente <code>192.168.1.0/24</code> a <code>192.168.3.0/24</code> sin incluir otra red?</li>
+          </ol>
+          <textarea class="response" data-response="act-14" placeholder="Buscá el prefijo común y comprobá la alineación." aria-label="Buscá el prefijo común y comprobá la alineación."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            1) <code>192.168.0.0/22</code>. 2) No de forma exacta como un único bloque CIDR alineado;
+            un /22 incluiría también el bloque completo 0-3.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module advanced" id="routing" data-search="routing tabla enrutamiento destino mascara interfaz gateway longest prefix default route">
+        <div class="level-tag">Avanzado 3</div>
+        <div class="module-header">
+          <div class="module-number">15</div>
+          <div>
+            <h2>Tablas de enrutamiento</h2>
+            <p class="module-subtitle">Elegir una ruta según el prefijo de destino más específico.</p>
+          </div>
+        </div>
+
+        <p>
+          Una tabla de enrutamiento contiene, como mínimo, una red de destino, su máscara o prefijo,
+          la interfaz de salida y, cuando corresponde, un <strong>gateway</strong> o siguiente salto.
+        </p>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Red</th><th>Prefijo</th><th>Interfaz</th><th>Gateway</th></tr></thead>
+            <tbody>
+              <tr><td>192.168.0.0</td><td>/24</td><td>eth1</td><td>Directa</td></tr>
+              <tr><td>192.168.1.0</td><td>/24</td><td>wlan0</td><td>Directa</td></tr>
+              <tr><td>172.16.0.0</td><td>/16</td><td>eth1</td><td>192.168.0.1</td></tr>
+              <tr><td>172.16.1.0</td><td>/24</td><td>wlan0</td><td>192.168.1.1</td></tr>
+              <tr><td>0.0.0.0</td><td>/0</td><td>eth1</td><td>192.168.0.1</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout success">
+          <strong>Regla de selección.</strong>
+          Si varias rutas son aplicables, se elige normalmente la que tiene el <strong>prefijo más largo</strong>,
+          es decir, la ruta más específica.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-15" data-task>
+            <label for="act-15">Actividad 15. Elegir la ruta</label>
+          </div>
+          <p>Con la tabla anterior:</p>
+          <ol>
+            <li>¿Qué rutas son aplicables a <code>172.16.1.58</code> y cuál se elige?</li>
+            <li>¿Qué ruta se aplica a <code>192.168.0.25</code>?</li>
+            <li>¿Cuál es la ruta por defecto?</li>
+          </ol>
+          <textarea class="response" data-response="act-15" placeholder="Justificá usando prefijo más largo." aria-label="Justificá usando prefijo más largo."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            1) /16, /24 y /0 son aplicables; se elige 172.16.1.0/24 vía wlan0.
+            2) 192.168.0.0/24 por eth1. 3) 0.0.0.0/0 vía 192.168.0.1.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module advanced" id="sumarizacion" data-search="sumarizacion agregacion rutas prefijo comun router">
+        <div class="level-tag">Avanzado 4</div>
+        <div class="module-header">
+          <div class="module-number">16</div>
+          <div>
+            <h2>Sumarización o agregación de rutas</h2>
+            <p class="module-subtitle">Reducir entradas de enrutamiento mediante un prefijo común.</p>
+          </div>
+        </div>
+
+        <p>
+          Si varias redes se alcanzan por la misma acción de reenvío, pueden representarse mediante un prefijo común.
+          Esto reduce la cantidad de entradas que un router debe consultar.
+        </p>
+
+        <div class="command-block" data-label="EJEMPLO">
+          <pre><code>172.17.0.0/16
+172.19.0.0/16
+
+Prefijo binario común: 14 bits
+Resumen posible: 172.16.0.0/14
+
+ATENCIÓN: ese resumen también cubre 172.16.0.0 y 172.18.0.0.</code></pre>
+        </div>
+
+        <div class="callout warning">
+          <strong>No toda sumarización es conveniente.</strong>
+          Debe verificarse que las redes incluidas en el prefijo resumido tengan una política de reenvío compatible.
+          Diseñar bloques contiguos desde el inicio facilita la agregación.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-16" data-task>
+            <label for="act-16">Actividad 16. Diseñar para sumarizar</label>
+          </div>
+          <p>
+            Una sede posee las redes <code>172.20.0.0/24</code>, <code>172.20.1.0/24</code>,
+            <code>172.20.2.0/24</code> y <code>172.20.3.0/24</code>, todas detrás del mismo router.
+            Proponé una ruta resumen e indicá qué rango cubre.
+          </p>
+          <textarea class="response" data-response="act-16" placeholder="Escribí el prefijo y su rango." aria-label="Escribí el prefijo y su rango."></textarea>
+          <details><summary>Comprobar</summary><div class="solution">
+            <code>172.20.0.0/22</code>, que cubre 172.20.0.0 a 172.20.3.255.
+          </div></details>
+        </div>
+      </section>
+
+      <section class="module" id="servicios" data-search="gateway dhcp dns estatica dinamica nat router">
+        <div class="level-tag">Aplicación 1</div>
+        <div class="module-header">
+          <div class="module-number">17</div>
+          <div>
+            <h2>Gateway, DHCP, DNS y asignación de direcciones</h2>
+            <p class="module-subtitle">La IP necesita otros parámetros para integrarse en una red real.</p>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Gateway</h3>
+            <p>Dirección del router al que se envía tráfico destinado a redes diferentes.</p>
+          </article>
+          <article class="mini-card">
+            <h3>DHCP</h3>
+            <p>Asigna automáticamente IP, máscara, gateway, DNS y otros parámetros a los clientes.</p>
+          </article>
+          <article class="mini-card">
+            <h3>DNS</h3>
+            <p>Relaciona nombres de dominio con direcciones IP para facilitar el acceso a servicios.</p>
+          </article>
+        </div>
+
+        <p>
+          En muchos diseños se reserva una dirección temprana del rango, por ejemplo el primer host, para el router,
+          aunque esto es una convención de administración y no una obligación matemática. Servidores y routers suelen
+          recibir direcciones estáticas; los clientes pueden recibirlas mediante DHCP.
+        </p>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-17" data-task>
+            <label for="act-17">Actividad 17. Configuración coherente</label>
+          </div>
+          <p>Una PC tiene <code>192.168.20.35/24</code>. Elegí una configuración coherente entre estas opciones y justificá:</p>
+          <ul>
+            <li>Gateway: <code>192.168.20.1</code> o <code>192.168.30.1</code>.</li>
+            <li>DNS: puede estar dentro o fuera de la LAN, siempre que exista una ruta para alcanzarlo.</li>
+            <li>¿Qué componente podría entregar automáticamente esos datos?</li>
+          </ul>
+          <textarea class="response" data-response="act-17" placeholder="Relacioná red local, gateway y DHCP." aria-label="Relacioná red local, gateway y DHCP."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="windows" data-search="windows ipconfig cmd ipv4 mascara gateway dns dhcp práctica">
+        <div class="level-tag">Aplicación 2</div>
+        <div class="module-header">
+          <div class="module-number">18</div>
+          <div>
+            <h2>Aplicación práctica en Windows</h2>
+            <p class="module-subtitle">Observar datos reales y convertirlos en información de red.</p>
+          </div>
+        </div>
+
+        <div class="command-block" data-label="CMD">
+          <pre><code>ipconfig
+ipconfig /all</code></pre>
+        </div>
+
+        <p>En el adaptador conectado, identificar:</p>
+        <ul>
+          <li>dirección IPv4;</li>
+          <li>máscara de subred;</li>
+          <li>puerta de enlace predeterminada;</li>
+          <li>servidores DNS;</li>
+          <li>estado de DHCP;</li>
+          <li>dirección física o MAC.</li>
+        </ul>
+
+        <div class="command-block" data-label="PRUEBA LOOPBACK">
+          <pre><code>ping 127.0.0.1</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-18" data-task>
+            <label for="act-18">Actividad 18. Relevamiento real</label>
+          </div>
+          <ol>
+            <li>Ejecutá <code>ipconfig /all</code>.</li>
+            <li>Registrá IPv4, máscara y gateway del adaptador conectado.</li>
+            <li>Calculá la dirección de red y broadcast.</li>
+            <li>Indicá si la IPv4 es privada, pública o especial.</li>
+            <li>Comprobá loopback y explicá qué demuestra esa prueba y qué NO demuestra.</li>
+          </ol>
+          <textarea class="response" data-response="act-18" placeholder="Pegá solamente datos necesarios y evitá información personal innecesaria." aria-label="Pegá solamente datos necesarios y evitá información personal innecesaria."></textarea>
+        </div>
+      </section>
+
+      <section class="module advanced" id="ipv6" data-search="ipv6 128 hexadecimal compresion :: /64 global link local multicast loopback">
+        <div class="level-tag">Avanzado 5</div>
+        <div class="module-header">
+          <div class="module-number">19</div>
+          <div>
+            <h2>Introducción a IPv6</h2>
+            <p class="module-subtitle">128 bits, hexadecimal, jerarquía y ausencia de broadcast.</p>
+          </div>
+        </div>
+
+        <p>
+          IPv6 amplía el espacio de direccionamiento de 32 a <strong>128 bits</strong>. Se representa mediante
+          ocho grupos hexadecimales de cuatro dígitos separados por dos puntos.
+        </p>
+
+        <div class="command-block" data-label="IPv6">
+          <pre><code>Forma completa:
+2001:0DB8:0000:0000:0002:0000:5555:4777
+
+Sin ceros iniciales:
+2001:DB8:0:0:2:0:5555:4777
+
+Compresión:
+2001:DB8::2:0:5555:4777</code></pre>
+        </div>
+
+        <div class="callout warning">
+          <strong>Regla de compresión.</strong>
+          La sustitución de una cadena continua de grupos cero por <code>::</code> se realiza una sola vez
+          dentro de una dirección, porque de otro modo no podría reconstruirse su longitud sin ambigüedad.
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>Tipo</th><th>Referencia</th><th>Función</th></tr></thead>
+            <tbody>
+              <tr><td>Unicast global</td><td><code>2000::/3</code></td><td>Direccionamiento global.</td></tr>
+              <tr><td>Link-local</td><td><code>FE80::/10</code></td><td>Comunicación dentro del enlace local.</td></tr>
+              <tr><td>Multicast</td><td><code>FF00::/8</code></td><td>Comunicación hacia grupos.</td></tr>
+              <tr><td>Loopback</td><td><code>::1/128</code></td><td>Propio host.</td></tr>
+              <tr><td>Unique local</td><td><code>FC00::/7</code></td><td>Ámbito interno.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <p>
+          Un esquema organizacional frecuente parte de un prefijo <code>/48</code> y utiliza 16 bits adicionales
+          para identificar subredes <code>/64</code>. IPv6 no utiliza direcciones de broadcast: se apoya, entre otros
+          mecanismos, en multicast.
+        </p>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-19a" data-task>
+            <label for="act-19a">Actividad 19A. Comprimir y expandir IPv6</label>
+          </div>
+          <ol>
+            <li>Comprimí <code>2001:0DB8:0000:0000:0000:0000:0000:0045</code>.</li>
+            <li>Expandí <code>2001:DB8:1::25</code> a ocho grupos de cuatro dígitos.</li>
+          </ol>
+          <textarea class="response" data-response="act-19a" placeholder="Recordá que :: se usa una sola vez." aria-label="Recordá que :: se usa una sola vez."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-19b" data-task>
+            <label for="act-19b">Actividad 19B. Crear subredes IPv6</label>
+          </div>
+          <p>
+            Si una organización recibe <code>2001:5:5::/48</code>, escribí cinco subredes /64 utilizando
+            el cuarto grupo hexadecimal para numerarlas.
+          </p>
+          <textarea class="response" data-response="act-19b" placeholder="Ejemplo inicial: 2001:5:5:0::/64" aria-label="Ejemplo inicial: 2001:5:5:0::/64"></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="banco" data-search="banco ejercicios clase mascara red broadcast validas invalidas subred">
+        <div class="level-tag">Práctica intensiva</div>
+        <div class="module-header">
+          <div class="module-number">20</div>
+          <div>
+            <h2>Banco de ejercitación específica</h2>
+            <p class="module-subtitle">Problemas breves para dominar cada operación antes del integrador.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-20a" data-task><label for="act-20a">20A. Red y broadcast</label></div>
+          <p>Calculá red y broadcast:</p>
+          <ol>
+            <li><code>192.168.1.15/24</code></li>
+            <li><code>192.168.1.1/27</code></li>
+            <li><code>10.213.100.34/16</code></li>
+            <li><code>126.84.76.221/27</code></li>
+            <li><code>206.195.18.35</code> con máscara <code>255.192.0.0</code></li>
+          </ol>
+          <textarea class="response" data-response="act-20a" placeholder="Red / broadcast para cada caso." aria-label="Red / broadcast para cada caso."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-20b" data-task><label for="act-20b">20B. Direcciones válidas e inválidas</label></div>
+          <p>Decidí si la dirección puede asignarse como host con la máscara dada y justificá:</p>
+          <ol>
+            <li><code>192.10.10.1/24</code></li>
+            <li><code>245.150.190.10/24</code></li>
+            <li><code>135.70.191.255/23</code></li>
+            <li><code>127.100.100.10/8</code></li>
+            <li><code>200.10.10.128/27</code></li>
+            <li><code>165.100.255.189/26</code></li>
+          </ol>
+          <textarea class="response" data-response="act-20b" placeholder="Usá clase/bloque especial, red y broadcast." aria-label="Usá clase/bloque especial, red y broadcast."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-20c" data-task><label for="act-20c">20C. Máscara adaptada</label></div>
+          <p>Determiná una máscara que cumpla simultáneamente con las necesidades:</p>
+          <ol>
+            <li>Red <code>192.10.10.0/24</code>: al menos 14 subredes y 14 hosts por subred.</li>
+            <li>Red <code>165.100.0.0/16</code>: al menos 1000 subredes y 60 hosts por subred.</li>
+            <li>Red <code>210.100.56.0/24</code>: al menos 6 subredes y 30 hosts por subred.</li>
+          </ol>
+          <textarea class="response" data-response="act-20c" placeholder="Calculá bits de subred, bits de host, prefijo y máscara." aria-label="Calculá bits de subred, bits de host, prefijo y máscara."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-20d" data-task><label for="act-20d">20D. Explicar conceptos</label></div>
+          <ol>
+            <li>¿Por qué una /27 tiene bloques de 32 direcciones?</li>
+            <li>¿Por qué una /30 se usa frecuentemente para enlaces con pocos hosts?</li>
+            <li>¿Por qué VLSM aprovecha mejor las direcciones que FLSM cuando las redes tienen tamaños muy distintos?</li>
+            <li>¿Por qué una ruta /24 tiene prioridad sobre una /16 si ambas coinciden con el destino?</li>
+            <li>¿Por qué una IP privada necesita NAT para comunicarse directamente con Internet?</li>
+          </ol>
+          <textarea class="response" data-response="act-20d" placeholder="Respondé conceptualmente, no solo con fórmulas." aria-label="Respondé conceptualmente, no solo con fórmulas."></textarea>
+        </div>
+      </section>
+
+      <section class="module advanced" id="integrador" data-search="integrador diseño vlsm nat rutas ipv4 ipv6">
+        <div class="level-tag">Desafío final</div>
+        <div class="module-header">
+          <div class="module-number">21</div>
+          <div>
+            <h2>Desafío integrador: diseñar una red institucional</h2>
+            <p class="module-subtitle">Articular direccionamiento, subredes, gateway, NAT y rutas.</p>
+          </div>
+        </div>
+
+        <p>
+          Una institución recibe para su LAN el bloque privado <code>172.16.0.0/16</code> y necesita organizar:
+        </p>
+        <ul>
+          <li>Administración: 200 hosts.</li>
+          <li>Laboratorio: 120 hosts.</li>
+          <li>Docentes: 60 hosts.</li>
+          <li>Biblioteca: 30 hosts.</li>
+          <li>Dos enlaces punto a punto entre routers: 2 hosts cada uno.</li>
+        </ul>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-21" data-task>
+            <label for="act-21">Actividad 21. Proyecto completo</label>
+          </div>
+          <ol>
+            <li>Ordená los segmentos para aplicar VLSM.</li>
+            <li>Asigná a cada uno dirección de red, prefijo, máscara, rango de hosts y broadcast.</li>
+            <li>Elegí una dirección de gateway para cada LAN.</li>
+            <li>Explicá cómo accederían a Internet mediante NAT.</li>
+            <li>Proponé una ruta por defecto para los routers internos.</li>
+            <li>Indicá qué bloques podrían organizarse para facilitar sumarización.</li>
+            <li>Como extensión, suponé que la institución recibe <code>2001:DB8:CAFE::/48</code> y asigná una /64 a cada segmento.</li>
+          </ol>
+          <textarea class="response response-integrator" data-response="act-21" placeholder="Desarrollá el esquema completo y justificá cada decisión." aria-label="Desarrollá el esquema completo y justificá cada decisión."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="cierre" data-search="cierre autoevaluacion ticket conceptos">
+        <div class="module-header">
+          <div class="module-number">22</div>
+          <div>
+            <h2>Cierre y autoevaluación</h2>
+            <p class="module-subtitle">Comprobar comprensión antes de avanzar.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-22" data-task>
+            <label for="act-22">Ticket de salida</label>
+          </div>
+          <ol>
+            <li>Explicá la relación entre IP, máscara y dirección de red.</li>
+            <li>¿Qué diferencia existe entre FLSM y VLSM?</li>
+            <li>¿Qué hace la operación AND?</li>
+            <li>¿Qué diferencia hay entre broadcast y gateway?</li>
+            <li>¿Qué problema resuelve CIDR respecto del direccionamiento por clases?</li>
+            <li>¿Qué significa “prefijo más largo” en una tabla de enrutamiento?</li>
+            <li>Mencioná dos diferencias estructurales entre IPv4 e IPv6.</li>
+          </ol>
+          <textarea class="response" data-response="act-22" placeholder="Una o dos oraciones por pregunta." aria-label="Una o dos oraciones por pregunta."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario fuentes bibliografia definiciones">
+        <div class="module-header">
+          <div class="module-number">23</div>
+          <div>
+            <h2>Glosario y fuentes de trabajo</h2>
+            <p class="module-subtitle">Vocabulario esencial y materiales integrados.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>AND</dt><dd>Operación booleana utilizada entre una dirección IP y su máscara para obtener la dirección de red.</dd>
+          <dt>Broadcast</dt><dd>Dirección IPv4 que representa a todos los hosts de una subred determinada.</dd>
+          <dt>CIDR</dt><dd>Direccionamiento sin clases que expresa la longitud del prefijo mediante /n.</dd>
+          <dt>DHCP</dt><dd>Protocolo de configuración dinámica de hosts.</dd>
+          <dt>DNS</dt><dd>Sistema que relaciona nombres con direcciones IP.</dd>
+          <dt>FLSM</dt><dd>Esquema de subnetting en el que todas las subredes utilizan la misma máscara y tamaño.</dd>
+          <dt>Gateway</dt><dd>Próximo salto utilizado para alcanzar redes que no son locales.</dd>
+          <dt>Host</dt><dd>Interfaz o dispositivo direccionable dentro de una red.</dd>
+          <dt>IPv4</dt><dd>Versión de IP con direcciones de 32 bits.</dd>
+          <dt>IPv6</dt><dd>Versión de IP con direcciones de 128 bits representadas en hexadecimal.</dd>
+          <dt>Loopback</dt><dd>Dirección que apunta al propio sistema; en IPv4 se reserva 127.0.0.0/8.</dd>
+          <dt>Máscara</dt><dd>Patrón de 32 bits que separa prefijo de red y parte de host en IPv4.</dd>
+          <dt>NAT</dt><dd>Traducción de direcciones de red entre distintos espacios de direccionamiento.</dd>
+          <dt>Prefijo</dt><dd>Conjunto inicial de bits que identifica una red o bloque.</dd>
+          <dt>Ruta por defecto</dt><dd>Ruta 0.0.0.0/0 utilizada cuando no existe una coincidencia más específica.</dd>
+          <dt>Subnetting</dt><dd>Proceso de dividir un bloque IP en subredes más pequeñas.</dd>
+          <dt>Sumarización</dt><dd>Representación de varias rutas mediante un prefijo común.</dd>
+          <dt>VLSM</dt><dd>Uso de máscaras de longitud variable para asignar bloques de distintos tamaños.</dd>
+        </dl>
+
+        <div class="source-note">
+          <strong>Materiales integrados en esta clase:</strong>
+          “Direcciones IP y máscaras de red” (material HTML de trabajo);
+          “Direccionamiento IP - Cálculo de redes TCP/IP”;
+          “Direccionamiento IP y subredes: ejercicios resueltos”;
+          y “Guía sobre direccionamiento IP, subredes y enrutamiento” de Jonas P. Lüke.
+          La secuencia didáctica distingue expresamente convenciones históricas de subnetting de los criterios modernos.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Clase 12 · Direccionamiento IP, subredes y enrutamiento.
+        Recorrido teórico-práctico desde binario e IPv4 hasta VLSM, CIDR, routing e IPv6.
+      </p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

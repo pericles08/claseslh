@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Material teórico-práctico sobre comandos de red, diagnóstico y mantenimiento en Windows mediante CMD.">
+  <title>Comandos de red, diagnóstico y mantenimiento en Windows</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase11">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes y mantenimiento de sistemas</p>
+      <h1>Comandos de red, diagnóstico y mantenimiento en Windows</h1>
+      <p>
+        Material teórico-práctico para explorar la consola de Windows, interpretar información de red,
+        diagnosticar problemas, relevar el estado del equipo y aplicar procedimientos básicos de mantenimiento.
+      </p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">CMD</span>
+        <span class="hero-tag">IP y DNS</span>
+        <span class="hero-tag">Conectividad</span>
+        <span class="hero-tag">Puertos y procesos</span>
+        <span class="hero-tag">Diagnóstico</span>
+        <span class="hero-tag">Mantenimiento</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: ping, DNS, memoria, puertos">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Recorrido de contenidos</h2>
+      <nav>
+        <a href="#presentacion">Presentación</a>
+        <a href="#cmd">1. CMD y operadores</a>
+        <a href="#ipconfig">2. IPConfig y DNS</a>
+        <a href="#ping">3. Ping y latencia</a>
+        <a href="#nslookup">4. NSLookup</a>
+        <a href="#trazado">5. TRACERT y PATHPING</a>
+        <a href="#netstat">6. NETSTAT</a>
+        <a href="#mac-arp">7. MAC, GETMAC y ARP</a>
+        <a href="#loopback">8. Loopback y rutas</a>
+        <a href="#sistema-procesos">9. Sistema y procesos</a>
+        <a href="#diagnostico">10. Diagnóstico de Windows</a>
+        <a href="#mantenimiento">11. Limpieza y mantenimiento</a>
+        <a href="#integrador">12. Trabajo integrador</a>
+        <a href="#evaluacion">13. Criterios de evaluación</a>
+        <a href="#glosario">14. Glosario</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso de actividades</strong>
+        <div class="progress-track">
+          <progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress>
+        </div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>
+        No se encontraron módulos que coincidan con la búsqueda.
+      </div>
+
+      <section class="module" id="presentacion" data-search="presentación objetivos seguridad modalidad trabajo">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación del recorrido</h2>
+            <p class="module-subtitle">Propósitos, modalidad de trabajo y criterios de seguridad.</p>
+          </div>
+        </div>
+
+        <p>
+          La línea de comandos de Windows permite observar información que muchas veces queda oculta en las
+          interfaces gráficas. Su uso favorece una comprensión más profunda de la comunicación en red, porque
+          obliga a interpretar direcciones, protocolos, puertos, rutas, procesos y estados del sistema.
+        </p>
+
+        <div class="objectives">
+          <article class="mini-card">
+            <h3>Objetivos de aprendizaje</h3>
+            <ul>
+              <li>Reconocer la función de los principales comandos de red y diagnóstico.</li>
+              <li>Interpretar resultados reales obtenidos en una computadora con Windows.</li>
+              <li>Relacionar direcciones IP, direcciones MAC, puertos, procesos y rutas.</li>
+              <li>Guardar evidencias mediante redirección de salida a archivos de texto.</li>
+              <li>Elaborar conclusiones fundamentadas a partir de datos observables.</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Modalidad de trabajo</h3>
+            <ul>
+              <li>Lectura breve de cada concepto.</li>
+              <li>Ejecución controlada del comando propuesto.</li>
+              <li>Registro de resultados en archivos o capturas.</li>
+              <li>Interpretación de la información obtenida.</li>
+              <li>Resolución de preguntas y elaboración de una conclusión.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout danger">
+          <strong>Condición de seguridad.</strong>
+          Los comandos que modifican configuraciones, reinician el equipo, detienen procesos, liberan una dirección IP,
+          reparan discos o eliminan archivos deben utilizarse únicamente con autorización docente y sobre equipos
+          destinados a la práctica. No deben aplicarse en computadoras institucionales críticas ni en dispositivos ajenos.
+        </div>
+
+        <div class="callout success">
+          <strong>Principio de trabajo.</strong>
+          El objetivo no es memorizar comandos de manera aislada, sino comprender qué pregunta técnica permite responder
+          cada herramienta y cómo se justifica una conclusión a partir de la salida obtenida.
+        </div>
+      </section>
+
+      <section class="module" id="cmd" data-search="cmd consola línea comandos administrador operadores redirección archivo tubería pipe">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>CMD y operadores de la consola</h2>
+            <p class="module-subtitle">Introducción a la interfaz de línea de comandos y a la construcción de reportes.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>CMD</strong> es la interfaz de línea de comandos de Windows. Permite escribir instrucciones para
+          consultar el sistema, administrar archivos, ejecutar programas y diagnosticar configuraciones. Aunque las
+          interfaces gráficas resultan más accesibles, la consola ofrece precisión, rapidez y posibilidades de automatización.
+        </p>
+
+        <h3>Apertura de la consola</h3>
+        <ol class="steps">
+          <li>Presionar la tecla de Windows y escribir <span class="inline-code">cmd</span>.</li>
+          <li>Abrir “Símbolo del sistema”. Para ciertas tareas, seleccionar “Ejecutar como administrador”.</li>
+          <li>Reconocer el indicador de la consola, por ejemplo: <span class="inline-code">C:\Users\Estudiante&gt;</span>.</li>
+          <li>Escribir un comando, presionar Enter y analizar la salida.</li>
+        </ol>
+
+        <h3>Operadores fundamentales</h3>
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Operador</th>
+                <th>Función</th>
+                <th>Ejemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&gt;</code></td>
+                <td>Redirige la salida y crea o sobrescribe un archivo.</td>
+                <td><code>ipconfig /all &gt; red.txt</code></td>
+              </tr>
+              <tr>
+                <td><code>&gt;&gt;</code></td>
+                <td>Agrega la salida al final de un archivo existente.</td>
+                <td><code>getmac &gt;&gt; red.txt</code></td>
+              </tr>
+              <tr>
+                <td><code>|</code></td>
+                <td>Envía la salida de un comando a otro para filtrarla o procesarla.</td>
+                <td><code>netstat -ano | find "127.0.0.1"</code></td>
+              </tr>
+              <tr>
+                <td><code>&amp;&amp;</code></td>
+                <td>Ejecuta un segundo comando si el primero finaliza correctamente.</td>
+                <td><code>ipconfig /release &amp;&amp; ipconfig /renew</code></td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="command-block">
+          <pre><code>hostname &gt; reporte_equipo.txt
+systeminfo &gt;&gt; reporte_equipo.txt
+tasklist &gt;&gt; reporte_equipo.txt</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-cmd-1" data-task>
+            <label for="act-cmd-1">Actividad 1. Primer reporte desde CMD</label>
+          </div>
+          <ol>
+            <li>Abrir CMD.</li>
+            <li>Ejecutar los tres comandos del bloque anterior.</li>
+            <li>Abrir el archivo <span class="inline-code">reporte_equipo.txt</span>.</li>
+            <li>Explicar qué información incorporó cada comando y qué diferencia existe entre <code>&gt;</code> y <code>&gt;&gt;</code>.</li>
+          </ol>
+          <textarea class="response" data-response="cmd-1" placeholder="Escribí aquí la explicación y las observaciones principales." aria-label="Escribí aquí la explicación y las observaciones principales."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="ipconfig" data-search="ipconfig ipv4 ipv6 máscara puerta enlace gateway dhcp dns caché ttl release renew flushdns displaydns registerdns">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>IPConfig y configuración IP</h2>
+            <p class="module-subtitle">Lectura de interfaces, direccionamiento, DHCP, DNS y caché local.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>ipconfig</strong> permite visualizar y gestionar la configuración IP de las interfaces de red.
+          La salida puede mostrar datos de Ethernet, Wi-Fi, Bluetooth y adaptadores virtuales. La interpretación
+          correcta exige identificar cuál de esas interfaces se encuentra realmente conectada.
+        </p>
+
+        <h3>Parámetros principales</h3>
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Comando</th>
+                <th>Uso principal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>ipconfig</code></td><td>Muestra información básica de las interfaces.</td></tr>
+              <tr><td><code>ipconfig /all</code></td><td>Muestra IPv4, IPv6, MAC, DHCP, DNS, gateway y más datos.</td></tr>
+              <tr><td><code>ipconfig /release</code></td><td>Libera la dirección IP asignada por DHCP.</td></tr>
+              <tr><td><code>ipconfig /renew</code></td><td>Solicita una nueva dirección al servidor DHCP.</td></tr>
+              <tr><td><code>ipconfig /flushdns</code></td><td>Borra la caché local de resoluciones DNS.</td></tr>
+              <tr><td><code>ipconfig /displaydns</code></td><td>Muestra el contenido actual de la caché DNS.</td></tr>
+              <tr><td><code>ipconfig /registerdns</code></td><td>Fuerza el registro dinámico de DNS.</td></tr>
+              <tr><td><code>ipconfig /?</code></td><td>Muestra la ayuda y los parámetros disponibles.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <h3>Cómo interpretar una interfaz conectada</h3>
+        <div class="command-block">
+          <pre><code>Adaptador de Ethernet Ethernet:
+  Dirección IPv4. . . . . . . . . . . : 192.168.128.243
+  Máscara de subred . . . . . . . . . : 255.255.255.0
+  Puerta de enlace predeterminada . . . : 192.168.128.1</code></pre>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h4>Dirección IPv4</h4>
+            <p>Identifica al equipo dentro de la red local. En el ejemplo, la dirección es <code>192.168.128.243</code>.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Máscara de subred</h4>
+            <p>Permite determinar qué parte corresponde a la red y qué parte identifica al host.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Puerta de enlace</h4>
+            <p>Es el dispositivo que encamina el tráfico hacia otras redes, habitualmente el router.</p>
+          </article>
+        </div>
+
+        <h3>Caché DNS y TTL</h3>
+        <p>
+          La caché DNS conserva temporalmente resultados de consultas de nombres de dominio. El <strong>TTL</strong>
+          indica, en segundos, cuánto tiempo permanecerá válida una entrada antes de desaparecer. Al llegar a cero,
+          el equipo deberá consultar nuevamente a un servidor DNS.
+        </p>
+
+        <div class="command-block">
+          <pre><code>ipconfig /displaydns &gt; antes_dns.txt
+ipconfig /flushdns
+ipconfig /displaydns &gt; despues_flush.txt</code></pre>
+        </div>
+
+        <div class="callout warning">
+          <strong>Precaución con DHCP.</strong>
+          <code>ipconfig /release</code> interrumpe temporalmente la conectividad de la interfaz. Debe utilizarse
+          únicamente con autorización, seguida de <code>ipconfig /renew</code>.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ip-1" data-task>
+            <label for="act-ip-1">Actividad 2. Relevamiento completo de red</label>
+          </div>
+          <div class="command-block">
+            <pre><code>ipconfig /all &gt; mi_configuracion.txt</code></pre>
+          </div>
+          <p>En el archivo, identificar y registrar:</p>
+          <ul>
+            <li>nombre del adaptador conectado;</li>
+            <li>dirección IPv4 y dirección MAC;</li>
+            <li>máscara de subred y puerta de enlace;</li>
+            <li>servidores DNS;</li>
+            <li>estado de DHCP.</li>
+          </ul>
+          <textarea class="response" data-response="ip-1" placeholder="Registrá los datos observados y explicá qué función cumple cada uno." aria-label="Registrá los datos observados y explicá qué función cumple cada uno."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ip-2" data-task>
+            <label for="act-ip-2">Actividad 3. Comparación de la caché DNS</label>
+          </div>
+          <ol>
+            <li>Guardar la caché con <code>ipconfig /displaydns &gt; antes_dns.txt</code>.</li>
+            <li>Limpiarla con <code>ipconfig /flushdns</code>.</li>
+            <li>Navegar por tres sitios diferentes.</li>
+            <li>Guardar la nueva caché con <code>ipconfig /displaydns &gt; despues_dns.txt</code>.</li>
+            <li>Comparar nombres de dominio, tipos de registro y TTL.</li>
+          </ol>
+          <textarea class="response" data-response="ip-2" placeholder="Explicá qué cambió entre ambos archivos y qué representa el TTL." aria-label="Explicá qué cambió entre ambos archivos y qué representa el TTL."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="ping" data-search="ping icmp latencia rtt paquetes ttl mtu fragmentación tiempo respuesta conectividad">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Ping, conectividad y latencia</h2>
+            <p class="module-subtitle">Comprobación de alcance, medición de RTT y análisis básico de paquetes ICMP.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>ping</strong> comprueba si un destino puede ser alcanzado. Envía mensajes ICMP y mide el tiempo
+          de ida y vuelta, conocido como <strong>RTT</strong>. También informa paquetes enviados, recibidos y perdidos.
+        </p>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Preguntas que permite responder</h3>
+            <ul>
+              <li>¿El destino responde?</li>
+              <li>¿Existe pérdida de paquetes?</li>
+              <li>¿La latencia es estable?</li>
+              <li>¿El nombre de dominio se resuelve a una IP?</li>
+            </ul>
+          </article>
+          <article class="mini-card">
+            <h3>Factores que influyen</h3>
+            <ul>
+              <li>calidad del enlace Wi-Fi o cableado;</li>
+              <li>distancia física y cantidad de saltos;</li>
+              <li>congestión de la red;</li>
+              <li>carga del servidor de destino;</li>
+              <li>políticas de firewall o bloqueo de ICMP.</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3>Sintaxis y opciones</h3>
+        <div class="command-block">
+          <pre><code>ping www.google.com
+ping 8.8.8.8
+ping -n 6 8.8.8.8
+ping -t www.google.com
+ping -w 3000 192.168.1.1
+ping -f -l 1472 www.google.com</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Opción</th>
+                <th>Interpretación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>-n 6</code></td><td>Envía una cantidad determinada de solicitudes.</td></tr>
+              <tr><td><code>-t</code></td><td>Envía solicitudes de manera continua hasta presionar Ctrl + C.</td></tr>
+              <tr><td><code>-w 3000</code></td><td>Define un tiempo de espera de 3000 milisegundos.</td></tr>
+              <tr><td><code>-f</code></td><td>Impide la fragmentación del paquete.</td></tr>
+              <tr><td><code>-l 1472</code></td><td>Define el tamaño de los datos enviados.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <h3>MTU y tamaño del paquete</h3>
+        <p>
+          En una prueba con <code>-f -l 1472</code>, se envían 1472 bytes de datos. A ellos se agregan 20 bytes
+          de cabecera IP y 8 bytes de cabecera ICMP. El total es 1500 bytes, valor habitual de MTU en numerosas redes.
+        </p>
+
+        <div class="callout">
+          <strong>Lectura orientativa.</strong>
+          En una red local cableada, el tiempo suele ser muy bajo. En conexiones hacia otros países o continentes,
+          una latencia elevada puede ser consecuencia normal de la distancia. Más importante que un único valor es
+          observar la estabilidad, la pérdida de paquetes y la comparación entre destinos equivalentes.
+        </div>
+
+        <details>
+          <summary>Seguridad: usos maliciosos relacionados con ICMP</summary>
+          <div>
+            <p>
+              Existen ataques conocidos como ping flood, ping of death y smurf. Se mencionan únicamente para comprender
+              riesgos de disponibilidad y filtrado. No deben reproducirse en redes reales, ya que implican saturación,
+              tráfico manipulado o explotación de vulnerabilidades.
+            </p>
+          </div>
+        </details>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ping-1" data-task>
+            <label for="act-ping-1">Actividad 4. Comparación de tres destinos</label>
+          </div>
+          <div class="command-block">
+            <pre><code>ping www.google.com &gt; pings.txt
+ping www.facebook.com &gt;&gt; pings.txt
+ping www.unc.edu.ar &gt;&gt; pings.txt</code></pre>
+          </div>
+          <p>
+            Comparar el promedio, el mínimo, el máximo y la pérdida de paquetes. Determinar qué destino respondió
+            más rápido y justificar la respuesta con datos concretos.
+          </p>
+          <textarea class="response" data-response="ping-1" placeholder="Escribí la comparación y la conclusión fundamentada." aria-label="Escribí la comparación y la conclusión fundamentada."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ping-2" data-task>
+            <label for="act-ping-2">Actividad 5. Ping continuo y análisis de estabilidad</label>
+          </div>
+          <ol>
+            <li>Ejecutar <code>ping -t</code> hacia un sitio autorizado.</li>
+            <li>Esperar entre 30 y 60 segundos.</li>
+            <li>Detener con Ctrl + C.</li>
+            <li>Analizar variaciones de RTT y porcentaje de pérdida.</li>
+          </ol>
+          <textarea class="response" data-response="ping-2" placeholder="Indicá qué información apareció al detener el comando y si la conexión fue estable." aria-label="Indicá qué información apareció al detener el comando y si la conexión fue estable."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="nslookup" data-search="nslookup dns dominio dirección ip resolución nombre servidor cdn balanceo">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>NSLookup y resolución de nombres</h2>
+            <p class="module-subtitle">Consulta del sistema DNS y relación entre dominios y direcciones IP.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>nslookup</strong> consulta el sistema de nombres de dominio. Permite observar qué servidor DNS
+          responde y qué direcciones IP se asocian con un nombre. Un mismo dominio puede devolver varias direcciones
+          por distribución geográfica, redundancia, balanceo de carga o redes de entrega de contenidos.
+        </p>
+
+        <div class="command-block">
+          <pre><code>nslookup www.google.com
+nslookup www.microsoft.com
+nslookup www.wikipedia.org</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-dns-1" data-task>
+            <label for="act-dns-1">Actividad 6. Consulta comparada de dominios</label>
+          </div>
+          <div class="command-block">
+            <pre><code>nslookup www.google.com &gt; dns_consultas.txt
+nslookup www.microsoft.com &gt;&gt; dns_consultas.txt
+nslookup www.wikipedia.org &gt;&gt; dns_consultas.txt</code></pre>
+          </div>
+          <p>Responder:</p>
+          <ol>
+            <li>¿Qué servidor DNS atendió la consulta?</li>
+            <li>¿Qué direcciones IP devolvió cada dominio?</li>
+            <li>¿Aparecieron varias direcciones para un mismo nombre?</li>
+            <li>¿Por qué las respuestas pueden variar entre equipos o momentos?</li>
+          </ol>
+          <textarea class="response" data-response="dns-1" placeholder="Registrá las respuestas y elaborá una explicación sobre la variación de direcciones." aria-label="Registrá las respuestas y elaborá una explicación sobre la variación de direcciones."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="trazado" data-search="tracert pathping traceroute saltos routers ttl icmp latencia timeout ruta">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>TRACERT y PATHPING</h2>
+            <p class="module-subtitle">Análisis de rutas, saltos, TTL, latencia y pérdida intermedia.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>TRACERT</strong> muestra los saltos que recorren los paquetes hasta un destino. Para hacerlo,
+          utiliza valores crecientes de TTL. Cada router reduce el TTL en uno; cuando el valor llega a cero, el
+          dispositivo responde con un mensaje ICMP de tiempo excedido. De esta manera se construye la ruta.
+        </p>
+
+        <div class="command-block">
+          <pre><code>tracert www.google.com
+tracert www.wikipedia.org
+tracert www.facebook.com</code></pre>
+        </div>
+
+        <h3>Lectura de una línea</h3>
+        <div class="command-block">
+          <pre><code>4    36 ms    56 ms    32 ms    host54.ejemplo.net [181.88.169.54]</code></pre>
+        </div>
+        <ul>
+          <li><strong>4:</strong> número de salto.</li>
+          <li><strong>36, 56 y 32 ms:</strong> tres mediciones de tiempo de respuesta.</li>
+          <li><strong>host54.ejemplo.net:</strong> nombre del nodo, si puede resolverse.</li>
+          <li><strong>181.88.169.54:</strong> dirección IP del nodo.</li>
+        </ul>
+
+        <div class="callout warning">
+          <strong>Interpretación de los asteriscos.</strong>
+          La aparición de <code>* * *</code> no demuestra por sí sola una falla. Un router puede reenviar tráfico
+          normalmente y, al mismo tiempo, no responder a las solicitudes ICMP por configuración o seguridad.
+        </div>
+
+        <h3>PATHPING</h3>
+        <p>
+          <strong>pathping</strong> combina aspectos de <code>ping</code> y <code>tracert</code>. Primero identifica
+          la ruta y luego recopila estadísticas de latencia y pérdida para cada salto. Por esa razón demora más tiempo,
+          pero ofrece una visión más detallada.
+        </p>
+
+        <div class="command-block">
+          <pre><code>pathping www.google.com</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-trace-1" data-task>
+            <label for="act-trace-1">Actividad 7. Comparación de tres rutas</label>
+          </div>
+          <ol>
+            <li>Ejecutar TRACERT con tres destinos.</li>
+            <li>Guardar cada resultado en un archivo.</li>
+            <li>Registrar cantidad de saltos, mayor tiempo observado y presencia de asteriscos.</li>
+            <li>Comparar si las rutas comparten los primeros saltos.</li>
+          </ol>
+          <textarea class="response" data-response="trace-1" placeholder="Escribí la comparación entre rutas y una conclusión sobre las diferencias observadas." aria-label="Escribí la comparación entre rutas y una conclusión sobre las diferencias observadas."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-trace-2" data-task>
+            <label for="act-trace-2">Actividad 8. Diagnóstico con PATHPING</label>
+          </div>
+          <p>
+            Ejecutar <code>pathping</code> hacia un destino autorizado. Identificar el salto con mayor pérdida
+            y explicar por qué el resultado debe interpretarse con cautela.
+          </p>
+          <textarea class="response" data-response="trace-2" placeholder="Registrá la evidencia y explicá la interpretación." aria-label="Registrá la evidencia y explicá la interpretación."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="netstat" data-search="netstat conexiones activas puertos protocolo tcp udp established time_wait listening pid proceso">
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>NETSTAT: conexiones, puertos y procesos</h2>
+            <p class="module-subtitle">Observación de comunicaciones activas y relación con el PID.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>netstat</strong> muestra conexiones de red, puertos, estados y, según los parámetros utilizados,
+          identificadores de procesos. No todas las líneas representan tráfico activo: algunas indican puertos
+          preparados para recibir conexiones o conexiones que se encuentran en proceso de cierre.
+        </p>
+
+        <h3>Estructura de la salida</h3>
+        <div class="command-block">
+          <pre><code>Proto  Dirección local          Dirección remota       Estado        PID
+TCP    192.168.128.243:50022    20.22.207.36:443       ESTABLISHED   4080</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Columna</th>
+                <th>Significado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Proto</td><td>Protocolo utilizado, generalmente TCP o UDP.</td></tr>
+              <tr><td>Dirección local</td><td>IP y puerto de la computadora.</td></tr>
+              <tr><td>Dirección remota</td><td>IP y puerto del equipo o servicio externo.</td></tr>
+              <tr><td>Estado</td><td>Situación de la conexión TCP.</td></tr>
+              <tr><td>PID</td><td>Identificador del proceso que mantiene la conexión.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <h3>Estados frecuentes</h3>
+        <div class="three-col">
+          <article class="mini-card"><h4>ESTABLISHED</h4><p>Conexión activa y establecida.</p></article>
+          <article class="mini-card"><h4>LISTENING</h4><p>Puerto a la espera de conexiones entrantes.</p></article>
+          <article class="mini-card"><h4>TIME_WAIT</h4><p>Conexión cerrada recientemente, en espera de paquetes tardíos.</p></article>
+        </div>
+
+        <h3>Parámetros útiles</h3>
+        <div class="command-block">
+          <pre><code>netstat -a
+netstat -n
+netstat -o
+netstat -ano
+netstat -b</code></pre>
+        </div>
+
+        <ul>
+          <li><code>-a</code>: muestra conexiones y puertos en escucha.</li>
+          <li><code>-n</code>: muestra direcciones y puertos numéricos.</li>
+          <li><code>-o</code>: incorpora el PID.</li>
+          <li><code>-b</code>: intenta mostrar el programa asociado y puede requerir permisos de administrador.</li>
+        </ul>
+
+        <div class="callout">
+          <strong>Relación con el Administrador de tareas.</strong>
+          El PID obtenido con <code>netstat -ano</code> puede buscarse en la pestaña “Detalles” del Administrador
+          de tareas para identificar qué proceso sostiene una conexión.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-netstat-1" data-task>
+            <label for="act-netstat-1">Actividad 9. Análisis de conexiones activas</label>
+          </div>
+          <div class="command-block">
+            <pre><code>netstat -ano &gt; conexiones_activas.txt</code></pre>
+          </div>
+          <p>Analizar el archivo y responder:</p>
+          <ul>
+            <li>¿Cuántas conexiones se encuentran en estado ESTABLISHED?</li>
+            <li>¿Aparecen puertos 80 o 443?</li>
+            <li>¿Qué direcciones remotas se repiten?</li>
+            <li>¿Qué PID mantiene más conexiones?</li>
+            <li>¿El proceso asociado resulta esperable?</li>
+          </ul>
+          <textarea class="response" data-response="netstat-1" placeholder="Registrá la cantidad de conexiones, los PID relevantes y la conclusión." aria-label="Registrá la cantidad de conexiones, los PID relevantes y la conclusión."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-netstat-2" data-task>
+            <label for="act-netstat-2">Actividad 10. Filtro de conexiones locales</label>
+          </div>
+          <div class="command-block">
+            <pre><code>netstat -ano | find "127.0.0.1" &gt; puertos_loopback.txt</code></pre>
+          </div>
+          <p>Identificar puertos locales, estados y PID. Luego relacionarlos con los procesos del sistema.</p>
+          <textarea class="response" data-response="netstat-2" placeholder="Indicá qué puertos y procesos aparecen asociados al loopback." aria-label="Indicá qué puertos y procesos aparecen asociados al loopback."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="mac-arp" data-search="mac media access control oui fabricante ieee getmac arp tabla ip dirección física broadcast ff ff">
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>Dirección MAC, GETMAC y ARP</h2>
+            <p class="module-subtitle">Identificación física de interfaces y relación entre direcciones IP y MAC.</p>
+          </div>
+        </div>
+
+        <p>
+          La dirección <strong>MAC</strong> identifica una interfaz de red en la capa de enlace. Se expresa normalmente
+          mediante 48 bits, es decir, seis bytes en formato hexadecimal. Los primeros 24 bits corresponden al OUI,
+          asociado al fabricante; los restantes identifican la interfaz concreta.
+        </p>
+
+        <div class="command-block">
+          <pre><code>00-1A-2B-3C-4D-5E</code></pre>
+        </div>
+
+        <h3>GETMAC</h3>
+        <p>
+          <code>getmac</code> muestra las direcciones físicas de las interfaces instaladas, incluso si alguna de ellas
+          se encuentra desconectada.
+        </p>
+
+        <div class="command-block">
+          <pre><code>getmac
+getmac /fo table
+getmac /nh</code></pre>
+        </div>
+
+        <h3>ARP</h3>
+        <p>
+          <code>arp -a</code> muestra la tabla que relaciona direcciones IP con direcciones MAC dentro de la red local.
+          Las entradas dinámicas se aprenden automáticamente; las estáticas permanecen definidas de manera explícita
+          o representan valores especiales.
+        </p>
+
+        <div class="command-block">
+          <pre><code>arp -a</code></pre>
+        </div>
+
+        <div class="callout">
+          <strong>Dirección de difusión.</strong>
+          La asociación <code>255.255.255.255</code> con <code>ff-ff-ff-ff-ff-ff</code> representa una difusión
+          general: el mensaje se dirige a todos los dispositivos del segmento local.
+        </div>
+
+        <details>
+          <summary>Seguridad y falsificación de direcciones MAC</summary>
+          <div>
+            <p>
+              Una dirección MAC puede modificarse o falsificarse. Por esa razón, los controles basados únicamente
+              en direcciones MAC no constituyen una medida de seguridad suficiente. Conocer una MAC no otorga acceso
+              directo, pero puede facilitar suplantaciones dentro de una red local.
+            </p>
+          </div>
+        </details>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-mac-1" data-task>
+            <label for="act-mac-1">Actividad 11. Relevamiento de interfaces y fabricantes</label>
+          </div>
+          <ol>
+            <li>Ejecutar <code>getmac</code> y registrar las direcciones encontradas.</li>
+            <li>Ejecutar <code>arp -a</code>.</li>
+            <li>Elegir una MAC de la tabla ARP.</li>
+            <li>Consultar su OUI mediante una herramienta autorizada.</li>
+            <li>Registrar el fabricante estimado y aclarar que la identificación puede no ser concluyente.</li>
+          </ol>
+          <textarea class="response" data-response="mac-1" placeholder="Registrá las MAC, el OUI consultado y la interpretación." aria-label="Registrá las MAC, el OUI consultado y la interpretación."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-mac-2" data-task>
+            <label for="act-mac-2">Actividad 12. Actualización de la tabla ARP</label>
+          </div>
+          <ol>
+            <li>Observar la tabla con <code>arp -a</code>.</li>
+            <li>Hacer ping a otra computadora autorizada de la red local.</li>
+            <li>Volver a ejecutar <code>arp -a</code>.</li>
+            <li>Comprobar si apareció una nueva asociación IP–MAC.</li>
+          </ol>
+          <textarea class="response" data-response="mac-2" placeholder="Explicá qué cambió y por qué ARP necesita esa relación." aria-label="Explicá qué cambió y por qué ARP necesita esa relación."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="loopback" data-search="loopback localhost 127.0.0.1 hosts route print tabla rutas 0.0.0.0">
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>Loopback, localhost y tabla de rutas</h2>
+            <p class="module-subtitle">Pruebas internas del protocolo TCP/IP y análisis del encaminamiento local.</p>
+          </div>
+        </div>
+
+        <p>
+          La dirección <strong>127.0.0.1</strong>, denominada <strong>loopback</strong> o <strong>localhost</strong>,
+          representa a la propia computadora. Permite comprobar el funcionamiento interno de TCP/IP sin requerir
+          acceso a Internet ni comunicación con otro dispositivo.
+        </p>
+
+        <div class="command-block">
+          <pre><code>ping 127.0.0.1
+ping localhost
+type C:\Windows\System32\drivers\etc\hosts
+netstat -ano | find "127.0.0.1"</code></pre>
+        </div>
+
+        <h3>Diferencia entre loopback e IP privada</h3>
+        <div class="two-col">
+          <article class="mini-card">
+            <h4>127.0.0.1</h4>
+            <p>Solo identifica al propio equipo. No puede utilizarse desde otra computadora para llegar a este dispositivo.</p>
+          </article>
+          <article class="mini-card">
+            <h4>192.168.x.x, 10.x.x.x o 172.16–31.x.x</h4>
+            <p>Son rangos privados utilizados para identificar equipos dentro de una red local.</p>
+          </article>
+        </div>
+
+        <h3>Tabla de rutas</h3>
+        <p>
+          <code>route print</code> muestra las rutas que utiliza Windows para decidir por qué interfaz y puerta
+          de enlace enviar cada paquete. La ruta <code>0.0.0.0</code> suele representar la ruta predeterminada;
+          el rango <code>127.0.0.0</code> corresponde al loopback.
+        </p>
+
+        <div class="command-block">
+          <pre><code>route print &gt; tabla_rutas.txt</code></pre>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-loop-1" data-task>
+            <label for="act-loop-1">Actividad 13. Verificación del loopback</label>
+          </div>
+          <div class="command-block">
+            <pre><code>ping 127.0.0.1 &gt; ping_loopback.txt
+ping localhost &gt;&gt; ping_loopback.txt</code></pre>
+          </div>
+          <p>Comparar ambos resultados y explicar por qué deberían llegar al mismo destino.</p>
+          <textarea class="response" data-response="loop-1" placeholder="Indicá similitudes, diferencias y función de la prueba." aria-label="Indicá similitudes, diferencias y función de la prueba."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-loop-2" data-task>
+            <label for="act-loop-2">Actividad 14. Lectura de la tabla de rutas</label>
+          </div>
+          <p>
+            Ejecutar <code>route print</code> e identificar la ruta predeterminada, la interfaz utilizada y las
+            entradas asociadas al loopback. Explicar qué destino representa <code>0.0.0.0</code>.
+          </p>
+          <textarea class="response" data-response="loop-2" placeholder="Registrá las rutas principales y su interpretación." aria-label="Registrá las rutas principales y su interpretación."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="sistema-procesos" data-search="systeminfo tasklist taskkill pid memoria bios windows procesos redirección">
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>Información del sistema y procesos</h2>
+            <p class="module-subtitle">Inventario del equipo, procesos activos y relación con el diagnóstico de red.</p>
+          </div>
+        </div>
+
+        <h3>SYSTEMINFO</h3>
+        <p>
+          <code>systeminfo</code> muestra versión de Windows, fabricante, modelo, BIOS, arquitectura, memoria,
+          actualizaciones y configuración de red. Resulta útil para inventarios, soporte técnico y comparación de equipos.
+        </p>
+
+        <h3>TASKLIST</h3>
+        <p>
+          <code>tasklist</code> enumera procesos activos, PID y uso de memoria. Su información puede combinarse con
+          <code>netstat -ano</code> para identificar qué proceso mantiene una conexión.
+        </p>
+
+        <div class="command-block">
+          <pre><code>systeminfo &gt; reporte.txt
+tasklist &gt;&gt; reporte.txt</code></pre>
+        </div>
+
+        <h3>Finalización de procesos</h3>
+        <div class="command-block">
+          <pre><code>taskkill /PID 1234
+taskkill /PID 1234 /F
+taskkill /IM programa.exe /F</code></pre>
+        </div>
+
+        <div class="callout danger">
+          <strong>Advertencia.</strong>
+          <code>taskkill</code> puede cerrar procesos esenciales o provocar pérdida de información no guardada.
+          Debe utilizarse solo sobre programas identificados, con autorización y luego de guardar el trabajo.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-sys-1" data-task>
+            <label for="act-sys-1">Actividad 15. Informe de sistema y procesos</label>
+          </div>
+          <p>Crear <span class="inline-code">reporte.txt</span> y responder:</p>
+          <ul>
+            <li>¿Cuál es la versión de Windows?</li>
+            <li>¿Cuánta memoria física total hay?</li>
+            <li>¿Qué modelo de equipo o fabricante aparece?</li>
+            <li>¿Cuántos procesos se observan?</li>
+            <li>¿Qué proceso utiliza más memoria?</li>
+          </ul>
+          <textarea class="response" data-response="sys-1" placeholder="Registrá los datos y una breve interpretación del estado general del equipo." aria-label="Registrá los datos y una breve interpretación del estado general del equipo."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-sys-2" data-task>
+            <label for="act-sys-2">Actividad 16. Relación entre conexión y proceso</label>
+          </div>
+          <ol>
+            <li>Ejecutar <code>netstat -ano</code>.</li>
+            <li>Seleccionar una conexión ESTABLISHED.</li>
+            <li>Registrar su PID.</li>
+            <li>Buscar ese PID con <code>tasklist</code> o en el Administrador de tareas.</li>
+            <li>Explicar si el proceso identificado resulta coherente con la actividad del equipo.</li>
+          </ol>
+          <textarea class="response" data-response="sys-2" placeholder="Escribí la relación entre PID, proceso y conexión remota." aria-label="Escribí la relación entre PID, proceso y conexión remota."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="diagnostico" data-search="diagnóstico windows taskmgr perfmon resmon mdsched winsat eventvwr services devmgmt dxdiag msinfo32 chkdsk sfc driverquery wmic">
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>Herramientas de diagnóstico de Windows</h2>
+            <p class="module-subtitle">Monitoreo de recursos, hardware, servicios, eventos y archivos del sistema.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Comando</th>
+                <th>Herramienta o función</th>
+                <th>Dato a observar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>taskmgr</code></td><td>Administrador de tareas.</td><td>CPU, memoria, disco, red y procesos.</td></tr>
+              <tr><td><code>perfmon</code></td><td>Monitor de rendimiento.</td><td>Contadores y gráficos del sistema.</td></tr>
+              <tr><td><code>resmon</code></td><td>Monitor de recursos.</td><td>Consumo detallado por proceso.</td></tr>
+              <tr><td><code>mdsched</code></td><td>Diagnóstico de memoria.</td><td>Errores en la RAM; requiere reinicio.</td></tr>
+              <tr><td><code>winsat formal</code></td><td>Evaluación de rendimiento.</td><td>Procesador, memoria, disco y gráficos.</td></tr>
+              <tr><td><code>eventvwr</code></td><td>Visor de eventos.</td><td>Errores, advertencias e información.</td></tr>
+              <tr><td><code>services.msc</code></td><td>Consola de servicios.</td><td>Estado y modo de inicio.</td></tr>
+              <tr><td><code>devmgmt.msc</code></td><td>Administrador de dispositivos.</td><td>Hardware y controladores.</td></tr>
+              <tr><td><code>dxdiag</code></td><td>Diagnóstico de DirectX.</td><td>CPU, RAM, video y controladores.</td></tr>
+              <tr><td><code>msinfo32</code></td><td>Información del sistema.</td><td>Hardware, BIOS, dispositivos y software.</td></tr>
+              <tr><td><code>chkdsk C:</code></td><td>Análisis del sistema de archivos.</td><td>Errores y estado del disco.</td></tr>
+              <tr><td><code>sfc /scannow</code></td><td>Comprobación de archivos del sistema.</td><td>Archivos dañados o reparados.</td></tr>
+              <tr><td><code>driverquery</code></td><td>Listado de controladores.</td><td>Nombre, tipo y estado de drivers.</td></tr>
+              <tr><td><code>wmic cpu get name</code></td><td>Consulta del procesador, si está disponible.</td><td>Modelo de CPU.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Herramientas que requieren autorización.</strong>
+          <code>mdsched</code> reinicia el equipo; <code>winsat formal</code> puede demandar recursos;
+          <code>sfc /scannow</code> y ciertas opciones de <code>chkdsk</code> realizan operaciones de reparación.
+          En una práctica de aula, puede limitarse el trabajo a la observación o a una demostración docente.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-diag-1" data-task>
+            <label for="act-diag-1">Actividad 17. Monitor de recursos</label>
+          </div>
+          <ol>
+            <li>Abrir <code>taskmgr</code> y registrar uso de CPU y memoria.</li>
+            <li>Abrir <code>resmon</code> y localizar el proceso que más memoria consume.</li>
+            <li>Abrir <code>perfmon</code> y observar la variación del procesador.</li>
+            <li>Comparar qué nivel de detalle ofrece cada herramienta.</li>
+          </ol>
+          <textarea class="response" data-response="diag-1" placeholder="Explicá las diferencias entre las tres herramientas y registrá los datos observados." aria-label="Explicá las diferencias entre las tres herramientas y registrá los datos observados."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-diag-2" data-task>
+            <label for="act-diag-2">Actividad 18. Hardware y controladores</label>
+          </div>
+          <ol>
+            <li>Ejecutar <code>dxdiag</code> y registrar procesador, RAM y placa de video.</li>
+            <li>Ejecutar <code>msinfo32</code> y localizar información de BIOS y modelo.</li>
+            <li>Ejecutar <code>driverquery &gt; controladores.txt</code>.</li>
+            <li>Abrir <code>devmgmt.msc</code> y verificar si existe algún dispositivo con advertencia.</li>
+          </ol>
+          <textarea class="response" data-response="diag-2" placeholder="Registrá los datos del hardware y una conclusión sobre el estado de los controladores." aria-label="Registrá los datos del hardware y una conclusión sobre el estado de los controladores."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-diag-3" data-task>
+            <label for="act-diag-3">Actividad 19. Eventos y servicios</label>
+          </div>
+          <ol>
+            <li>Abrir <code>eventvwr</code> y localizar un error o advertencia reciente en “Sistema”.</li>
+            <li>Registrar origen, fecha y descripción general.</li>
+            <li>Abrir <code>services.msc</code> y seleccionar un servicio.</li>
+            <li>Registrar su nombre, estado y tipo de inicio, sin modificarlo.</li>
+          </ol>
+          <textarea class="response" data-response="diag-3" placeholder="Describí el evento y el servicio observados, sin incluir datos personales." aria-label="Describí el evento y el servicio observados, sin incluir datos personales."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="mantenimiento" data-search="mantenimiento limpieza windows temp archivos temporales cleanmgr papelera caché espacio disco">
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Limpieza y mantenimiento básico</h2>
+            <p class="module-subtitle">Archivos temporales, Liberador de espacio y criterios para una eliminación segura.</p>
+          </div>
+        </div>
+
+        <p>
+          Windows y las aplicaciones generan archivos temporales para instalaciones, cachés, registros y tareas en curso.
+          Con el tiempo, algunos dejan de ser necesarios. La limpieza debe realizarse con criterio, distinguiendo entre
+          la carpeta temporal del usuario y las herramientas de mantenimiento del sistema.
+        </p>
+
+        <h3>Carpeta %temp%</h3>
+        <p>
+          <code>%temp%</code> es una variable de entorno que conduce a la carpeta temporal del usuario actual.
+          Puede abrirse desde “Ejecutar” o consultarse desde CMD.
+        </p>
+
+        <div class="command-block">
+          <pre><code>cd %temp%
+dir %temp%</code></pre>
+        </div>
+
+        <h3>Cleanmgr</h3>
+        <p>
+          <code>cleanmgr</code> abre el Liberador de espacio en disco. Analiza categorías como archivos temporales,
+          papelera, miniaturas, cachés, informes de errores y restos de actualizaciones.
+        </p>
+
+        <div class="command-block">
+          <pre><code>cleanmgr</code></pre>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h4>Limpieza manual con %temp%</h4>
+            <ul>
+              <li>Se concentra en una carpeta.</li>
+              <li>Permite observar los archivos.</li>
+              <li>Requiere mayor cuidado.</li>
+              <li>Algunos elementos pueden estar en uso.</li>
+            </ul>
+          </article>
+          <article class="mini-card">
+            <h4>Limpieza con cleanmgr</h4>
+            <ul>
+              <li>Analiza varias categorías.</li>
+              <li>Presenta estimaciones de espacio.</li>
+              <li>Organiza la eliminación.</li>
+              <li>Resulta más segura para una práctica guiada.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout danger">
+          <strong>No borrar fuera de las ubicaciones indicadas.</strong>
+          No deben eliminarse carpetas del sistema ni archivos desconocidos. Si un archivo temporal se encuentra en uso,
+          debe omitirse. Antes de vaciar la papelera, es necesario comprobar que no contenga archivos importantes.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-maint-1" data-task>
+            <label for="act-maint-1">Actividad 20. Exploración de archivos temporales</label>
+          </div>
+          <ol>
+            <li>Abrir <code>%temp%</code>.</li>
+            <li>Registrar cantidad aproximada de elementos.</li>
+            <li>Anotar tres nombres de archivo y dos extensiones.</li>
+            <li>Identificar si existen elementos bloqueados o en uso.</li>
+          </ol>
+          <textarea class="response" data-response="maint-1" placeholder="Registrá las observaciones sin copiar datos personales ni nombres sensibles." aria-label="Registrá las observaciones sin copiar datos personales ni nombres sensibles."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-maint-2" data-task>
+            <label for="act-maint-2">Actividad 21. Comparación de métodos de limpieza</label>
+          </div>
+          <ol>
+            <li>Observar el espacio estimado por <code>cleanmgr</code>.</li>
+            <li>Identificar qué categoría ocupa más espacio.</li>
+            <li>Comparar la limpieza automática con la exploración manual de <code>%temp%</code>.</li>
+            <li>Explicar cuál método es más seguro y cuál ofrece mayor control.</li>
+          </ol>
+          <textarea class="response" data-response="maint-2" placeholder="Elaborá la comparación y una recomendación fundamentada." aria-label="Elaborá la comparación y una recomendación fundamentada."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="integrador" data-search="trabajo práctico integrador red cmd entrega archivos evidencia informe conclusión">
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Trabajo práctico integrador</h2>
+            <p class="module-subtitle">Construcción de un diagnóstico técnico básico a partir de evidencias.</p>
+          </div>
+        </div>
+
+        <p>
+          El trabajo integrador propone reunir en una única carpeta los resultados de configuración, conectividad,
+          resolución DNS, rutas, conexiones, direcciones físicas, procesos y estado general del equipo.
+        </p>
+
+        <h3>Parte A. Generación de evidencias</h3>
+        <div class="command-block">
+          <pre><code>ipconfig /all &gt; 01_configuracion_red.txt
+getmac &gt; 02_direcciones_mac.txt
+arp -a &gt; 03_tabla_arp.txt
+ping 127.0.0.1 &gt; 04_loopback.txt
+ping www.google.com &gt; 05_conectividad.txt
+nslookup www.google.com &gt; 06_dns.txt
+tracert www.google.com &gt; 07_ruta.txt
+netstat -ano &gt; 08_conexiones.txt
+route print &gt; 09_rutas_locales.txt
+systeminfo &gt; 10_sistema.txt
+tasklist &gt; 11_procesos.txt</code></pre>
+        </div>
+
+        <h3>Parte B. Informe de interpretación</h3>
+        <ol>
+          <li>Identificar la interfaz conectada, su IPv4, máscara, gateway, DNS y MAC.</li>
+          <li>Explicar si el protocolo TCP/IP interno funciona correctamente mediante la prueba loopback.</li>
+          <li>Determinar si existe conectividad con el destino seleccionado y analizar el RTT.</li>
+          <li>Explicar qué dirección o direcciones devuelve DNS.</li>
+          <li>Registrar cantidad de saltos y posibles timeouts de TRACERT.</li>
+          <li>Seleccionar una conexión activa y relacionarla con su PID y proceso.</li>
+          <li>Describir la ruta predeterminada de la tabla de rutas.</li>
+          <li>Elaborar una conclusión técnica sobre el estado general de red y del equipo.</li>
+        </ol>
+
+        <h3>Parte C. Estructura sugerida de entrega</h3>
+        <div class="command-block">
+          <pre><code>apellido_nombre_cmd_redes/
+├── evidencias/
+│   ├── 01_configuracion_red.txt
+│   ├── 02_direcciones_mac.txt
+│   ├── ...
+│   └── 11_procesos.txt
+└── informe_final.pdf o informe_final.docx</code></pre>
+        </div>
+
+        <div class="callout warning">
+          <strong>Protección de datos.</strong>
+          Antes de entregar capturas o archivos, revisar que no aparezcan nombres de usuario, direcciones públicas,
+          nombres de equipos personales, rutas privadas o información sensible que no sea necesaria para la actividad.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-int-1" data-task>
+            <label for="act-int-1">Actividad 22. Conclusión integradora</label>
+          </div>
+          <p>
+            Redactar una conclusión de entre 150 y 250 palabras que responda: ¿qué evidencias permiten afirmar que
+            la configuración de red es correcta?, ¿qué limitaciones tiene el diagnóstico realizado?, ¿qué prueba
+            adicional sería pertinente?
+          </p>
+          <textarea class="response response-long" data-response="int-1" placeholder="Redactá aquí la conclusión integradora." aria-label="Redactá aquí la conclusión integradora."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="evaluacion" data-search="evaluación criterios rúbrica interpretación comandos informe evidencias seguridad">
+        <div class="module-header">
+          <div class="module-number">13</div>
+          <div>
+            <h2>Criterios de evaluación</h2>
+            <p class="module-subtitle">Aspectos considerados en la resolución de las prácticas y del trabajo integrador.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Criterio</th>
+                <th>Desempeño esperado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Uso de comandos</td>
+                <td>Selecciona el comando adecuado, respeta la sintaxis y utiliza parámetros pertinentes.</td>
+              </tr>
+              <tr>
+                <td>Interpretación técnica</td>
+                <td>Explica direcciones, estados, tiempos, saltos, puertos y procesos a partir de datos reales.</td>
+              </tr>
+              <tr>
+                <td>Construcción de evidencias</td>
+                <td>Guarda salidas en archivos, organiza la carpeta y presenta resultados legibles.</td>
+              </tr>
+              <tr>
+                <td>Relación conceptual</td>
+                <td>Vincula IP, MAC, DNS, gateway, ARP, rutas, puertos y PID.</td>
+              </tr>
+              <tr>
+                <td>Diagnóstico y argumentación</td>
+                <td>Formula conclusiones prudentes, reconoce límites y evita afirmaciones sin evidencia.</td>
+              </tr>
+              <tr>
+                <td>Seguridad y responsabilidad</td>
+                <td>No ejecuta acciones destructivas, protege datos sensibles y respeta la autorización docente.</td>
+              </tr>
+              <tr>
+                <td>Comunicación</td>
+                <td>Presenta un informe claro, ordenado y con vocabulario técnico apropiado.</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout success">
+          <strong>Desempeño logrado.</strong>
+          La resolución no se limita a copiar resultados: identifica datos relevantes, los compara, explica su significado
+          y construye una conclusión técnica coherente con las evidencias.
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario ip mac dns dhcp gateway ttl icmp mtu rtt arp pid puerto router">
+        <div class="module-header">
+          <div class="module-number">14</div>
+          <div>
+            <h2>Glosario de conceptos clave</h2>
+            <p class="module-subtitle">Síntesis conceptual para acompañar la interpretación de los comandos.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>ARP</dt>
+          <dd>Protocolo que relaciona direcciones IPv4 con direcciones MAC dentro de una red local.</dd>
+
+          <dt>DHCP</dt>
+          <dd>Servicio que asigna automáticamente direcciones IP y otros parámetros de red.</dd>
+
+          <dt>DNS</dt>
+          <dd>Sistema que traduce nombres de dominio a direcciones IP.</dd>
+
+          <dt>Gateway o puerta de enlace</dt>
+          <dd>Dispositivo que permite alcanzar redes diferentes de la red local.</dd>
+
+          <dt>ICMP</dt>
+          <dd>Protocolo de control y diagnóstico utilizado, entre otros, por ping y tracert.</dd>
+
+          <dt>IP</dt>
+          <dd>Dirección lógica utilizada para identificar un dispositivo y encaminar paquetes.</dd>
+
+          <dt>MAC</dt>
+          <dd>Identificador de una interfaz en la capa de enlace de datos.</dd>
+
+          <dt>MTU</dt>
+          <dd>Tamaño máximo de una unidad de transmisión que puede circular sin fragmentarse.</dd>
+
+          <dt>PID</dt>
+          <dd>Número que identifica un proceso en ejecución.</dd>
+
+          <dt>Puerto</dt>
+          <dd>Número lógico que permite diferenciar servicios o aplicaciones dentro de un equipo.</dd>
+
+          <dt>Router</dt>
+          <dd>Dispositivo que encamina paquetes entre redes.</dd>
+
+          <dt>RTT</dt>
+          <dd>Tiempo total de ida y vuelta de un paquete entre origen y destino.</dd>
+
+          <dt>TTL</dt>
+          <dd>Valor que limita la vida de un paquete o el tiempo de validez de una entrada en caché, según el contexto.</dd>
+        </dl>
+
+        <details>
+          <summary>Comandos complementarios</summary>
+          <div>
+            <ul>
+              <li><code>hostname</code>: muestra el nombre del equipo.</li>
+              <li><code>netsh</code>: administra y configura componentes de red mediante contextos.</li>
+              <li><code>nbtstat</code>: muestra información NetBIOS sobre TCP/IP.</li>
+              <li><code>net use</code>: administra conexiones con recursos compartidos.</li>
+              <li><code>chkdsk</code>: analiza el sistema de archivos y, con parámetros específicos, puede repararlo.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Material de enseñanza para prácticas guiadas en Windows. La ejecución de comandos debe realizarse con
+        autorización, respetando las políticas institucionales, la privacidad y la integridad de los equipos.
+      </p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

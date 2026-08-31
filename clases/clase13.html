@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 13: dispositivos de red. Hub, switch y router, modelo OSI, dominios de colisión y broadcast, tablas MAC, ARP, routing y prácticas guiadas con Windows y Cisco Packet Tracer.">
+  <title>Clase 13 - Dispositivos de Red: Hub, Switch y Router</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase13">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 13</p>
+      <h1>Dispositivos de Red: Hub, Switch y Router</h1>
+      <p>
+        Una clase teórico-práctica para comprender cómo circula el tráfico dentro de una red,
+        qué información analiza cada dispositivo y por qué hub, switch y router cumplen funciones diferentes.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">Hub</span>
+        <span class="hero-tag">Switch</span>
+        <span class="hero-tag">Router</span>
+        <span class="hero-tag">Modelo OSI</span>
+        <span class="hero-tag">MAC</span>
+        <span class="hero-tag">IP</span>
+        <span class="hero-tag">ARP</span>
+        <span class="hero-tag">CMD</span>
+        <span class="hero-tag">Packet Tracer</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: hub, tabla MAC, broadcast, tracert">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Índice de la clase</h2>
+      <nav>
+        <a href="#objetivos">Presentación y objetivos</a>
+        <a href="#panorama">1. Panorama general</a>
+        <a href="#hub">2. Hub</a>
+        <a href="#switch">3. Switch</a>
+        <a href="#mac-table">4. Tabla MAC</a>
+        <a href="#router">5. Router</a>
+        <a href="#osi">6. Relación con OSI</a>
+        <a href="#dominios">7. Colisión y broadcast</a>
+        <a href="#comparativa">8. Comparativa</a>
+        <a href="#decision">9. Elegir el dispositivo</a>
+        <a href="#windows">10. Comprobaciones en Windows</a>
+        <a href="#pt-lan">11. Packet Tracer: LAN con switch</a>
+        <a href="#pt-router">12. Packet Tracer: dos redes y router</a>
+        <a href="#pt-simulacion">13. Packet Tracer: modo Simulación</a>
+        <a href="#reto">14. Reto integrador</a>
+        <a href="#cierre">15. Cierre</a>
+        <a href="#glosario">16. Glosario</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso</strong>
+        <div class="progress-track"><progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress></div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>No se encontraron módulos que coincidan con la búsqueda.</div>
+
+      <section class="module" id="objetivos" data-search="objetivos hub switch router osi trafico rendimiento">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación y objetivos</h2>
+            <p class="module-subtitle">Tres dispositivos, tres formas distintas de tratar el tráfico.</p>
+          </div>
+        </div>
+
+        <p>Al finalizar la clase podrás:</p>
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Reconocer y diferenciar</h3>
+            <ul>
+              <li>las funciones básicas de hub, switch y router;</li>
+              <li>sus características y limitaciones;</li>
+              <li>la capa del modelo OSI en la que actúa cada uno.</li>
+            </ul>
+          </article>
+          <article class="mini-card">
+            <h3>Aplicar y comprobar</h3>
+            <ul>
+              <li>cómo afectan al tráfico, colisiones y broadcasts;</li>
+              <li>cómo observar MAC, ARP, gateway y rutas desde Windows;</li>
+              <li>cómo construir y probar una red en Cisco Packet Tracer.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Pregunta guía:</strong>
+          Si PC1 quiere enviar información a PC3, ¿qué hace cada dispositivo con esos datos:
+          los repite, los conmuta o los enruta?
+        </div>
+      </section>
+
+      <section class="module" id="panorama" data-search="introduccion dispositivos red hub switch router fotos">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>Panorama general</h2>
+            <p class="module-subtitle">A simple vista pueden parecer similares, pero internamente toman decisiones distintas.</p>
+          </div>
+        </div>
+
+        <div class="photo-grid">
+          <figure class="device-photo">
+            <img
+              src="../assets/clase13/hub.jpg"
+              width="496" height="328" decoding="async"
+              alt="Fotografía de un hub Ethernet Netgear de cuatro puertos"
+              loading="lazy">
+            <figcaption>Hub Ethernet Netgear de 4 puertos. Foto: Plugwash, dominio público, Wikimedia Commons.</figcaption>
+          </figure>
+
+          <figure class="device-photo">
+            <img
+              src="../assets/clase13/switch.jpg"
+              width="4080" height="3060" decoding="async"
+              alt="Fotografía de un switch Ethernet en un laboratorio"
+              loading="lazy">
+            <figcaption>Switch Ethernet en un laboratorio. Foto: JBequio, CC BY 4.0, Wikimedia Commons.</figcaption>
+          </figure>
+
+          <figure class="device-photo">
+            <img
+              src="../assets/clase13/router.jpg"
+              width="1024" height="768" decoding="async"
+              alt="Fotografía de un router Cisco serie 1900"
+              loading="lazy">
+            <figcaption>Router Cisco serie 1900. Foto: Maraguache, CC BY-SA 4.0, Wikimedia Commons.</figcaption>
+          </figure>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card"><h3>Hub</h3><p>Repite señales. No interpreta MAC ni IP.</p></article>
+          <article class="mini-card"><h3>Switch</h3><p>Conmuta tramas según direcciones MAC.</p></article>
+          <article class="mini-card"><h3>Router</h3><p>Enruta paquetes entre redes según direcciones IP.</p></article>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-1" data-task><label for="act-1">Actividad 1. Observación inicial</label></div>
+          <p>Mirando las fotografías, escribí dos similitudes físicas y dos diferencias funcionales que esperás encontrar.</p>
+          <textarea class="response" data-response="act-1" placeholder="Relacioná los puertos visibles con las funciones que puede cumplir cada dispositivo." aria-label="Relacioná los puertos visibles con las funciones que puede cumplir cada dispositivo."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="hub" data-search="hub concentrador repetidor capa 1 física colision half duplex">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>Hub o concentrador</h2>
+            <p class="module-subtitle">Un repetidor multipuerto que trabaja en la capa física.</p>
+          </div>
+        </div>
+
+        <figure class="device-photo">
+          <img
+            src="../assets/clase13/hub.jpg"
+              width="496" height="328" decoding="async"
+            alt="Hub Ethernet Netgear de cuatro puertos"
+            loading="lazy">
+          <figcaption>Ejemplo físico de un hub Ethernet.</figcaption>
+        </figure>
+
+        <p>
+          El <strong>hub</strong> es un dispositivo básico de interconexión. Funciona como un
+          <strong>repetidor multipuerto</strong>: cuando recibe bits por un puerto, regenera la señal y la replica
+          hacia los demás puertos activos.
+        </p>
+
+        <div class="callout">
+          <strong>Modelo OSI:</strong> Capa 1 · Física. El hub no decide según direcciones MAC o IP.
+        </div>
+
+        <div class="traffic-demo">
+          <div class="traffic-node">PC1<br>envía a PC3</div>
+          <div class="traffic-arrow">→</div>
+          <div class="traffic-node">HUB<br>repite bits</div>
+          <div class="traffic-arrow">→</div>
+          <div class="traffic-node">PC2 · PC3 · PC4<br>ven la señal</div>
+        </div>
+
+        <div class="accuracy-note">
+          <strong>Precisión:</strong>
+          una trama unicast no “se transforma” en broadcast. El hub replica físicamente la señal a todos los puertos;
+          después cada placa de red decide si la trama le corresponde.
+        </div>
+
+        <h3>Consecuencias</h3>
+        <ul>
+          <li>Todos los puertos comparten el mismo dominio de colisión.</li>
+          <li>En Ethernet clásico half-duplex pueden aparecer colisiones.</li>
+          <li>El ancho de banda se comparte.</li>
+          <li>No aprende direcciones ni filtra tráfico.</li>
+          <li>Actualmente está prácticamente desplazado por switches.</li>
+        </ul>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-2" data-task><label for="act-2">Actividad 2. ¿Qué hace el hub?</label></div>
+          <p>PC1 envía una trama unicast a PC3. Explicá qué ocurre en el hub, qué reciben PC2 y PC4 y qué hace finalmente cada NIC.</p>
+          <textarea class="response" data-response="act-2" placeholder="Diferenciá la repetición física de la decisión lógica del destinatario." aria-label="Diferenciá la repetición física de la decisión lógica del destinatario."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="switch" data-search="switch conmutador capa 2 mac trama colision full duplex vlan">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Switch o conmutador</h2>
+            <p class="module-subtitle">Aprende direcciones MAC y selecciona puertos de salida.</p>
+          </div>
+        </div>
+
+        <figure class="device-photo">
+          <img
+            src="../assets/clase13/switch.jpg"
+              width="4080" height="3060" decoding="async"
+            alt="Switch Ethernet instalado en un laboratorio"
+            loading="lazy">
+          <figcaption>Switch Ethernet en un laboratorio informático.</figcaption>
+        </figure>
+
+        <p>
+          Un switch Ethernet convencional opera principalmente en la <strong>capa 2: Enlace de datos</strong>.
+          Inspecciona direcciones MAC y aprende qué MAC se encuentra detrás de cada puerto.
+        </p>
+
+        <h3>Qué ocurre al recibir una trama</h3>
+        <ol class="steps">
+          <li>Observa la <strong>MAC de origen</strong> y aprende por qué puerto llegó.</li>
+          <li>Consulta su tabla MAC buscando la <strong>MAC destino</strong>.</li>
+          <li>Si conoce el puerto destino, reenvía la trama solo por ese puerto.</li>
+          <li>Si la MAC destino es desconocida, realiza <strong>flooding</strong> dentro de la VLAN.</li>
+          <li>Los broadcasts se reenvían por los puertos de la misma VLAN, excepto el puerto de entrada.</li>
+        </ol>
+
+        <div class="callout success">
+          <strong>Rendimiento:</strong>
+          cada puerto de un switch constituye un dominio de colisión separado. En enlaces full-duplex modernos,
+          las colisiones dejan de formar parte del funcionamiento normal del enlace.
+        </div>
+
+        <h3>Switch administrable</h3>
+        <p>
+          Un switch administrable puede incorporar VLAN, STP, agregación de enlaces, seguridad por puerto,
+          monitoreo y otras funciones. Existen además switches multicapa capaces de realizar funciones de capa 3.
+        </p>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-3" data-task><label for="act-3">Actividad 3. Switch conocido vs desconocido</label></div>
+          <p>Explicá qué hace un switch cuando conoce la MAC destino y qué hace cuando todavía no aparece en su tabla.</p>
+          <textarea class="response" data-response="act-3" placeholder="Incluí aprendizaje por MAC origen y flooding." aria-label="Incluí aprendizaje por MAC origen y flooding."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="mac-table" data-search="tabla mac cam source destination flooding">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>Cómo aprende un switch: tabla MAC</h2>
+            <p class="module-subtitle">La tabla relaciona direcciones físicas con puertos.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead><tr><th>MAC aprendida</th><th>Puerto</th><th>Interpretación</th></tr></thead>
+            <tbody>
+              <tr><td><code>00:11:22:33:44:AA</code></td><td>Fa0/1</td><td>PC1 está alcanzable por el puerto 1.</td></tr>
+              <tr><td><code>00:11:22:33:44:BB</code></td><td>Fa0/2</td><td>PC2 está alcanzable por el puerto 2.</td></tr>
+              <tr><td><code>00:11:22:33:44:CC</code></td><td>Fa0/3</td><td>PC3 está alcanzable por el puerto 3.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Clave:</strong> el switch aprende utilizando la <strong>MAC de origen</strong> de las tramas recibidas.
+          Luego usa la <strong>MAC de destino</strong> para elegir el puerto de salida.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-4" data-task><label for="act-4">Actividad 4. Interpretar una tabla MAC</label></div>
+          <p>Si una trama entra por Fa0/1 con origen AA y destino CC, indicá qué aprende el switch y por dónde la reenvía si CC ya figura en Fa0/3.</p>
+          <textarea class="response" data-response="act-4" placeholder="Describí aprendizaje y reenvío." aria-label="Describí aprendizaje y reenvío."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="router" data-search="router enrutador capa 3 ip tabla rutas nat broadcast redes">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>Router o enrutador</h2>
+            <p class="module-subtitle">Conecta redes IP diferentes y decide el siguiente salto.</p>
+          </div>
+        </div>
+
+        <figure class="device-photo">
+          <img
+            src="../assets/clase13/router.jpg"
+              width="1024" height="768" decoding="async"
+            alt="Router Cisco serie 1900"
+            loading="lazy">
+          <figcaption>Router Cisco serie 1900 instalado en una organización.</figcaption>
+        </figure>
+
+        <p>
+          El router trabaja principalmente en la <strong>capa 3: Red</strong>. Examina la dirección IP destino
+          de un paquete, consulta su tabla de enrutamiento y selecciona una interfaz o un siguiente salto.
+        </p>
+
+        <div class="network-map">
+          <span class="box">Red A<br>192.168.1.0/24</span>
+          <span class="link">↔</span>
+          <span class="box">ROUTER</span>
+          <span class="link">↔</span>
+          <span class="box">Red B<br>192.168.2.0/24</span>
+        </div>
+
+        <h3>Funciones habituales</h3>
+        <ul>
+          <li>interconectar redes distintas;</li>
+          <li>seleccionar rutas;</li>
+          <li>separar dominios de broadcast;</li>
+          <li>actuar como gateway de una LAN;</li>
+          <li>realizar NAT en muchos escenarios;</li>
+          <li>aplicar filtros, ACL y otras políticas según el equipo.</li>
+        </ul>
+
+        <div class="accuracy-note">
+          <strong>Sobre la velocidad:</strong>
+          no conviene afirmar simplemente que “un router es más lento que un switch”.
+          Son dispositivos que realizan funciones distintas. El rendimiento depende del hardware, interfaces,
+          funciones activadas y diseño de la red.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-5" data-task><label for="act-5">Actividad 5. ¿Cuándo necesito un router?</label></div>
+          <p>Explicá por qué dos PCs de 192.168.1.0/24 pueden comunicarse mediante un switch, pero una PC de 192.168.1.0/24 y otra de 192.168.2.0/24 necesitan enrutamiento.</p>
+          <textarea class="response" data-response="act-5" placeholder="Relacioná subred, gateway y capa 3." aria-label="Relacioná subred, gateway y capa 3."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="osi" data-search="modelo osi capa 1 capa 2 capa 3 hub switch router">
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>Hub, switch y router dentro del modelo OSI</h2>
+            <p class="module-subtitle">La capa explica qué información puede interpretar cada dispositivo.</p>
+          </div>
+        </div>
+
+        <div class="osi-stack">
+          <div class="osi-layer"><strong>3</strong><span>Red · paquetes · direcciones IP</span><span class="device-pill">Router</span></div>
+          <div class="osi-layer"><strong>2</strong><span>Enlace · tramas · direcciones MAC</span><span class="device-pill">Switch</span></div>
+          <div class="osi-layer"><strong>1</strong><span>Física · bits y señales</span><span class="device-pill">Hub</span></div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-6" data-task><label for="act-6">Actividad 6. Asociar dispositivo, PDU y dirección</label></div>
+          <p>Completá para hub, switch y router: capa OSI, unidad que procesa principalmente y tipo de dirección utilizada.</p>
+          <textarea class="response" data-response="act-6" placeholder="Ejemplo: Switch → Capa 2 → trama → MAC." aria-label="Ejemplo: Switch → Capa 2 → trama → MAC."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="dominios" data-search="dominio colision broadcast switch hub router vlan">
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>Dominios de colisión y dominios de broadcast</h2>
+            <p class="module-subtitle">Dos conceptos distintos que suelen confundirse.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="domain-box">
+            <h3>Dominio de colisión</h3>
+            <p>Conjunto de interfaces que podrían competir por el mismo medio compartido.</p>
+            <ul>
+              <li>Hub: un dominio compartido.</li>
+              <li>Switch: un dominio por puerto/enlace.</li>
+            </ul>
+          </div>
+          <div class="domain-box">
+            <h3>Dominio de broadcast</h3>
+            <p>Conjunto de interfaces que reciben una difusión de capa 2.</p>
+            <ul>
+              <li>Switch sin VLAN: normalmente un dominio.</li>
+              <li>Router: no reenvía broadcasts de capa 2 entre interfaces.</li>
+              <li>VLAN: permite crear dominios de broadcast separados en switches administrables.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-7" data-task><label for="act-7">Actividad 7. Contar dominios</label></div>
+          <p>Tenemos cuatro PCs conectadas a un switch y el switch conectado a un router. Sin VLAN, ¿cuántos dominios de colisión hay en los enlaces hacia las PCs? ¿Cuántos dominios de broadcast representa esa LAN?</p>
+          <textarea class="response" data-response="act-7" placeholder="Justificá la diferencia entre ambos conceptos." aria-label="Justificá la diferencia entre ambos conceptos."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="comparativa" data-search="comparativa hub switch router capa direccion trafico broadcast">
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>Comparativa rápida</h2>
+            <p class="module-subtitle">Una síntesis para tomar decisiones.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr><th>Dispositivo</th><th>Capa</th><th>Observa</th><th>Decisión</th><th>Colisiones</th><th>Broadcast L2</th><th>Uso</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Hub</td><td>1</td><td>Bits/señal</td><td>Replica</td><td>Un dominio compartido</td><td>No lo filtra</td><td>Histórico / laboratorio</td></tr>
+              <tr><td>Switch</td><td>2</td><td>MAC</td><td>Conmuta tramas</td><td>Un dominio por puerto</td><td>Se mantiene dentro de la VLAN</td><td>LAN</td></tr>
+              <tr><td>Router</td><td>3</td><td>IP</td><td>Enruta paquetes</td><td>No se analiza igual que en un medio compartido</td><td>Separa dominios</td><td>Interconectar redes</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+      </section>
+
+      <section class="module" id="decision" data-search="elegir dispositivo casos escenarios">
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>¿Qué dispositivo elegir?</h2>
+            <p class="module-subtitle">Aplicar el concepto a necesidades concretas.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-9" data-task><label for="act-9">Actividad 9. Casos</label></div>
+          <ol>
+            <li>Conectar 20 PCs dentro de la misma LAN de un laboratorio.</li>
+            <li>Conectar la red de Administración con la red de Docentes.</li>
+            <li>Observar en una práctica histórica cómo se replica una señal Ethernet a todos los puertos.</li>
+            <li>Crear dos grupos aislados lógicamente sobre un switch administrable.</li>
+          </ol>
+          <textarea class="response" data-response="act-9" placeholder="Elegí hub, switch, router o switch con VLAN según el caso." aria-label="Elegí hub, switch, router o switch con VLAN según el caso."></textarea>
+        </div>
+      </section>
+
+      <!-- CONSOLA WINDOWS -->
+      <section class="module windows-practice" id="windows" data-search="windows cmd ipconfig arp tracert ping route nslookup comprobacion paso a paso">
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>Comprobaciones paso a paso en la consola de Windows</h2>
+            <p class="module-subtitle">Observar en una PC real qué elementos de capa 2 y capa 3 participan en la comunicación.</p>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Antes de comenzar:</strong>
+          estas comprobaciones son de diagnóstico y lectura. No es necesario modificar parámetros de red.
+          Trabajá sobre una red autorizada por el docente y no publiques direcciones o datos innecesarios.
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 1. Abrir la consola</h4>
+          <ol>
+            <li>Presioná <strong>Windows + R</strong>.</li>
+            <li>Escribí <code>cmd</code>.</li>
+            <li>Presioná Enter.</li>
+          </ol>
+          <div class="expected"><strong>Comprobación:</strong> debe abrirse el Símbolo del sistema.</div>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 2. Identificar IP, máscara, gateway y MAC</h4>
+          <div class="command-block" data-label="CMD"><pre><code>ipconfig /all</code></pre></div>
+          <p>Buscá el adaptador que realmente está conectado y registrá:</p>
+          <ul>
+            <li>Dirección IPv4.</li>
+            <li>Máscara de subred.</li>
+            <li>Puerta de enlace predeterminada.</li>
+            <li>Dirección física.</li>
+            <li>DHCP habilitado o no.</li>
+            <li>Servidores DNS.</li>
+          </ul>
+          <div class="expected">
+            <strong>Qué demuestra:</strong>
+            la MAC corresponde al nivel de enlace; la IPv4, máscara y gateway permiten interpretar la pertenencia
+            a una red y la salida hacia otras redes.
+          </div>
+          <div class="error-box">
+            <strong>Atención:</strong>
+            si aparece una IPv4 del tipo <code>169.254.x.x</code>, puede indicar que el equipo no obtuvo correctamente
+            una configuración IPv4 mediante DHCP.
+          </div>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 3. Probar la pila TCP/IP local</h4>
+          <div class="command-block" data-label="CMD"><pre><code>ping 127.0.0.1</code></pre></div>
+          <div class="expected"><strong>Resultado esperado:</strong> respuestas del loopback local.</div>
+          <p><strong>Interpretación:</strong> esta prueba comprueba el funcionamiento local de TCP/IP; no comprueba cable, switch, Wi-Fi ni router.</p>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 4. Comprobar el gateway</h4>
+          <p>Tomá la dirección de “Puerta de enlace predeterminada” obtenida en el paso 2.</p>
+          <div class="command-block" data-label="CMD"><pre><code>ping 192.168.1.1</code></pre></div>
+          <p><em>Reemplazá 192.168.1.1 por el gateway real de tu equipo.</em></p>
+          <div class="expected">
+            <strong>Si responde:</strong> existe conectividad IP desde tu PC hasta la interfaz local del router.
+          </div>
+          <div class="error-box">
+            <strong>Si no responde:</strong> puede existir un problema local, filtrado de ICMP o una configuración incorrecta.
+            No concluir automáticamente que el router “está caído”.
+          </div>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 5. Revisar la tabla ARP</h4>
+          <div class="command-block" data-label="CMD"><pre><code>arp -a</code></pre></div>
+          <p>Observá asociaciones entre <strong>IPv4 y direcciones físicas MAC</strong>.</p>
+          <div class="expected">
+            <strong>Qué demuestra:</strong> la tabla ARP está almacenada en el host local.
+            Relaciona IPv4 del enlace local con direcciones MAC aprendidas recientemente.
+          </div>
+          <div class="accuracy-note">
+            <strong>Importante:</strong>
+            la tabla ARP no “la mantiene el switch”. La mantiene cada host o dispositivo IP.
+            El switch tiene su propia tabla MAC, que es distinta.
+          </div>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 6. Ver la ruta hasta un destino externo</h4>
+          <div class="command-block" data-label="CMD"><pre><code>tracert 8.8.8.8</code></pre></div>
+          <p>Observá los saltos.</p>
+          <div class="expected">
+            <strong>Interpretación:</strong> el primer salto suele corresponder al gateway de tu red local,
+            aunque la topología o las políticas de la red pueden producir otros comportamientos.
+          </div>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 7. Comparar conectividad por IP y por nombre</h4>
+          <div class="command-block" data-label="CMD"><pre><code>ping 8.8.8.8
+ping www.google.com</code></pre></div>
+          <p>
+            Si el primer ping funciona y el segundo no logra resolver el nombre, la conectividad IP puede estar disponible
+            mientras existe un problema de resolución DNS.
+          </p>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 8. Revisar la tabla de rutas del equipo</h4>
+          <div class="command-block" data-label="CMD"><pre><code>route print</code></pre></div>
+          <p>Buscá especialmente:</p>
+          <ul>
+            <li>la ruta de tu red local;</li>
+            <li>la interfaz asociada;</li>
+            <li>la ruta <code>0.0.0.0</code>, que representa la ruta predeterminada IPv4.</li>
+          </ul>
+        </div>
+
+        <div class="check-step">
+          <h4>Paso 9. Comprobar DNS de forma explícita</h4>
+          <div class="command-block" data-label="CMD"><pre><code>nslookup www.google.com</code></pre></div>
+          <div class="expected">
+            <strong>Qué observar:</strong> servidor DNS consultado y una o más direcciones devueltas para el nombre.
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-10" data-task><label for="act-10">Actividad 10. Informe de diagnóstico</label></div>
+          <p>Realizá los nueve pasos y redactá un informe breve que incluya:</p>
+          <ol>
+            <li>IP, máscara, gateway y MAC.</li>
+            <li>Una entrada ARP del gateway.</li>
+            <li>Primer salto de <code>tracert</code>.</li>
+            <li>Ruta por defecto observada en <code>route print</code>.</li>
+            <li>Qué pruebas corresponden principalmente a capa 2 y cuáles a capa 3.</li>
+          </ol>
+          <textarea class="response response-lab" data-response="act-10" placeholder="Registrá datos necesarios y explicá qué comprobó cada comando." aria-label="Registrá datos necesarios y explicá qué comprobó cada comando."></textarea>
+        </div>
+      </section>
+
+      <!-- PACKET TRACER 1 -->
+      <section class="module packet-tracer" id="pt-lan" data-search="packet tracer paso a paso switch pc lan crear cables ips ping">
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Cisco Packet Tracer: construir una LAN con switch</h2>
+            <p class="module-subtitle">Primera red desde cero: tres PCs, un switch y una sola subred.</p>
+          </div>
+        </div>
+
+        <div class="network-map">
+          <span class="box">PC0<br>192.168.10.10</span>
+          <span class="link">─</span>
+          <span class="box">SWITCH 2960</span>
+          <span class="link">─</span>
+          <span class="box">PC1 / PC2<br>.11 / .12</span>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 1. Crear un proyecto nuevo</h4>
+          <ol>
+            <li>Abrí Cisco Packet Tracer.</li>
+            <li>Seleccioná <strong>File → New</strong> si fuera necesario.</li>
+            <li>Trabajá en el espacio lógico <strong>Logical</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 2. Colocar los dispositivos</h4>
+          <ol>
+            <li>En la barra inferior elegí <strong>End Devices</strong>.</li>
+            <li>Arrastrá <strong>3 PC</strong> al área de trabajo.</li>
+            <li>Elegí <strong>Network Devices → Switches</strong>.</li>
+            <li>Arrastrá un <strong>2960</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 3. Conectar las PCs al switch</h4>
+          <ol>
+            <li>Seleccioná <strong>Connections</strong>.</li>
+            <li>Podés utilizar <strong>Automatically Choose Connection Type</strong> o cable <strong>Copper Straight-Through</strong>.</li>
+            <li>Conectá PC0 FastEthernet0 → Switch Fa0/1.</li>
+            <li>Conectá PC1 FastEthernet0 → Switch Fa0/2.</li>
+            <li>Conectá PC2 FastEthernet0 → Switch Fa0/3.</li>
+            <li>Esperá a que los indicadores de enlace estén activos.</li>
+          </ol>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 4. Configurar las direcciones IP</h4>
+          <p>En cada PC: <strong>PC → Desktop → IP Configuration</strong>.</p>
+          <div class="table-wrap">
+            <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+              <thead><tr><th>Equipo</th><th>IPv4</th><th>Máscara</th><th>Gateway</th></tr></thead>
+              <tbody>
+                <tr><td>PC0</td><td>192.168.10.10</td><td>255.255.255.0</td><td>Vacío por ahora</td></tr>
+                <tr><td>PC1</td><td>192.168.10.11</td><td>255.255.255.0</td><td>Vacío por ahora</td></tr>
+                <tr><td>PC2</td><td>192.168.10.12</td><td>255.255.255.0</td><td>Vacío por ahora</td></tr>
+              </tbody>
+            </table>
+</div>
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 5. Probar conectividad</h4>
+          <p>En PC0 abrí <strong>Desktop → Command Prompt</strong>:</p>
+          <div class="command-block" data-label="PACKET TRACER PC0"><pre><code>ping 192.168.10.11
+ping 192.168.10.12</code></pre></div>
+          <div class="expected"><strong>Resultado esperado:</strong> ambas PCs deben responder.</div>
+          <p>El primer ping puede tardar o perder inicialmente un paquete mientras se resuelven direcciones mediante ARP.</p>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 6. Comprobar qué aprendió el switch</h4>
+          <ol>
+            <li>Hacé clic en el switch.</li>
+            <li>Abrí la pestaña <strong>CLI</strong>.</li>
+            <li>Presioná Enter si lo solicita.</li>
+            <li>Ejecutá:</li>
+          </ol>
+          <div class="command-block" data-label="SWITCH CLI"><pre><code>enable
+show mac address-table</code></pre></div>
+          <div class="expected">
+            <strong>Qué deberías observar:</strong> las MAC de las PCs asociadas a Fa0/1, Fa0/2 y Fa0/3.
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-11" data-task><label for="act-11">Actividad 11. Evidencias de la LAN</label></div>
+          <p>Registrá qué IP tiene cada PC, si los pings funcionan y qué entradas aparecen en la tabla MAC del switch.</p>
+          <textarea class="response" data-response="act-11" placeholder="Relacioná cada MAC aprendida con el puerto correspondiente." aria-label="Relacioná cada MAC aprendida con el puerto correspondiente."></textarea>
+        </div>
+      </section>
+
+      <!-- PACKET TRACER ROUTER -->
+      <section class="module packet-tracer" id="pt-router" data-search="packet tracer router dos redes subredes gateway configuración interfaz">
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Cisco Packet Tracer: construir dos redes unidas por un router</h2>
+            <p class="module-subtitle">La práctica central: dos switches, dos subredes y enrutamiento entre ellas.</p>
+          </div>
+        </div>
+
+        <div class="network-map">
+          <span class="box">PC0 / PC1<br>192.168.1.0/24</span>
+          <span class="link">─</span>
+          <span class="box">SW1</span>
+          <span class="link">─</span>
+          <span class="box">ROUTER</span>
+          <span class="link">─</span>
+          <span class="box">SW2</span>
+          <span class="link">─</span>
+          <span class="box">PC2 / PC3<br>192.168.2.0/24</span>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 1. Colocar los equipos</h4>
+          <ol>
+            <li>Agregá <strong>4 PCs</strong>.</li>
+            <li>Agregá <strong>2 switches 2960</strong>.</li>
+            <li>Agregá un router con al menos dos interfaces Ethernet, por ejemplo un modelo disponible con <strong>G0/0 y G0/1</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 2. Realizar el cableado</h4>
+          <ul>
+            <li>PC0 y PC1 → Switch 1.</li>
+            <li>PC2 y PC3 → Switch 2.</li>
+            <li>Switch 1 → interfaz G0/0 del router.</li>
+            <li>Switch 2 → interfaz G0/1 del router.</li>
+          </ul>
+          <p>Utilizá selección automática de cable o Copper Straight-Through.</p>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 3. Definir el plan de direccionamiento</h4>
+          <div class="table-wrap">
+            <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+              <thead><tr><th>Equipo / interfaz</th><th>IPv4</th><th>Máscara</th><th>Gateway</th></tr></thead>
+              <tbody>
+                <tr><td>Router G0/0</td><td>192.168.1.1</td><td>255.255.255.0</td><td>-</td></tr>
+                <tr><td>PC0</td><td>192.168.1.10</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>PC1</td><td>192.168.1.11</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>Router G0/1</td><td>192.168.2.1</td><td>255.255.255.0</td><td>-</td></tr>
+                <tr><td>PC2</td><td>192.168.2.10</td><td>255.255.255.0</td><td>192.168.2.1</td></tr>
+                <tr><td>PC3</td><td>192.168.2.11</td><td>255.255.255.0</td><td>192.168.2.1</td></tr>
+              </tbody>
+            </table>
+</div>
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 4. Configurar el router desde CLI</h4>
+          <p>Hacé clic en el router → <strong>CLI</strong>. Si pregunta por el diálogo inicial de configuración, respondé <code>no</code>.</p>
+          <div class="command-block" data-label="ROUTER CLI"><pre><code>enable
+configure terminal
+
+interface gigabitEthernet 0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
+interface gigabitEthernet 0/1
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+
+end
+show ip interface brief</code></pre></div>
+          <div class="accuracy-note">
+            Los nombres exactos de las interfaces pueden variar según el modelo elegido.
+            Si el router muestra <code>G0/0/0</code>, <code>G0/0/1</code> u otra nomenclatura, utilizá esos nombres.
+          </div>
+          <div class="expected"><strong>Resultado esperado:</strong> ambas interfaces configuradas deben aparecer <code>up/up</code> cuando el enlace esté activo.</div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 5. Configurar las PCs</h4>
+          <p>En cada PC: <strong>Desktop → IP Configuration</strong>. Cargá exactamente los valores de la tabla anterior.</p>
+          <div class="error-box">
+            <strong>Error típico:</strong> configurar IP y máscara pero olvidar el gateway.
+            Las PCs de la misma subred podrían comunicarse, pero no llegarían correctamente a la otra red.
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 6. Comprobar primero cada red local</h4>
+          <p>Desde PC0:</p>
+          <div class="command-block" data-label="PC0"><pre><code>ping 192.168.1.11
+ping 192.168.1.1</code></pre></div>
+          <p>Desde PC2:</p>
+          <div class="command-block" data-label="PC2"><pre><code>ping 192.168.2.11
+ping 192.168.2.1</code></pre></div>
+          <div class="expected"><strong>Antes de probar entre redes:</strong> estos cuatro pings deberían funcionar.</div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 7. Probar comunicación entre redes</h4>
+          <p>Desde PC0:</p>
+          <div class="command-block" data-label="PC0"><pre><code>ping 192.168.2.10
+ping 192.168.2.11</code></pre></div>
+          <div class="expected">
+            <strong>Resultado esperado:</strong> debe existir comunicación porque el router tiene una interfaz
+            directamente conectada a cada red.
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 8. Comprobar las rutas del router</h4>
+          <div class="command-block" data-label="ROUTER CLI"><pre><code>show ip route</code></pre></div>
+          <p>Deberían aparecer las redes:</p>
+          <ul>
+            <li><code>192.168.1.0/24</code> directamente conectada;</li>
+            <li><code>192.168.2.0/24</code> directamente conectada.</li>
+          </ul>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Paso 9. Probar con tracert desde una PC</h4>
+          <p>Desde PC0:</p>
+          <div class="command-block" data-label="PC0"><pre><code>tracert 192.168.2.10</code></pre></div>
+          <p>El router debe aparecer como salto entre las dos redes.</p>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-12" data-task><label for="act-12">Actividad 12. Validar la red completa</label></div>
+          <p>Completá una tabla de comprobación:</p>
+          <div class="table-wrap">
+            <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table class="verify-table">
+              <thead><tr><th>Prueba</th><th>Resultado</th><th>¿Qué dispositivo interviene?</th><th>Explicación</th></tr></thead>
+              <tbody>
+                <tr><td>PC0 → PC1</td><td>...</td><td>...</td><td>...</td></tr>
+                <tr><td>PC2 → PC3</td><td>...</td><td>...</td><td>...</td></tr>
+                <tr><td>PC0 → Router G0/0</td><td>...</td><td>...</td><td>...</td></tr>
+                <tr><td>PC0 → PC2</td><td>...</td><td>...</td><td>...</td></tr>
+              </tbody>
+            </table>
+</div>
+          </div>
+          <textarea class="response" data-response="act-12" placeholder="Explicá qué ocurre en cada prueba y en qué capa se toma la decisión principal." aria-label="Explicá qué ocurre en cada prueba y en qué capa se toma la decisión principal."></textarea>
+        </div>
+      </section>
+
+      <!-- SIMULACIÓN -->
+      <section class="module packet-tracer" id="pt-simulacion" data-search="packet tracer simulacion arp icmp pdu hub switch broadcast">
+        <div class="module-header">
+          <div class="module-number">13</div>
+          <div>
+            <h2>Packet Tracer: observar el tráfico en modo Simulación</h2>
+            <p class="module-subtitle">No alcanza con que el ping funcione: hay que mirar qué paquetes circularon.</p>
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Experiencia A. Primer ping en una LAN con switch</h4>
+          <ol>
+            <li>Volvé al escenario de tres PCs y un switch.</li>
+            <li>Pasá de <strong>Realtime</strong> a <strong>Simulation</strong>.</li>
+            <li>Filtrá, si querés, para observar <strong>ARP e ICMP</strong>.</li>
+            <li>Enviá un ping desde PC0 a PC1.</li>
+            <li>Usá <strong>Capture/Forward</strong> para avanzar evento por evento.</li>
+          </ol>
+          <div class="expected">
+            <strong>Qué deberías descubrir:</strong>
+            antes del ICMP puede aparecer ARP. La solicitud ARP es broadcast y el switch la inunda por la VLAN.
+            Una vez aprendidas las MAC, las tramas unicast posteriores pueden enviarse por el puerto correspondiente.
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Experiencia B. Comparar con un hub</h4>
+          <ol>
+            <li>Creá tres PCs conectadas a un hub.</li>
+            <li>Usá direcciones 192.168.20.10, .11 y .12 /24.</li>
+            <li>En modo Simulation generá tráfico entre PC0 y PC1.</li>
+            <li>Observá por qué puertos replica el hub la señal.</li>
+            <li>Comparalo con el switch.</li>
+          </ol>
+          <div class="accuracy-note">
+            No describas toda propagación del hub como “broadcast”. Distinguí entre una trama realmente broadcast
+            y una trama unicast cuya señal física es repetida por el hub.
+          </div>
+        </div>
+
+        <div class="pt-stage">
+          <h4>Experiencia C. Ver qué cambia al introducir un router</h4>
+          <ol>
+            <li>Usá el escenario 192.168.1.0/24 ↔ router ↔ 192.168.2.0/24.</li>
+            <li>Enviá un ping de PC0 a PC2.</li>
+            <li>Observá ARP en la primera LAN.</li>
+            <li>Observá el paquete IP ingresar al router.</li>
+            <li>Observá que el router genera una nueva trama de enlace para reenviar el paquete por la segunda red.</li>
+          </ol>
+          <div class="expected">
+            <strong>Concepto central:</strong>
+            las MAC cambian salto a salto; las direcciones IP origen/destino del paquete se mantienen en el
+            enrutamiento normal extremo a extremo (sin considerar aquí NAT).
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-13" data-task><label for="act-13">Actividad 13. Comparación observacional</label></div>
+          <p>Completá para hub, switch y router: qué unidad recibe, qué información inspecciona y a cuántos puertos/interfaces reenvía en el ejemplo observado.</p>
+          <textarea class="response response-analysis" data-response="act-13" placeholder="Usá evidencias del modo Simulation, no solo definiciones teóricas." aria-label="Usá evidencias del modo Simulation, no solo definiciones teóricas."></textarea>
+        </div>
+      </section>
+
+      <section class="module packet-tracer" id="reto" data-search="reto integración departamentos empresa switches router subred">
+        <div class="module-header">
+          <div class="module-number">14</div>
+          <div>
+            <h2>Reto integrador: dos departamentos</h2>
+            <p class="module-subtitle">Construir, configurar, verificar y explicar.</p>
+          </div>
+        </div>
+
+        <p>Diseñá una red con:</p>
+        <ul>
+          <li><strong>Departamento A:</strong> 3 PCs conectadas a un switch.</li>
+          <li><strong>Departamento B:</strong> 3 PCs conectadas a otro switch.</li>
+          <li>Un router entre ambos switches.</li>
+          <li>Cada departamento en su propia subred.</li>
+        </ul>
+
+        <p>Usá, por ejemplo:</p>
+        <ul>
+          <li>Departamento A: <code>192.168.10.0/24</code>.</li>
+          <li>Departamento B: <code>192.168.20.0/24</code>.</li>
+        </ul>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-14" data-task><label for="act-14">Actividad 14. Proyecto final</label></div>
+          <ol>
+            <li>Dibujá la topología.</li>
+            <li>Asigná IP a las seis PCs y a las dos interfaces del router.</li>
+            <li>Configurá gateways.</li>
+            <li>Probá comunicación dentro de cada departamento.</li>
+            <li>Probá comunicación entre departamentos.</li>
+            <li>Usá <code>show mac address-table</code> en cada switch.</li>
+            <li>Usá <code>show ip route</code> en el router.</li>
+            <li>Observá al menos un ping en Simulation.</li>
+            <li>Explicá dónde aparece broadcast y dónde deja de propagarse.</li>
+          </ol>
+          <textarea class="response response-project" data-response="act-14" placeholder="Documentá IPs, pruebas, resultados y conclusiones." aria-label="Documentá IPs, pruebas, resultados y conclusiones."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="cierre" data-search="cierre conclusiones autoevaluacion">
+        <div class="module-header">
+          <div class="module-number">15</div>
+          <div>
+            <h2>Cierre y conclusiones</h2>
+            <p class="module-subtitle">No memorizar aparatos: comprender qué decisión toma cada uno.</p>
+          </div>
+        </div>
+
+        <ul>
+          <li>El <strong>hub</strong> trabaja con bits y repite señales.</li>
+          <li>El <strong>switch</strong> trabaja principalmente con tramas y direcciones MAC.</li>
+          <li>El <strong>router</strong> trabaja con paquetes IP y conecta redes diferentes.</li>
+          <li>Un switch reduce dominios de colisión; un router separa dominios de broadcast.</li>
+          <li>ARP permite que un host descubra la MAC asociada a una IPv4 del enlace local.</li>
+          <li>La tabla MAC pertenece al switch; la caché ARP pertenece al host/dispositivo IP.</li>
+          <li>Packet Tracer permite observar el proceso, no solamente comprobar el resultado final.</li>
+        </ul>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-15" data-task><label for="act-15">Ticket de salida</label></div>
+          <ol>
+            <li>¿Por qué el switch es más eficiente que el hub para una LAN?</li>
+            <li>¿Por qué un router es necesario entre 192.168.1.0/24 y 192.168.2.0/24?</li>
+            <li>¿Cuál es la diferencia entre tabla MAC y tabla ARP?</li>
+            <li>¿Qué dispositivo separa dominios de broadcast?</li>
+            <li>¿Qué observaste en Simulation que no era evidente con un simple ping?</li>
+          </ol>
+          <textarea class="response" data-response="act-15" placeholder="Respondé con tus palabras." aria-label="Respondé con tus palabras."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario mac arp icmp broadcast vlan gateway">
+        <div class="module-header">
+          <div class="module-number">16</div>
+          <div>
+            <h2>Glosario</h2>
+            <p class="module-subtitle">Conceptos esenciales de la sesión.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>ARP</dt><dd>Protocolo que permite asociar una IPv4 local con una dirección MAC.</dd>
+          <dt>Broadcast</dt><dd>Trama o paquete destinado a múltiples receptores dentro del ámbito correspondiente.</dd>
+          <dt>Dominio de broadcast</dt><dd>Conjunto de interfaces alcanzadas por una difusión de capa 2 dentro de una VLAN.</dd>
+          <dt>Dominio de colisión</dt><dd>Ámbito donde dispositivos podrían competir por un medio Ethernet compartido.</dd>
+          <dt>Flooding</dt><dd>Reenvío de una trama por múltiples puertos cuando corresponde, por ejemplo ante destino MAC desconocido o broadcast.</dd>
+          <dt>Gateway</dt><dd>Dispositivo de capa 3 al que un host envía tráfico destinado a otras redes.</dd>
+          <dt>Hub</dt><dd>Repetidor multipuerto de capa física.</dd>
+          <dt>MAC</dt><dd>Dirección de capa de enlace utilizada por Ethernet para identificar interfaces dentro del dominio local.</dd>
+          <dt>Router</dt><dd>Dispositivo de capa 3 que reenvía paquetes entre redes.</dd>
+          <dt>Switch</dt><dd>Dispositivo de capa 2 que aprende MAC y conmuta tramas entre puertos.</dd>
+          <dt>VLAN</dt><dd>Segmentación lógica que permite separar dominios de broadcast sobre infraestructura de switching.</dd>
+        </dl>
+
+        <div class="source-note">
+          Las fotografías incluidas provienen de Wikimedia Commons y conservan en sus pies los créditos/licencias correspondientes.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Clase 13 · Dispositivos de Red: Hub, Switch y Router · Teoría, comprobaciones en Windows y laboratorio en Cisco Packet Tracer.</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

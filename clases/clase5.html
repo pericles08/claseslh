@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sesión 5: Introducción a las Especificaciones LAN. Redes LAN, estándares IEEE 802.x, Ethernet, FDDI y fibra óptica.">
+  <title>Sesión 5 - Introducción a las Especificaciones LAN</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase5">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Sesión 5</p>
+      <h1>Introducción a las Especificaciones LAN</h1>
+      <p>
+        Recorrido conceptual y aplicado sobre redes de área local, estándares de comunicación,
+        tecnologías cableadas e inalámbricas y el papel actual de la fibra óptica en las redes modernas.
+      </p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">LAN</span>
+        <span class="hero-tag">Ethernet</span>
+        <span class="hero-tag">IEEE 802.x</span>
+        <span class="hero-tag">Wi-Fi</span>
+        <span class="hero-tag">FDDI</span>
+        <span class="hero-tag">Fibra óptica</span>
+        <span class="hero-tag">FTTH</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: LAN, Ethernet, 802.11, fibra">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Recorrido de contenidos</h2>
+      <nav>
+        <a href="#presentacion">Presentación</a>
+        <a href="#objetivos">1. Objetivos específicos</a>
+        <a href="#lan">2. ¿Qué es una red LAN?</a>
+        <a href="#caracteristicas">3. Características de una LAN</a>
+        <a href="#estandares">4. El papel de los estándares</a>
+        <a href="#ethernet">5. Ethernet</a>
+        <a href="#ieee">6. Familia IEEE 802.x</a>
+        <a href="#fddi">7. FDDI</a>
+        <a href="#fibra">8. Redes actuales con fibra</a>
+        <a href="#comparacion">9. Comparación de tecnologías</a>
+        <a href="#actividad">10. Actividad integradora</a>
+        <a href="#sintesis">11. Síntesis conceptual</a>
+        <a href="#glosario">12. Glosario</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso de actividades</strong>
+        <div class="progress-track">
+          <progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress>
+        </div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>
+        No se encontraron módulos que coincidan con la búsqueda.
+      </div>
+
+      <section class="module" id="presentacion" data-search="presentación clase sesión lan estándares fibra">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación de la clase</h2>
+            <p class="module-subtitle">Comprender las redes LAN desde una perspectiva técnica y aplicada.</p>
+          </div>
+        </div>
+
+        <p>
+          En la presente clase se introduce el concepto de <strong>red LAN</strong> desde una perspectiva técnica y aplicada,
+          articulando los contenidos con situaciones concretas del entorno cotidiano. Asimismo, se abordan los principales
+          estándares que regulan el funcionamiento de estas redes, entendiendo que la conectividad no es un proceso espontáneo,
+          sino el resultado de acuerdos técnicos que permiten la comunicación entre dispositivos heterogéneos.
+        </p>
+
+        <p>
+          En este marco, se incorpora también una referencia a las <strong>redes actuales basadas en fibra óptica</strong>,
+          dado su creciente protagonismo en los entornos domésticos, educativos y productivos.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea de partida.</strong>
+          Una red funciona porque los dispositivos comparten reglas de comunicación. Los estándares permiten que equipos
+          de distintos fabricantes puedan conectarse, intercambiar información y utilizar recursos comunes.
+        </div>
+      </section>
+
+      <section class="module" id="objetivos" data-search="objetivos comprender identificar analizar reconocer lan estándares cable inalámbrico fibra">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>Objetivos específicos</h2>
+            <p class="module-subtitle">Qué se espera comprender al finalizar el recorrido.</p>
+          </div>
+        </div>
+
+        <div class="objectives">
+          <article class="mini-card">
+            <h3>Comprender</h3>
+            <p>Qué es una red LAN y reconocer su presencia en distintos entornos cotidianos.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Identificar</h3>
+            <p>Los principales estándares de redes LAN y la función que cumplen.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Analizar</h3>
+            <p>Diferencias entre tecnologías de red cableadas e inalámbricas.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Reconocer</h3>
+            <p>El papel actual de la fibra óptica en las redes modernas.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="lan" data-search="lan local area network red local hogar escuela empresa recursos">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>¿Qué es una red LAN?</h2>
+            <p class="module-subtitle">Una red de área local conecta dispositivos dentro de un espacio limitado.</p>
+          </div>
+        </div>
+
+        <p>
+          Una <strong>LAN</strong> (<em>Local Area Network</em>) es un conjunto de dispositivos interconectados dentro de
+          un espacio geográfico limitado, como una vivienda, una institución educativa o una organización.
+        </p>
+
+        <p>
+          Desde un enfoque conceptual, puede entenderse como un sistema que permite la <strong>circulación de información
+          y el acceso compartido a recursos</strong>, tales como archivos, impresoras o conexión a Internet.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Hogar</h3>
+            <p>
+              Computadoras, celulares, televisores y consolas conectados a través de un router conforman una red LAN doméstica.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Escuela</h3>
+            <p>
+              Las computadoras de una sala de informática pueden compartir recursos y acceder a servicios comunes.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Empresa</h3>
+            <p>
+              Una LAN permite acceder a sistemas de gestión, impresoras, archivos y bases de datos compartidas.
+            </p>
+          </article>
+        </div>
+
+        <div class="network-diagram">
+          <div class="network-line">
+            <span class="network-node">PC</span>
+            <span class="network-node">Notebook</span>
+            <span class="network-node">Celular</span>
+            <span class="network-node">Impresora</span>
+          </div>
+          <div class="network-line">
+            <span class="arrow">↕</span>
+            <span class="network-node">Switch / Router / Punto de acceso</span>
+            <span class="arrow">↔</span>
+            <span class="network-node">Recursos y servicios compartidos</span>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-lan-1" data-task>
+            <label for="act-lan-1">Actividad 1. Reconocer una LAN cercana</label>
+          </div>
+          <p>
+            Pensá en una red que utilices habitualmente —en tu casa, escuela o trabajo— e identificá
+            al menos cuatro dispositivos o recursos que formen parte de ella.
+          </p>
+          <textarea class="response" data-response="lan-1" placeholder="Describí brevemente la red y los dispositivos que la integran." aria-label="Describí brevemente la red y los dispositivos que la integran."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="caracteristicas" data-search="características alcance velocidad cableado inalámbrico ethernet wifi administración local">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Características de una LAN</h2>
+            <p class="module-subtitle">Alcance, velocidad, medios de conexión y administración.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Alcance limitado</h3>
+            <p>
+              Opera dentro de un espacio geográfico reducido, como una habitación, una vivienda,
+              un edificio o un conjunto cercano de edificios.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Alta velocidad</h3>
+            <p>
+              Las LAN permiten transferencias rápidas de datos entre equipos cercanos y recursos compartidos.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Distintos medios</h3>
+            <p>
+              Puede utilizar conexiones <strong>cableadas</strong>, como Ethernet, o
+              <strong>inalámbricas</strong>, como Wi-Fi.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Administración local</h3>
+            <p>
+              Generalmente es gestionada por una persona, institución u organización responsable de su infraestructura.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Una LAN no implica necesariamente cable.</strong>
+          Una red local puede combinar enlaces Ethernet, Wi-Fi y, en determinados entornos,
+          conexiones de fibra óptica dentro de una misma infraestructura.
+        </div>
+      </section>
+
+      <section class="module" id="estandares" data-search="estándares normas reglas ieee compatibilidad interoperabilidad fabricantes">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>El papel de los estándares en las redes</h2>
+            <p class="module-subtitle">Reglas comunes para lograr compatibilidad entre tecnologías.</p>
+          </div>
+        </div>
+
+        <p>
+          Para que dispositivos de diferentes fabricantes puedan comunicarse correctamente, es necesario que utilicen
+          <strong>reglas comunes</strong>, denominadas <strong>estándares</strong>.
+        </p>
+
+        <p>
+          Estas normas son desarrolladas por organismos internacionales como el <strong>IEEE</strong>. Su existencia
+          favorece la compatibilidad y la interoperabilidad entre tecnologías.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h4>Compatibilidad</h4>
+            <p>Equipos de distintas marcas pueden utilizar mecanismos comunes de comunicación.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Interoperabilidad</h4>
+            <p>Distintas tecnologías pueden integrarse dentro de una misma infraestructura.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Evolución</h4>
+            <p>Los estándares se actualizan para incorporar nuevas velocidades, medios y mecanismos de seguridad.</p>
+          </article>
+        </div>
+
+        <div class="callout warning">
+          <strong>Para pensar.</strong>
+          La conectividad no ocurre solamente porque dos dispositivos estén conectados físicamente:
+          también deben compartir reglas compatibles para transmitir e interpretar la información.
+        </div>
+      </section>
+
+      <section class="module" id="ethernet" data-search="ethernet 802.3 cable utp fibra óptica lan cableada estabilidad velocidad">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>Ethernet</h2>
+            <p class="module-subtitle">El estándar predominante en las redes LAN cableadas.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>Ethernet</strong> constituye el estándar más utilizado en redes LAN cableadas.
+          Un ejemplo cotidiano es conectar una computadora al router o a un switch mediante un cable de red.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Estabilidad</h3>
+            <p>Las conexiones cableadas suelen ofrecer un enlace estable y predecible.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Velocidad</h3>
+            <p>Ethernet dispone de distintas variantes y velocidades según el estándar y el medio físico utilizado.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Medios</h3>
+            <p>Puede funcionar sobre cable de cobre, como UTP, y también sobre fibra óptica.</p>
+          </article>
+        </div>
+
+        <div class="callout success">
+          <strong>Ethernet no significa únicamente “cable UTP”.</strong>
+          En redes actuales de alto rendimiento también existen enlaces Ethernet implementados sobre fibra óptica.
+        </div>
+      </section>
+
+      <section class="module" id="ieee" data-search="ieee 802 802.3 802.11 802.1q vlan 802.1x wifi acceso">
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>La familia de estándares IEEE 802.x</h2>
+            <p class="module-subtitle">Normas que organizan distintos aspectos de las redes locales.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Estándar</th>
+                <th>Área principal</th>
+                <th>Aplicación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>IEEE 802.3</code></td>
+                <td>Ethernet</td>
+                <td>Redes LAN cableadas.</td>
+              </tr>
+              <tr>
+                <td><code>IEEE 802.11</code></td>
+                <td>Wi-Fi</td>
+                <td>Redes LAN inalámbricas.</td>
+              </tr>
+              <tr>
+                <td><code>IEEE 802.1Q</code></td>
+                <td>VLAN</td>
+                <td>Segmentación lógica de redes.</td>
+              </tr>
+              <tr>
+                <td><code>IEEE 802.1X</code></td>
+                <td>Control de acceso</td>
+                <td>Mecanismos de autenticación y control de acceso a la red.</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Cableado</h3>
+            <p>
+              <strong>802.3</strong> constituye la referencia central para Ethernet y sus diferentes variantes.
+            </p>
+          </article>
+          <article class="mini-card">
+            <h3>Inalámbrico</h3>
+            <p>
+              <strong>802.11</strong> reúne los estándares asociados a redes Wi-Fi.
+            </p>
+          </article>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ieee-1" data-task>
+            <label for="act-ieee-1">Actividad 2. Relacionar estándar y función</label>
+          </div>
+          <p>
+            Indicá con qué estándar relacionarías cada situación: conexión Ethernet cableada, red Wi-Fi,
+            segmentación mediante VLAN y control de acceso a la red.
+          </p>
+          <textarea class="response" data-response="ieee-1" placeholder="Relacioná cada situación con 802.3, 802.11, 802.1Q o 802.1X." aria-label="Relacioná cada situación con 802.3, 802.11, 802.1Q o 802.1X."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="fddi" data-search="fddi fibra doble anillo 100 mbps tolerancia fallos histórico">
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>FDDI</h2>
+            <p class="module-subtitle">Un estándar histórico basado en fibra óptica.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>FDDI</strong> fue un estándar importante basado en fibra óptica y tuvo relevancia en redes
+          que requerían mayor disponibilidad y tolerancia a fallos.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h4>Velocidad</h4>
+            <p>100 Mbps.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Topología</h4>
+            <p>Doble anillo.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Disponibilidad</h4>
+            <p>Diseñado con alta tolerancia a fallos.</p>
+          </article>
+        </div>
+
+        <div class="callout warning">
+          <strong>Perspectiva histórica.</strong>
+          FDDI fue una tecnología relevante, pero actualmente ha sido desplazada por tecnologías Ethernet
+          de mayor velocidad, incluidas implementaciones sobre fibra óptica.
+        </div>
+      </section>
+
+      <section class="module" id="fibra" data-search="fibra óptica luz vidrio plástico ftth alta velocidad interferencia alcance wan lan">
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>Redes actuales basadas en fibra óptica</h2>
+            <p class="module-subtitle">Un medio de transmisión central para las infraestructuras modernas.</p>
+          </div>
+        </div>
+
+        <p>
+          En la actualidad, la <strong>fibra óptica</strong> se ha consolidado como uno de los medios de transmisión
+          más importantes, tanto en redes troncales como en conexiones domiciliarias.
+        </p>
+
+        <h3>¿Qué es la fibra óptica?</h3>
+        <p>
+          Es un medio de transmisión que utiliza <strong>pulsos de luz</strong> para enviar datos a través de hilos
+          de vidrio o plástico extremadamente finos.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>FTTH</h3>
+            <p>Internet domiciliario mediante fibra hasta el hogar.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Campus</h3>
+            <p>Conexión entre edificios de una universidad, escuela técnica o empresa.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Proveedores</h3>
+            <p>Infraestructura de alta capacidad utilizada por proveedores de servicios de Internet.</p>
+          </article>
+        </div>
+
+        <h3>Ventajas principales</h3>
+        <div class="two-col">
+          <article class="mini-card">
+            <h4>Alta velocidad</h4>
+            <p>Permite alcanzar velocidades superiores al gigabit por segundo.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Gran capacidad</h4>
+            <p>Puede transportar grandes volúmenes de datos de manera simultánea.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Baja interferencia</h4>
+            <p>No se ve afectada por ruidos eléctricos de la misma manera que los medios metálicos.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Mayor alcance</h4>
+            <p>Permite cubrir distancias mayores con menor degradación de señal.</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Ejemplo cotidiano: FTTH.</strong>
+          Cuando un hogar cuenta con Internet de fibra óptica, el proveedor instala un enlace de fibra hasta
+          la vivienda. A partir de allí, la red local puede continuar mediante Ethernet, Wi-Fi o una combinación de tecnologías.
+        </div>
+
+        <h3>Relación entre fibra y LAN</h3>
+        <p>
+          Aunque la fibra suele asociarse a la conexión con Internet o a enlaces de mayor alcance, también puede formar
+          parte de una LAN, especialmente en instituciones educativas, empresas, centros de datos y redes de alto rendimiento.
+        </p>
+      </section>
+
+      <section class="module" id="comparacion" data-search="comparación ethernet wifi fibra fddi cableado inalámbrico medio alcance uso">
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>Comparación de tecnologías</h2>
+            <p class="module-subtitle">Diferenciar tecnologías por medio, uso y características generales.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Tecnología</th>
+                <th>Medio</th>
+                <th>Uso principal</th>
+                <th>Característica destacada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ethernet</td>
+                <td>Cobre o fibra</td>
+                <td>LAN cableada</td>
+                <td>Estabilidad y alto rendimiento</td>
+              </tr>
+              <tr>
+                <td>Wi-Fi</td>
+                <td>Ondas de radio</td>
+                <td>LAN inalámbrica</td>
+                <td>Movilidad y facilidad de acceso</td>
+              </tr>
+              <tr>
+                <td>FDDI</td>
+                <td>Principalmente fibra</td>
+                <td>Redes históricas de alta disponibilidad</td>
+                <td>Doble anillo y tolerancia a fallos</td>
+              </tr>
+              <tr>
+                <td>Fibra óptica</td>
+                <td>Pulsos de luz</td>
+                <td>LAN, troncales y acceso a Internet</td>
+                <td>Gran capacidad, alcance y baja interferencia</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout success">
+          <strong>No son categorías excluyentes.</strong>
+          Ethernet es un conjunto de tecnologías y estándares que puede utilizar diferentes medios físicos,
+          incluido el cobre y la fibra óptica.
+        </div>
+      </section>
+
+      <section class="module" id="actividad" data-search="actividad integradora lan ieee ethernet wifi fibra análisis">
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>Actividad integradora</h2>
+            <p class="module-subtitle">Aplicar los conceptos a una situación concreta de red.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-integrador-1" data-task>
+            <label for="act-integrador-1">Actividad 3. Analizar una red escolar</label>
+          </div>
+
+          <p>
+            Una institución educativa posee una sala de informática con 25 computadoras conectadas por cable,
+            notebooks docentes que se conectan por Wi-Fi y un enlace de fibra óptica que llega desde el proveedor de Internet.
+          </p>
+
+          <ol>
+            <li>¿Qué elementos de la situación forman parte de la LAN?</li>
+            <li>¿Qué tecnología utilizarían las computadoras conectadas por cable?</li>
+            <li>¿Qué familia de estándares se relaciona con el acceso Wi-Fi?</li>
+            <li>¿Qué papel cumple la fibra óptica en este escenario?</li>
+            <li>¿Podría utilizarse fibra también dentro de la red local? Explicá.</li>
+          </ol>
+
+          <textarea class="response" data-response="integrador-1" placeholder="Resolvé el caso utilizando los conceptos trabajados en la clase." aria-label="Resolvé el caso utilizando los conceptos trabajados en la clase."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-integrador-2" data-task>
+            <label for="act-integrador-2">Actividad 4. Comparar cable e inalámbrico</label>
+          </div>
+          <p>
+            Elaborá una breve comparación entre una conexión Ethernet y una conexión Wi-Fi, considerando estabilidad,
+            movilidad y posibles situaciones de uso.
+          </p>
+          <textarea class="response" data-response="integrador-2" placeholder="Escribí la comparación y proponé un ejemplo de uso para cada tecnología." aria-label="Escribí la comparación y proponé un ejemplo de uso para cada tecnología."></textarea>
+        </div>
+
+        <details>
+          <summary>Preguntas para repasar</summary>
+          <div>
+            <ol>
+              <li>¿Qué significa LAN?</li>
+              <li>¿Por qué una LAN tiene alcance limitado?</li>
+              <li>¿Para qué sirven los estándares?</li>
+              <li>¿Con qué estándar se relaciona Ethernet?</li>
+              <li>¿Con qué estándar se relaciona Wi-Fi?</li>
+              <li>¿Qué función cumple IEEE 802.1Q?</li>
+              <li>¿Qué característica histórica tuvo FDDI?</li>
+              <li>¿Qué ventajas ofrece la fibra óptica?</li>
+              <li>¿Puede existir fibra óptica dentro de una LAN?</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <section class="module" id="sintesis" data-search="síntesis conclusión lan ethernet wifi fibra estándares interoperabilidad">
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Síntesis conceptual</h2>
+            <p class="module-subtitle">Integración de los conceptos centrales de la sesión.</p>
+          </div>
+        </div>
+
+        <p>
+          Las redes LAN constituyen una infraestructura fundamental en la sociedad actual. Su funcionamiento se basa
+          en estándares que permiten la interoperabilidad entre dispositivos, siendo <strong>Ethernet</strong> y
+          <strong>Wi-Fi</strong> dos de las tecnologías predominantes.
+        </p>
+
+        <p>
+          En este contexto, la <strong>fibra óptica</strong> se posiciona como un elemento clave en la evolución de las redes,
+          al permitir mayores velocidades, estabilidad, capacidad de transmisión y alcance.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea de cierre.</strong>
+          Comprender estos conceptos permite no solo utilizar una red, sino también interpretar cómo se organiza,
+          qué tecnologías intervienen y por qué los estándares resultan fundamentales para su funcionamiento.
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario lan ethernet wifi ieee vlan fibra fddi ftth estándar">
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Glosario</h2>
+            <p class="module-subtitle">Conceptos fundamentales para revisar la clase.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>LAN</dt>
+          <dd>Local Area Network. Red que conecta dispositivos dentro de un área geográfica limitada.</dd>
+
+          <dt>Estándar</dt>
+          <dd>Conjunto de reglas técnicas que favorece la compatibilidad e interoperabilidad entre dispositivos y tecnologías.</dd>
+
+          <dt>IEEE</dt>
+          <dd>Organización vinculada con el desarrollo de numerosos estándares técnicos, entre ellos la familia IEEE 802.</dd>
+
+          <dt>Ethernet</dt>
+          <dd>Tecnología y familia de estándares ampliamente utilizada en redes LAN cableadas.</dd>
+
+          <dt>Wi-Fi</dt>
+          <dd>Tecnología de red inalámbrica asociada a la familia de estándares IEEE 802.11.</dd>
+
+          <dt>VLAN</dt>
+          <dd>Segmentación lógica de una red que permite separar grupos de dispositivos dentro de una misma infraestructura física.</dd>
+
+          <dt>FDDI</dt>
+          <dd>Tecnología histórica de red de 100 Mbps, basada principalmente en fibra óptica y topología de doble anillo.</dd>
+
+          <dt>Fibra óptica</dt>
+          <dd>Medio de transmisión que utiliza pulsos de luz para transportar información.</dd>
+
+          <dt>FTTH</dt>
+          <dd>Fiber To The Home. Arquitectura en la que la fibra óptica llega hasta la vivienda del usuario.</dd>
+        </dl>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Sesión 5 · Introducción a las Especificaciones LAN. Material teórico-práctico sobre redes locales,
+        estándares IEEE, Ethernet, Wi-Fi, FDDI y fibra óptica.
+      </p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

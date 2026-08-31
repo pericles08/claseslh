@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 10: Cableado estructurado y normas</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase10">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+  <main class="contenedor" id="contenido" tabindex="-1">
+
+    <a class="volver" href="../index.html">Volver al índice</a>
+
+    <section class="portada">
+      <h1>Clase 10: Cableado estructurado y normas</h1>
+      <p>
+        En esta clase se estudia el cableado estructurado como base física de una red local, las características
+        del cable UTP, la función del conector RJ-45 y las normas de conectorización EIA/TIA utilizadas en instalaciones Ethernet.
+      </p>
+
+      <div class="etiquetas">
+        <span class="etiqueta">Cableado estructurado</span>
+        <span class="etiqueta">UTP</span>
+        <span class="etiqueta">RJ-45</span>
+        <span class="etiqueta">T568A</span>
+        <span class="etiqueta">T568B</span>
+        <span class="etiqueta">Tester de red</span>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>Objetivos de la sesión</h2>
+
+      <ul>
+        <li>Comprender las características, tipos y usos del cableado UTP.</li>
+        <li>Reconocer la función y estructura del conector RJ-45.</li>
+        <li>Aplicar normas EIA/TIA para la correcta conectorización de cables de red.</li>
+        <li>Diferenciar cables directos y cruzados.</li>
+        <li>Identificar errores comunes en instalaciones de red.</li>
+        <li>Realizar una práctica de armado y verificación de un cable de red.</li>
+      </ul>
+
+      <div class="pregunta">
+        <strong>Pregunta inicial para pensar:</strong>
+        si dos computadoras están correctamente configuradas, pero el cable está mal armado, ¿la red puede funcionar?
+        ¿Qué parte del modelo de comunicación estaría fallando?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>1. ¿Qué es el cableado estructurado?</h2>
+
+      <p class="lead">
+        El <strong>cableado estructurado</strong> es un sistema estandarizado de cables, conectores, canalizaciones,
+        patch panels y puntos de red que permite organizar la infraestructura física de una red.
+      </p>
+
+      <p>
+        Su finalidad es asegurar un rendimiento predecible, facilitar el mantenimiento, permitir futuras ampliaciones
+        y garantizar que los dispositivos de red puedan interoperar correctamente. En una institución, un edificio o
+        un laboratorio, el cableado estructurado funciona como la base física que sostiene la comunicación digital.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1080 440" role="img" aria-label="Esquema de cableado estructurado">
+          <rect class="diagram-style-1" width="1080" height="440"/>
+          <text class="diagram-style-2" x="540" y="42">
+            Organización básica del cableado estructurado
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-4" x="70" y="95" width="210" height="120" rx="16"/>
+            <text class="diagram-style-5" x="175" y="140">Puesto de trabajo</text>
+            <text class="diagram-style-6" x="175" y="172">PC o notebook</text>
+
+            <rect class="diagram-style-7" x="405" y="95" width="250" height="120" rx="16"/>
+            <text class="diagram-style-8" x="530" y="135">Patch panel</text>
+            <text class="diagram-style-6" x="530" y="166">Ordena y centraliza bocas</text>
+
+            <rect class="diagram-style-9" x="800" y="95" width="210" height="120" rx="16"/>
+            <text class="diagram-style-10" x="905" y="140">Switch</text>
+            <text class="diagram-style-6" x="905" y="172">Conecta equipos en red</text>
+
+            <line class="diagram-style-11" x1="280" y1="155" x2="405" y2="155"/>
+            <polygon class="diagram-style-12" points="405,155 385,143 385,167"/>
+            <text class="diagram-style-13" x="342" y="132">Cable horizontal</text>
+
+            <line class="diagram-style-11" x1="655" y1="155" x2="800" y2="155"/>
+            <polygon class="diagram-style-12" points="800,155 780,143 780,167"/>
+            <text class="diagram-style-13" x="730" y="132">Patch cord</text>
+
+            <rect class="diagram-style-14" x="130" y="280" width="820" height="70" rx="16"/>
+            <text class="diagram-style-15" x="540" y="323">
+              Un sistema documentado permite identificar cada boca, cada cable y cada puerto de conexión.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          El cableado estructurado organiza la conexión entre puestos de trabajo, patch panel y equipos de red.
+        </figcaption>
+      </figure>
+
+      <div class="destacado">
+        <strong>Idea central:</strong> no se trata solo de “tirar cables”, sino de construir una infraestructura ordenada,
+        documentada, escalable y mantenible.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>2. Cable UTP: Unshielded Twisted Pair</h2>
+
+      <p>
+        El cable <strong>UTP</strong>, sigla de <em>Unshielded Twisted Pair</em>, es uno de los medios más utilizados
+        en redes LAN. Está formado por <strong>8 hilos</strong> agrupados en <strong>4 pares trenzados</strong>.
+        El trenzado ayuda a reducir interferencias y diafonía entre conductores.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1000 360" role="img" aria-label="Cable UTP con cuatro pares trenzados">
+          <rect class="diagram-style-1" width="1000" height="360"/>
+          <text class="diagram-style-2" x="500" y="42">
+            Cable UTP: 8 hilos organizados en 4 pares
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-16" x="100" y="90" width="800" height="190" rx="42"/>
+            <text class="diagram-style-17" x="500" y="310">
+              Cada par combina un hilo de color pleno y un hilo blanco/color.
+            </text>
+
+            <path class="diagram-style-18" d="M160 125 C220 95, 280 155, 340 125 C400 95, 460 155, 520 125 C580 95, 640 155, 700 125 C760 95, 820 155, 860 125"/>
+            <path class="diagram-style-19" d="M160 150 C220 180, 280 120, 340 150 C400 180, 460 120, 520 150 C580 180, 640 120, 700 150 C760 180, 820 120, 860 150"/>
+
+            <path class="diagram-style-20" d="M160 190 C220 160, 280 220, 340 190 C400 160, 460 220, 520 190 C580 160, 640 220, 700 190 C760 160, 820 220, 860 190"/>
+            <path class="diagram-style-21" d="M160 215 C220 245, 280 185, 340 215 C400 245, 460 185, 520 215 C580 245, 640 185, 700 215 C760 245, 820 185, 860 215"/>
+
+            <text class="diagram-style-22" x="140" y="123">Par naranja</text>
+            <text class="diagram-style-23" x="140" y="205">Par verde</text>
+            <text class="diagram-style-24" x="900" y="123">También azul</text>
+            <text class="diagram-style-25" x="900" y="205">y marrón</text>
+          </g>
+        </svg>
+        <figcaption>
+          El cable UTP contiene cuatro pares: naranja, verde, azul y marrón, cada uno con su correspondiente blanco/color.
+        </figcaption>
+      </figure>
+
+      <h3>Categorías más comunes</h3>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th>Ancho de banda</th>
+            <th>Velocidad soportada</th>
+            <th>Distancia máxima habitual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cat 5e</strong></td>
+            <td>100 MHz</td>
+            <td>Hasta 1 Gbps</td>
+            <td>100 m</td>
+          </tr>
+          <tr>
+            <td><strong>Cat 6</strong></td>
+            <td>250 MHz</td>
+            <td>1 Gbps hasta 100 m; 10 Gbps hasta distancias menores, aproximadamente 55 m</td>
+            <td>100 m para 1 Gbps</td>
+          </tr>
+          <tr>
+            <td><strong>Cat 6A</strong></td>
+            <td>500 MHz</td>
+            <td>Hasta 10 Gbps</td>
+            <td>100 m</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <h3>Comparativa con otros tipos de cable</h3>
+
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h3>UTP</h3>
+          <p>
+            No posee blindaje adicional. Es económico, flexible y muy usado en redes LAN escolares, domésticas e institucionales.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>STP</h3>
+          <p>
+            Tiene apantallado para reducir interferencias electromagnéticas. Se usa cuando el entorno presenta mucho ruido eléctrico.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Fibra óptica</h3>
+          <p>
+            Transmite mediante luz. Permite mayores velocidades y distancias, pero requiere equipamiento más específico.
+          </p>
+        </div>
+      </div>
+
+      <div class="advertencia">
+        <strong>Aclaración:</strong> el cable coaxial fue usado en redes antiguas y en otros servicios de comunicación,
+        pero en redes LAN actuales fue reemplazado mayoritariamente por par trenzado y fibra óptica.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>3. Conectorización y conector RJ-45</h2>
+
+      <p>
+        El conector <strong>RJ-45</strong> se utiliza en la mayoría de las redes Ethernet cableadas. Permite conectar
+        los hilos del cable UTP con placas de red, switches, routers, patch panels o bocas de red.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1040 430" role="img" aria-label="Conector RJ45 con pines numerados">
+          <rect class="diagram-style-1" width="1040" height="430"/>
+          <text class="diagram-style-2" x="520" y="42">
+            Conector RJ-45: identificación de pines
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-16" x="175" y="95" width="690" height="210" rx="20"/>
+            <rect class="diagram-style-4" x="230" y="140" width="580" height="105" rx="12"/>
+
+            <g>
+              <rect class="diagram-style-26" x="250" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="315" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="380" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="445" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="510" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="575" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="640" y="155" width="52" height="74" rx="6"/>
+              <rect class="diagram-style-26" x="705" y="155" width="52" height="74" rx="6"/>
+            </g>
+
+            <g class="diagram-style-27">
+              <text class="diagram-style-28" x="276" y="270">1</text>
+              <text class="diagram-style-28" x="341" y="270">2</text>
+              <text class="diagram-style-28" x="406" y="270">3</text>
+              <text class="diagram-style-28" x="471" y="270">4</text>
+              <text class="diagram-style-28" x="536" y="270">5</text>
+              <text class="diagram-style-28" x="601" y="270">6</text>
+              <text class="diagram-style-28" x="666" y="270">7</text>
+              <text class="diagram-style-28" x="731" y="270">8</text>
+            </g>
+
+            <text class="diagram-style-17" x="520" y="345">
+              Mirando el conector de frente, con los contactos metálicos hacia arriba, los pines se numeran de izquierda a derecha.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          El conector RJ-45 posee 8 pines. El orden de colores debe respetar una norma para que el cable funcione correctamente.
+        </figcaption>
+      </figure>
+
+      <h3>Tipos de cables según su conectorización</h3>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>Cable directo</h3>
+          <p>
+            Utiliza la misma norma en ambos extremos, por ejemplo T568B en los dos conectores.
+            Tradicionalmente se usa para conectar dispositivos diferentes, como PC a switch o PC a router.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Cable cruzado</h3>
+          <p>
+            Usa una norma en un extremo y otra norma en el otro, por ejemplo T568A y T568B.
+            Tradicionalmente se usaba para conectar dispositivos iguales, como PC a PC o switch a switch.
+          </p>
+        </div>
+      </div>
+
+      <div class="destacado">
+        <strong>Actualización técnica:</strong> muchos equipos modernos incorporan <strong>Auto-MDI/MDIX</strong>,
+        una función que detecta automáticamente el tipo de cableado. Sin embargo, aprender la diferencia entre cable
+        directo y cruzado sigue siendo fundamental para comprender el cableado Ethernet.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>4. Norma EIA/TIA 568B</h2>
+
+      <p class="lead">
+        La norma <strong>EIA/TIA-568B</strong> define el orden de los colores de los hilos dentro del conector RJ-45.
+        Respetar este orden permite que el cable sea compatible con equipos Ethernet y evita fallas de comunicación.
+      </p>
+
+      <h3>Orden de colores según T568B</h3>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Pin</th>
+            <th>Color</th>
+            <th>Par</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pin">1</span></td>
+            <td>Blanco/naranja</td>
+            <td>Par naranja</td>
+          </tr>
+          <tr>
+            <td><span class="pin">2</span></td>
+            <td>Naranja</td>
+            <td>Par naranja</td>
+          </tr>
+          <tr>
+            <td><span class="pin">3</span></td>
+            <td>Blanco/verde</td>
+            <td>Par verde</td>
+          </tr>
+          <tr>
+            <td><span class="pin">4</span></td>
+            <td>Azul</td>
+            <td>Par azul</td>
+          </tr>
+          <tr>
+            <td><span class="pin">5</span></td>
+            <td>Blanco/azul</td>
+            <td>Par azul</td>
+          </tr>
+          <tr>
+            <td><span class="pin">6</span></td>
+            <td>Verde</td>
+            <td>Par verde</td>
+          </tr>
+          <tr>
+            <td><span class="pin">7</span></td>
+            <td>Blanco/marrón</td>
+            <td>Par marrón</td>
+          </tr>
+          <tr>
+            <td><span class="pin">8</span></td>
+            <td>Marrón</td>
+            <td>Par marrón</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1080 430" role="img" aria-label="Orden de colores T568B">
+          <rect class="diagram-style-1" width="1080" height="430"/>
+          <text class="diagram-style-2" x="540" y="42">
+            Norma T568B: orden de hilos en RJ-45
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-29" x="90" y="105" width="900" height="180" rx="20"/>
+
+            <g>
+              <rect class="diagram-style-30" x="125" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-31" x="170" y="170">1</text>
+              <text class="diagram-style-32" x="170" y="210">B/Nar</text>
+
+              <rect class="diagram-style-33" x="225" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-34" x="270" y="170">2</text>
+              <text class="diagram-style-35" x="270" y="210">Naranja</text>
+
+              <rect class="diagram-style-36" x="325" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-37" x="370" y="170">3</text>
+              <text class="diagram-style-38" x="370" y="210">B/Ver</text>
+
+              <rect class="diagram-style-39" x="425" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-34" x="470" y="170">4</text>
+              <text class="diagram-style-35" x="470" y="210">Azul</text>
+
+              <rect class="diagram-style-40" x="525" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-41" x="570" y="170">5</text>
+              <text class="diagram-style-42" x="570" y="210">B/Azul</text>
+
+              <rect class="diagram-style-43" x="625" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-34" x="670" y="170">6</text>
+              <text class="diagram-style-35" x="670" y="210">Verde</text>
+
+              <rect class="diagram-style-44" x="725" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-45" x="770" y="170">7</text>
+              <text class="diagram-style-46" x="770" y="210">B/Marr</text>
+
+              <rect class="diagram-style-47" x="825" y="135" width="90" height="115" rx="10"/>
+              <text class="diagram-style-34" x="870" y="170">8</text>
+              <text class="diagram-style-35" x="870" y="210">Marrón</text>
+            </g>
+
+            <text class="diagram-style-17" x="540" y="330">
+              Para armar un cable directo con T568B, se respeta este mismo orden en ambos extremos.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          Orden de colores de la norma T568B. El criterio debe repetirse con precisión en el conector.
+        </figcaption>
+      </figure>
+
+      <h3>Comparación con T568A</h3>
+
+      <p>
+        En la norma <strong>T568A</strong> se invierten los pares naranja y verde. Es decir, el par verde ocupa los pines
+        1 y 2, mientras que el par naranja ocupa los pines 3 y 6.
+      </p>
+
+      <div class="destacado">
+        <strong>Regla práctica:</strong> si ambos extremos del cable tienen la misma norma, el cable es directo.
+        Si un extremo está armado con T568A y el otro con T568B, el cable es cruzado.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>5. Errores comunes en cableado</h2>
+
+      <p>
+        Muchos problemas de conectividad no se deben a la configuración IP, sino a errores físicos de cableado.
+        Por eso es importante revisar el armado, el orden de colores, la presión del crimpado y el estado de los conectores.
+      </p>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>Orden de colores incorrecto</h3>
+          <p>
+            Los hilos no respetan la norma elegida. Puede provocar pérdida de enlace, errores o baja velocidad.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Pares mal ubicados</h3>
+          <p>
+            Aunque los colores parezcan coincidir, separar pares puede generar diafonía e interferencias.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Conector mal crimpeado</h3>
+          <p>
+            Los contactos metálicos no perforan correctamente los hilos o el cable queda flojo dentro del conector.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Cubierta mal sujeta</h3>
+          <p>
+            Si la cubierta exterior no queda dentro del conector, el cable puede romperse con facilidad.
+          </p>
+        </div>
+      </div>
+
+      <div class="seguridad">
+        <strong>Cuidado en el laboratorio:</strong> las herramientas de corte y crimpado deben utilizarse con atención.
+        No se deben manipular conectores ni cables cerca de energía eléctrica sin supervisión.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>6. Actividad 1 – Armado de un cable UTP con norma T568B</h2>
+
+      <p class="lead">
+        En esta actividad se realizará el armado de un cable de red utilizando la norma T568B en ambos extremos.
+        El objetivo es construir un cable directo y verificarlo mediante un tester de red.
+      </p>
+
+      <h3>Materiales necesarios</h3>
+
+      <ul>
+        <li>Cable UTP.</li>
+        <li>Dos conectores RJ-45.</li>
+        <li>Pinza de crimpado.</li>
+        <li>Pelacables o herramienta de corte.</li>
+        <li>Tester de red.</li>
+      </ul>
+
+      <h3>Instrucciones</h3>
+
+      <ol class="pasos">
+        <li>Cortá el cable a la medida deseada.</li>
+        <li>Pelá aproximadamente 2 cm de la cubierta exterior sin dañar los hilos internos.</li>
+        <li>Separá e identificá los ocho hilos.</li>
+        <li>Ordenalos según la norma T568B: blanco/naranja, naranja, blanco/verde, azul, blanco/azul, verde, blanco/marrón, marrón.</li>
+        <li>Emparejá las puntas y cortalas para que queden parejas.</li>
+        <li>Insertá los hilos en el conector RJ-45 respetando el orden.</li>
+        <li>Verificá que los hilos lleguen hasta el fondo del conector.</li>
+        <li>Crimpá el conector con la pinza.</li>
+        <li>Repetí el procedimiento en el otro extremo usando la misma norma.</li>
+        <li>Usá el tester para verificar continuidad pin a pin.</li>
+      </ol>
+
+      <div class="campo-respuesta">
+        <p><strong>Norma utilizada:</strong> <span class="linea-respuesta"></span></p>
+        <p><strong>Tipo de cable resultante, directo o cruzado:</strong> <span class="linea-respuesta"></span></p>
+        <p><strong>Resultado del tester:</strong> <span class="linea-respuesta"></span></p>
+        <p><strong>Observaciones del armado:</strong> <span class="linea-respuesta"></span></p>
+      </div>
+
+      <div class="advertencia">
+        <strong>Criterio de validación:</strong> en un cable directo T568B, el tester debería marcar continuidad
+        del pin 1 al 1, del 2 al 2, del 3 al 3, y así sucesivamente hasta el pin 8.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>7. Actividad 2 – Revisión de esquema o patch panel</h2>
+
+      <p>
+        Observá un patch panel real del laboratorio, una imagen de una instalación o el esquema de cableado de una institución.
+        El propósito es reconocer si el cableado está organizado, documentado y correctamente identificado.
+      </p>
+
+      <h3>Preguntas guía</h3>
+
+      <ul>
+        <li>¿Se respetan los estándares de conectorización?</li>
+        <li>¿Está documentado el sistema de cableado?</li>
+        <li>¿Cómo se organizan los cables?</li>
+        <li>¿Las bocas de red están identificadas?</li>
+        <li>¿El patch panel se vincula con un plano, una planilla o una nomenclatura clara?</li>
+      </ul>
+
+      <div class="campo-respuesta">
+        <p><strong>Descripción del esquema o patch panel observado:</strong> <span class="linea-respuesta"></span></p>
+        <p><strong>Aspectos ordenados:</strong> <span class="linea-respuesta"></span></p>
+        <p><strong>Aspectos a mejorar:</strong> <span class="linea-respuesta"></span></p>
+      </div>
+
+      <div class="destacado">
+        <strong>Conclusión esperada:</strong> una instalación correctamente documentada facilita el mantenimiento,
+        la detección de fallas y la expansión futura de la red.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>8. Actividad 3 – Diagnóstico de errores comunes</h2>
+
+      <p>
+        Analizá imágenes, cables reales o simulaciones con errores típicos en la conectorización.
+        El objetivo es reconocer la falla y proponer una corrección según la norma T568B.
+      </p>
+
+      <h3>Errores posibles para analizar</h3>
+
+      <ul>
+        <li>Colores en orden incorrecto.</li>
+        <li>Pares separados o mal ubicados.</li>
+        <li>Hilos que no llegan al fondo del conector.</li>
+        <li>Conector mal crimpeado.</li>
+        <li>Cubierta exterior fuera del conector.</li>
+        <li>Cable excesivamente destrenzado.</li>
+      </ul>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Situación observada</th>
+            <th>Error detectado</th>
+            <th>Corrección según T568B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ejemplo 1</td>
+            <td><span class="linea-respuesta"></span></td>
+            <td><span class="linea-respuesta"></span></td>
+          </tr>
+          <tr>
+            <td>Ejemplo 2</td>
+            <td><span class="linea-respuesta"></span></td>
+            <td><span class="linea-respuesta"></span></td>
+          </tr>
+          <tr>
+            <td>Ejemplo 3</td>
+            <td><span class="linea-respuesta"></span></td>
+            <td><span class="linea-respuesta"></span></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <div class="pregunta">
+        <strong>Para reflexionar:</strong> si el tester marca continuidad, ¿eso garantiza siempre que el cable tendrá buen rendimiento?
+        ¿Qué otros factores podrían influir?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>9. Síntesis conceptual</h2>
+
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h3>Cableado estructurado</h3>
+          <p>
+            Organiza físicamente la red mediante normas, documentación, conectores, patch panels y puntos de red.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Cable UTP</h3>
+          <p>
+            Es el medio más común en redes LAN. Posee 8 hilos organizados en 4 pares trenzados.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Norma T568B</h3>
+          <p>
+            Define el orden de colores para armar conectores RJ-45 compatibles con redes Ethernet.
+          </p>
+        </div>
+      </div>
+
+      <div class="destacado">
+        <strong>Conclusión:</strong> el rendimiento de una red no depende únicamente de la configuración lógica.
+        La calidad del cableado, la correcta conectorización y la documentación de la instalación son condiciones
+        fundamentales para una red estable y mantenible.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>10. Preguntas de repaso</h2>
+
+      <ol>
+        <li>¿Qué es el cableado estructurado?</li>
+        <li>¿Por qué es importante documentar una instalación de red?</li>
+        <li>¿Cuántos hilos y cuántos pares tiene un cable UTP?</li>
+        <li>¿Qué diferencias existen entre UTP y STP?</li>
+        <li>¿Para qué sirve un conector RJ-45?</li>
+        <li>¿Qué diferencia hay entre un cable directo y un cable cruzado?</li>
+        <li>¿Qué función cumple Auto-MDI/MDIX?</li>
+        <li>¿Cuál es el orden de colores de la norma T568B?</li>
+        <li>¿Qué errores pueden aparecer en un cable mal crimpeado?</li>
+        <li>¿Qué información aporta un tester de red?</li>
+      </ol>
+    </section>
+
+    <section class="bloque">
+      <h2>11. Glosario mínimo</h2>
+
+      <dl class="glosario">
+        <dt>Cableado estructurado</dt>
+        <dd>Sistema organizado y estandarizado para instalar y administrar la infraestructura física de una red.</dd>
+
+        <dt>UTP</dt>
+        <dd>Cable de par trenzado no blindado, ampliamente utilizado en redes LAN.</dd>
+
+        <dt>STP</dt>
+        <dd>Cable de par trenzado con blindaje para reducir interferencias electromagnéticas.</dd>
+
+        <dt>RJ-45</dt>
+        <dd>Conector de 8 pines utilizado en redes Ethernet sobre par trenzado.</dd>
+
+        <dt>T568B</dt>
+        <dd>Norma de ordenamiento de colores para conectar cables UTP en conectores RJ-45.</dd>
+
+        <dt>Cable directo</dt>
+        <dd>Cable que utiliza la misma norma en ambos extremos.</dd>
+
+        <dt>Cable cruzado</dt>
+        <dd>Cable que utiliza una norma distinta en cada extremo, generalmente T568A en uno y T568B en el otro.</dd>
+
+        <dt>Patch panel</dt>
+        <dd>Panel de conexión que centraliza y ordena las bocas de red de una instalación.</dd>
+
+        <dt>Tester de red</dt>
+        <dd>Herramienta que permite comprobar continuidad y orden de pines en un cable de red.</dd>
+      </dl>
+    </section>
+
+  </main>
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

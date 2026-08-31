@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 8: Placa de red y Dirección MAC</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+<body id="inicio" data-page="clase8">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+  <main class="contenedor" id="contenido" tabindex="-1">
+    <a class="volver" href="../index.html">Volver al índice</a>
+
+    <section class="portada">
+      <h1>Clase 8: la placa de red y la dirección MAC</h1>
+      <p>
+        En esta clase se estudia cómo un dispositivo se conecta a una red, cómo se identifica dentro de una red local
+        y de qué manera circulan los mensajes entre equipos. El eje central será la relación entre la placa de red,
+        la dirección MAC y los modos de transmisión unicast, multicast y broadcast.
+      </p>
+
+      <div class="etiquetas">
+        <span class="etiqueta">Redes</span>
+        <span class="etiqueta">Capa de enlace</span>
+        <span class="etiqueta">Ethernet</span>
+        <span class="etiqueta">Wi-Fi</span>
+        <span class="etiqueta">Dirección MAC</span>
+        <span class="etiqueta">ARP</span>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>Objetivos de aprendizaje</h2>
+      <ul class="checklist">
+        <li>Reconocer qué es una placa de red y cuál es su función dentro de una computadora o dispositivo móvil.</li>
+        <li>Diferenciar una placa Ethernet cableada de una interfaz inalámbrica Wi-Fi.</li>
+        <li>Comprender qué es una dirección MAC y cómo se organiza su estructura básica.</li>
+        <li>Explicar la diferencia entre dirección MAC, dirección IP y nombre de equipo.</li>
+        <li>Interpretar los modos de transmisión unicast, multicast y broadcast.</li>
+        <li>Relacionar el protocolo ARP con la comunicación dentro de una red local.</li>
+      </ul>
+
+      <div class="pregunta">
+        <strong>Pregunta inicial para pensar:</strong>
+        si dos computadoras están conectadas a la misma red, ¿cómo sabe una de ellas a qué dispositivo físico debe enviarle la información?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>1. La placa de red: NIC o Network Interface Card</h2>
+
+      <p class="lead">
+        La <strong>placa de red</strong>, también llamada <strong>NIC</strong> por sus siglas en inglés
+        <em>Network Interface Card</em>, es el componente que permite que un dispositivo se comunique con otros
+        dentro de una red. Funciona como una interfaz entre el sistema informático y el medio de transmisión:
+        cable de cobre, fibra óptica u ondas de radio.
+      </p>
+
+      <p>
+        En una computadora de escritorio puede aparecer como una placa insertada en una ranura PCIe o como un
+        circuito integrado en la placa madre. En una notebook o celular suele estar incorporada internamente.
+        También existen adaptadores externos USB, muy usados cuando se necesita agregar Wi-Fi o reemplazar una
+        interfaz dañada.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 980 360" role="img" aria-label="Esquema de una computadora conectada por una placa de red a una red local">
+          <rect class="diagram-style-1" width="980" height="360"/>
+          <rect class="diagram-style-4" x="40" y="70" width="250" height="170" rx="18"/>
+          <text class="diagram-style-48" x="165" y="115">Computadora</text>
+          <rect class="diagram-style-49" x="82" y="145" width="166" height="58" rx="10"/>
+          <text class="diagram-style-50" x="165" y="180">Sistema operativo</text>
+
+          <rect class="diagram-style-7" x="360" y="95" width="230" height="120" rx="18"/>
+          <text class="diagram-style-51" x="475" y="135">Placa de red</text>
+          <text class="diagram-style-52" x="475" y="168">NIC Ethernet o Wi-Fi</text>
+          <text class="diagram-style-53" x="475" y="195">Tiene dirección MAC</text>
+
+          <line class="diagram-style-54" x1="290" y1="155" x2="360" y2="155"/>
+          <polygon class="diagram-style-12" points="360,155 340,145 340,165"/>
+
+          <line class="diagram-style-54" x1="590" y1="155" x2="690" y2="155"/>
+          <polygon class="diagram-style-12" points="690,155 670,145 670,165"/>
+
+          <rect class="diagram-style-55" x="700" y="70" width="240" height="170" rx="18"/>
+          <text class="diagram-style-48" x="820" y="112">Red local</text>
+          <circle class="diagram-style-56" cx="770" cy="170" r="28"/>
+          <circle class="diagram-style-57" cx="870" cy="170" r="28"/>
+          <circle class="diagram-style-58" cx="820" cy="215" r="28"/>
+          <line class="diagram-style-59" x1="770" y1="170" x2="870" y2="170"/>
+          <line class="diagram-style-59" x1="770" y1="170" x2="820" y2="215"/>
+          <line class="diagram-style-59" x1="870" y1="170" x2="820" y2="215"/>
+          <text class="diagram-style-60" x="490" y="295">
+            La NIC traduce los datos del equipo en señales que pueden circular por el medio de transmisión.
+          </text>
+        </svg>
+        <figcaption>
+          Esquema general: la placa de red permite que el sistema informático se comunique con el medio físico de la red.
+        </figcaption>
+      </figure>
+
+      <h3>Funciones principales de una NIC</h3>
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h4>Enviar y recibir tramas</h4>
+          <p>
+            En la capa de enlace, la información viaja en unidades llamadas <strong>tramas</strong>. La NIC prepara,
+            envía, recibe y filtra esas tramas.
+          </p>
+        </div>
+        <div class="tarjeta">
+          <h4>Convertir señales</h4>
+          <p>
+            Transforma datos digitales en señales eléctricas, ópticas o de radiofrecuencia, según el tipo de red.
+          </p>
+        </div>
+        <div class="tarjeta">
+          <h4>Identificar el dispositivo</h4>
+          <p>
+            Cada interfaz posee una dirección MAC que permite reconocerla dentro de la red local.
+          </p>
+        </div>
+      </div>
+
+      <h3>Tipos de placas o interfaces de red</h3>
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Tipo de interfaz</th>
+            <th>Medio de transmisión</th>
+            <th>Forma de conexión</th>
+            <th>Ejemplos de uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ethernet</strong></td>
+            <td>Cable UTP, STP o fibra óptica.</td>
+            <td>Integrada, PCIe, adaptador USB o módulo SFP/SFP+.</td>
+            <td>PC de escritorio, servidores, switches, routers, impresoras de red.</td>
+          </tr>
+          <tr>
+            <td><strong>Wi-Fi</strong></td>
+            <td>Ondas de radio en bandas de 2,4 GHz, 5 GHz y, en equipos compatibles, 6 GHz.</td>
+            <td>Integrada, Mini PCIe, M.2 o adaptador USB.</td>
+            <td>Notebooks, celulares, tablets, impresoras inalámbricas, puntos de acceso.</td>
+          </tr>
+          <tr>
+            <td><strong>Bluetooth</strong></td>
+            <td>Ondas de radio de corto alcance.</td>
+            <td>Integrada o adaptador USB.</td>
+            <td>Auriculares, teclados, mouse, periféricos y dispositivos IoT.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <h3>Velocidades de operación: valores orientativos</h3>
+      <p>
+        Las velocidades dependen del estándar, del cableado, del router o switch, de la distancia, de la interferencia
+        y de la compatibilidad entre dispositivos. Por eso, las cifras máximas suelen ser teóricas.
+      </p>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Tecnología</th>
+            <th>Estándar o denominación habitual</th>
+            <th>Velocidad orientativa</th>
+            <th>Comentario didáctico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ethernet</td>
+            <td>Fast Ethernet</td>
+            <td>100 Mbps</td>
+            <td>Fue muy común en redes escolares y domésticas antiguas.</td>
+          </tr>
+          <tr>
+            <td>Ethernet</td>
+            <td>Gigabit Ethernet</td>
+            <td>1 Gbps</td>
+            <td>Actualmente es una velocidad frecuente en placas y switches domésticos.</td>
+          </tr>
+          <tr>
+            <td>Ethernet</td>
+            <td>Multi-Gigabit Ethernet</td>
+            <td>2,5 Gbps y 5 Gbps</td>
+            <td>Permite mejorar redes existentes sin pasar directamente a 10 Gbps.</td>
+          </tr>
+          <tr>
+            <td>Ethernet</td>
+            <td>10 Gigabit Ethernet</td>
+            <td>10 Gbps</td>
+            <td>Usado en servidores, redes troncales y equipos de mayor rendimiento.</td>
+          </tr>
+          <tr>
+            <td>Wi-Fi</td>
+            <td>Wi-Fi 5 / 802.11ac</td>
+            <td>Hasta varios Gbps teóricos</td>
+            <td>Opera principalmente en 5 GHz.</td>
+          </tr>
+          <tr>
+            <td>Wi-Fi</td>
+            <td>Wi-Fi 6 / 802.11ax</td>
+            <td>Hasta 9,6 Gbps teóricos</td>
+            <td>Mejora la eficiencia en redes con muchos dispositivos.</td>
+          </tr>
+          <tr>
+            <td>Wi-Fi</td>
+            <td>Wi-Fi 6E</td>
+            <td>Similar a Wi-Fi 6, pero suma 6 GHz</td>
+            <td>Necesita router y dispositivo compatibles con 6 GHz.</td>
+          </tr>
+          <tr>
+            <td>Wi-Fi</td>
+            <td>Wi-Fi 7 / 802.11be</td>
+            <td>Mayor capacidad y menor latencia</td>
+            <td>Incorpora canales más anchos, 4K-QAM y operación multilink en equipos compatibles.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <div class="advertencia">
+        <strong>Aclaración importante:</strong> en redes modernas con switches, la comunicación Ethernet suele funcionar
+        en modo <strong>full-duplex</strong>, por lo que la antigua detección de colisiones perdió relevancia práctica.
+        Sin embargo, sigue siendo útil estudiarla para comprender la evolución histórica de Ethernet y el acceso al medio.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>2. La NIC en el modelo OSI</h2>
+
+      <p>
+        La placa de red participa principalmente en las dos primeras capas del modelo OSI. La <strong>capa física</strong>
+        se ocupa de las señales y el medio de transmisión. La <strong>capa de enlace de datos</strong> organiza la
+        información en tramas y utiliza direcciones MAC para identificar interfaces dentro de una misma red local.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 900 480" role="img" aria-label="Capas del modelo OSI vinculadas con la placa de red">
+          <rect class="diagram-style-1" width="900" height="480"/>
+          <text class="diagram-style-61" x="450" y="42">
+            Ubicación de la placa de red en el modelo OSI
+          </text>
+
+          <g class="diagram-style-62">
+            <rect class="diagram-style-63" x="90" y="75" width="720" height="44" rx="10"/>
+            <text class="diagram-style-64" x="115" y="103">7. Aplicación</text>
+
+            <rect class="diagram-style-63" x="90" y="124" width="720" height="44" rx="10"/>
+            <text class="diagram-style-64" x="115" y="152">6. Presentación</text>
+
+            <rect class="diagram-style-63" x="90" y="173" width="720" height="44" rx="10"/>
+            <text class="diagram-style-64" x="115" y="201">5. Sesión</text>
+
+            <rect class="diagram-style-63" x="90" y="222" width="720" height="44" rx="10"/>
+            <text class="diagram-style-64" x="115" y="250">4. Transporte</text>
+
+            <rect class="diagram-style-63" x="90" y="271" width="720" height="44" rx="10"/>
+            <text class="diagram-style-64" x="115" y="299">3. Red: direcciones IP y enrutamiento</text>
+
+            <rect class="diagram-style-7" x="90" y="320" width="720" height="52" rx="10"/>
+            <text class="diagram-style-65" x="115" y="352">2. Enlace de datos: tramas, switches y direcciones MAC</text>
+
+            <rect class="diagram-style-4" x="90" y="381" width="720" height="52" rx="10"/>
+            <text class="diagram-style-66" x="115" y="413">1. Física: cable, fibra, radiofrecuencia, señales eléctricas u ópticas</text>
+          </g>
+
+          <rect class="diagram-style-67" x="590" y="342" width="180" height="72" rx="14"/>
+          <text class="diagram-style-68" x="680" y="372">NIC</text>
+          <text class="diagram-style-69" x="680" y="398">Capa 1 + Capa 2</text>
+        </svg>
+        <figcaption>
+          La placa de red conecta el mundo lógico del sistema con el medio físico por el que circulan los datos.
+        </figcaption>
+      </figure>
+
+      <div class="destacado">
+        <strong>Idea central:</strong> la dirección IP identifica un equipo dentro de una red lógica; la dirección MAC
+        identifica una interfaz de red dentro de una red local.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>3. Dirección MAC: Media Access Control</h2>
+
+      <p>
+        La <strong>dirección MAC</strong> es un identificador asociado a una interfaz de red. Tradicionalmente se la
+        presentó como una dirección única grabada por el fabricante. En términos técnicos actuales, una dirección MAC
+        universalmente única de 48 bits se conoce formalmente como <strong>EUI-48</strong>. Está compuesta por seis
+        bytes que suelen representarse en hexadecimal.
+      </p>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>Ejemplo de dirección MAC</h3>
+          <p><code>00:1A:2B:3C:4D:5E</code></p>
+          <p>
+            Cada par hexadecimal representa un byte. Se usan los símbolos del 0 al 9 y las letras A, B, C, D, E y F.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Formato general</h3>
+          <p>
+            <strong>48 bits</strong> = <strong>6 bytes</strong> = <strong>12 dígitos hexadecimales</strong>.
+          </p>
+          <p>
+            Puede escribirse con dos puntos, guiones o puntos, por ejemplo:
+            <code>00:1A:2B:3C:4D:5E</code>,
+            <code>00-1A-2B-3C-4D-5E</code>.
+          </p>
+        </div>
+      </div>
+
+      <h3>Estructura simplificada de una dirección MAC</h3>
+
+      <figure class="figura">
+        <svg viewBox="0 0 980 300" role="img" aria-label="Estructura de una dirección MAC">
+          <rect class="diagram-style-1" width="980" height="300"/>
+          <text class="diagram-style-61" x="490" y="42">
+            Estructura de una dirección MAC de 48 bits
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-4" x="70" y="90" width="130" height="70" rx="10"/>
+            <rect class="diagram-style-4" x="210" y="90" width="130" height="70" rx="10"/>
+            <rect class="diagram-style-4" x="350" y="90" width="130" height="70" rx="10"/>
+            <rect class="diagram-style-7" x="500" y="90" width="130" height="70" rx="10"/>
+            <rect class="diagram-style-7" x="640" y="90" width="130" height="70" rx="10"/>
+            <rect class="diagram-style-7" x="780" y="90" width="130" height="70" rx="10"/>
+
+            <text class="diagram-style-70" x="135" y="135">00</text>
+            <text class="diagram-style-70" x="275" y="135">1A</text>
+            <text class="diagram-style-70" x="415" y="135">2B</text>
+            <text class="diagram-style-71" x="565" y="135">3C</text>
+            <text class="diagram-style-71" x="705" y="135">4D</text>
+            <text class="diagram-style-71" x="845" y="135">5E</text>
+
+            <line class="diagram-style-72" x1="70" y1="185" x2="480" y2="185"/>
+            <line class="diagram-style-73" x1="500" y1="185" x2="910" y2="185"/>
+
+            <text class="diagram-style-74" x="275" y="222">OUI: identifica al fabricante u organización</text>
+            <text class="diagram-style-75" x="705" y="222">Identificador asignado a la interfaz</text>
+
+            <text class="diagram-style-6" x="275" y="252">Primeros 24 bits</text>
+            <text class="diagram-style-6" x="705" y="252">Últimos 24 bits</text>
+          </g>
+        </svg>
+        <figcaption>
+          Representación didáctica: los primeros 24 bits suelen asociarse al OUI y los últimos 24 bits al identificador de la interfaz.
+        </figcaption>
+      </figure>
+
+      <h3>Características importantes</h3>
+      <ul>
+        <li>La dirección MAC se usa para identificar interfaces dentro de una red local.</li>
+        <li>Los switches aprenden direcciones MAC para decidir por qué puerto deben reenviar una trama.</li>
+        <li>No cumple la misma función que una dirección IP: la MAC se vincula con la red local; la IP permite comunicación lógica entre redes.</li>
+        <li>En algunos sistemas modernos, especialmente celulares y notebooks, puede usarse <strong>aleatorización de MAC</strong> para proteger la privacidad al conectarse a redes Wi-Fi.</li>
+        <li>Una dirección MAC puede modificarse por software en ciertos sistemas. A esa práctica se la conoce como <strong>MAC spoofing</strong>.</li>
+      </ul>
+
+      <div class="seguridad">
+        <strong>Privacidad y seguridad:</strong> la dirección MAC puede servir para reconocer un dispositivo dentro de una red local.
+        Por ese motivo, muchos sistemas actuales usan direcciones MAC aleatorias cuando exploran o se conectan a redes Wi-Fi públicas.
+        Esto no reemplaza otras medidas de seguridad, pero reduce el seguimiento del dispositivo.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>4. Tramas Ethernet: cómo viaja la información en la capa de enlace</h2>
+
+      <p>
+        En la capa de enlace, la unidad de información no se denomina paquete, sino <strong>trama</strong>.
+        Una trama Ethernet incluye, entre otros datos, una dirección MAC de destino, una dirección MAC de origen,
+        un campo que indica el tipo de contenido, los datos transportados y un control de errores.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1050 280" role="img" aria-label="Estructura simplificada de una trama Ethernet">
+          <rect class="diagram-style-1" width="1050" height="280"/>
+          <text class="diagram-style-61" x="525" y="40">
+            Estructura simplificada de una trama Ethernet
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-4" x="50" y="95" width="160" height="80" rx="10"/>
+            <text class="diagram-style-76" x="130" y="127">MAC destino</text>
+            <text class="diagram-style-77" x="130" y="153">¿A quién va?</text>
+
+            <rect class="diagram-style-7" x="220" y="95" width="160" height="80" rx="10"/>
+            <text class="diagram-style-78" x="300" y="127">MAC origen</text>
+            <text class="diagram-style-77" x="300" y="153">¿Quién envía?</text>
+
+            <rect class="diagram-style-9" x="390" y="95" width="145" height="80" rx="10"/>
+            <text class="diagram-style-79" x="462" y="127">Tipo</text>
+            <text class="diagram-style-77" x="462" y="153">IPv4, IPv6, ARP</text>
+
+            <rect class="diagram-style-29" x="545" y="95" width="300" height="80" rx="10"/>
+            <text class="diagram-style-80" x="695" y="127">Datos</text>
+            <text class="diagram-style-77" x="695" y="153">Información transportada</text>
+
+            <rect class="diagram-style-81" x="855" y="95" width="145" height="80" rx="10"/>
+            <text class="diagram-style-82" x="927" y="127">FCS</text>
+            <text class="diagram-style-77" x="927" y="153">Control de error</text>
+
+            <text class="diagram-style-83" x="525" y="225">
+              Para comprender esta clase, lo más importante es observar que la trama incluye MAC de origen y MAC de destino.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          La dirección MAC participa en el encabezado de las tramas que se transmiten dentro de la red local.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="bloque">
+      <h2>5. Diferencia entre dirección MAC, dirección IP y nombre del equipo</h2>
+
+      <p>
+        Un error frecuente es pensar que la dirección MAC y la dirección IP son lo mismo. En realidad, cumplen
+        funciones diferentes y pertenecen a niveles distintos de la comunicación.
+      </p>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+        <thead>
+          <tr>
+            <th>Elemento</th>
+            <th>Ejemplo</th>
+            <th>Función principal</th>
+            <th>Analogía</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dirección MAC</strong></td>
+            <td><code>00:1A:2B:3C:4D:5E</code></td>
+            <td>Identifica una interfaz dentro de una red local.</td>
+            <td>Como el número de serie de una placa de red.</td>
+          </tr>
+          <tr>
+            <td><strong>Dirección IP</strong></td>
+            <td><code>192.168.1.25</code></td>
+            <td>Identifica un equipo dentro de una red lógica y permite comunicación entre redes.</td>
+            <td>Como la dirección de una casa dentro de una ciudad.</td>
+          </tr>
+          <tr>
+            <td><strong>Nombre del equipo</strong></td>
+            <td><code>PC-LAB-03</code></td>
+            <td>Permite reconocer un dispositivo con un nombre legible para las personas.</td>
+            <td>Como el nombre visible de una persona o aula.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <div class="destacado">
+        <strong>Ejemplo:</strong> una notebook puede tener una MAC para la placa Wi-Fi y otra MAC distinta para la placa Ethernet.
+        Si además usa un adaptador USB de red, ese adaptador tendrá otra dirección MAC propia.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>6. Modos de transmisión: unicast, multicast y broadcast</h2>
+
+      <p>
+        Cuando una placa de red envía una trama, debe indicar a quién está dirigida. Según el alcance del mensaje,
+        la comunicación puede ser unicast, multicast o broadcast.
+      </p>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1080 520" role="img" aria-label="Comparación entre unicast, multicast y broadcast">
+          <rect class="diagram-style-1" width="1080" height="520"/>
+          <text class="diagram-style-2" x="540" y="42">
+            Modos de transmisión en una red local
+          </text>
+
+          <!-- Unicast -->
+          <g class="diagram-style-3">
+            <text class="diagram-style-84" x="180" y="85">Unicast</text>
+            <circle class="diagram-style-56" cx="85" cy="180" r="32"/>
+            <text class="diagram-style-34" x="85" y="187">A</text>
+            <circle class="diagram-style-57" cx="275" cy="180" r="32"/>
+            <text class="diagram-style-34" x="275" y="187">B</text>
+            <circle class="diagram-style-85" cx="180" cy="285" r="32"/>
+            <text class="diagram-style-34" x="180" y="292">C</text>
+            <line class="diagram-style-11" x1="118" y1="180" x2="242" y2="180"/>
+            <polygon class="diagram-style-12" points="242,180 224,169 224,191"/>
+            <text class="diagram-style-6" x="180" y="365">A envía solo a B.</text>
+
+            <!-- Multicast -->
+            <text class="diagram-style-84" x="540" y="85">Multicast</text>
+            <circle class="diagram-style-56" cx="445" cy="180" r="32"/>
+            <text class="diagram-style-34" x="445" y="187">A</text>
+            <circle class="diagram-style-57" cx="635" cy="150" r="32"/>
+            <text class="diagram-style-34" x="635" y="157">B</text>
+            <circle class="diagram-style-57" cx="635" cy="245" r="32"/>
+            <text class="diagram-style-34" x="635" y="252">C</text>
+            <circle class="diagram-style-85" cx="540" cy="320" r="32"/>
+            <text class="diagram-style-34" x="540" y="327">D</text>
+            <line class="diagram-style-11" x1="477" y1="178" x2="604" y2="153"/>
+            <polygon class="diagram-style-12" points="604,153 584,146 588,168"/>
+            <line class="diagram-style-11" x1="477" y1="188" x2="604" y2="239"/>
+            <polygon class="diagram-style-12" points="604,239 582,240 591,220"/>
+            <text class="diagram-style-6" x="540" y="390">A envía a un grupo interesado.</text>
+
+            <!-- Broadcast -->
+            <text class="diagram-style-84" x="900" y="85">Broadcast</text>
+            <circle class="diagram-style-56" cx="805" cy="180" r="32"/>
+            <text class="diagram-style-34" x="805" y="187">A</text>
+            <circle class="diagram-style-57" cx="995" cy="125" r="32"/>
+            <text class="diagram-style-34" x="995" y="132">B</text>
+            <circle class="diagram-style-57" cx="995" cy="225" r="32"/>
+            <text class="diagram-style-34" x="995" y="232">C</text>
+            <circle class="diagram-style-57" cx="900" cy="315" r="32"/>
+            <text class="diagram-style-34" x="900" y="322">D</text>
+            <line class="diagram-style-11" x1="836" y1="170" x2="964" y2="134"/>
+            <polygon class="diagram-style-12" points="964,134 943,130 950,151"/>
+            <line class="diagram-style-11" x1="836" y1="188" x2="964" y2="218"/>
+            <polygon class="diagram-style-12" points="964,218 943,224 948,202"/>
+            <line class="diagram-style-11" x1="824" y1="207" x2="877" y2="289"/>
+            <polygon class="diagram-style-12" points="877,289 858,278 876,267"/>
+            <text class="diagram-style-6" x="900" y="390">A envía a todos los equipos.</text>
+          </g>
+
+          <text class="diagram-style-60" x="540" y="465">
+            La diferencia no está en el contenido del mensaje, sino en el alcance del destinatario.
+          </text>
+        </svg>
+        <figcaption>
+          Comparación visual de los tres modos de transmisión más importantes en redes locales.
+        </figcaption>
+      </figure>
+
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h3>Unicast</h3>
+          <p>
+            El mensaje se dirige a un único dispositivo específico. Es el modo más común cuando una PC se comunica
+            con un servidor, una impresora o una carpeta compartida.
+          </p>
+          <p><strong>Ejemplo:</strong> una PC envía un archivo a una impresora de red.</p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Multicast</h3>
+          <p>
+            El mensaje se envía a un grupo de dispositivos que forman parte de un mismo grupo de recepción.
+            No todos los equipos de la red lo procesan.
+          </p>
+          <p><strong>Ejemplo:</strong> distribución de video en una red local o ciertos servicios de descubrimiento.</p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Broadcast</h3>
+          <p>
+            El mensaje se envía a todos los dispositivos del dominio de broadcast. Se utiliza cuando el emisor no
+            conoce todavía la dirección específica del destinatario.
+          </p>
+          <p><strong>Ejemplo:</strong> una solicitud ARP en IPv4.</p>
+        </div>
+      </div>
+
+      <h3>Dirección MAC de broadcast</h3>
+      <p>
+        La dirección MAC reservada para broadcast es:
+      </p>
+
+      <pre><code>FF:FF:FF:FF:FF:FF</code></pre>
+
+      <p>
+        Cuando una trama tiene esa dirección como destino, todos los dispositivos de la red local deben recibirla
+        y analizar si corresponde responder.
+      </p>
+    </section>
+
+    <section class="bloque">
+      <h2>7. ARP: relación entre IP y MAC</h2>
+
+      <p>
+        En redes IPv4, el protocolo <strong>ARP</strong> permite descubrir qué dirección MAC corresponde a una dirección IP
+        dentro de la red local. Es decir, ARP ayuda a responder la pregunta:
+      </p>
+
+      <div class="pregunta">
+        <strong>¿Quién tiene la IP 192.168.1.20? Indique su dirección MAC.</strong>
+      </div>
+
+      <ol class="pasos">
+        <li>La computadora A quiere comunicarse con la IP <code>192.168.1.20</code>.</li>
+        <li>Si no conoce la MAC de esa IP, envía una solicitud ARP en broadcast.</li>
+        <li>Todos los equipos reciben la solicitud, pero solo responde el equipo que tiene esa IP.</li>
+        <li>El equipo B responde con su dirección MAC.</li>
+        <li>La computadora A guarda temporalmente esa relación IP-MAC en su caché ARP.</li>
+      </ol>
+
+      <figure class="figura">
+        <svg viewBox="0 0 1030 430" role="img" aria-label="Proceso de ARP en una red local">
+          <rect class="diagram-style-1" width="1030" height="430"/>
+          <text class="diagram-style-61" x="515" y="42">
+            Ejemplo de solicitud y respuesta ARP
+          </text>
+
+          <g class="diagram-style-3">
+            <rect class="diagram-style-4" x="70" y="110" width="230" height="110" rx="16"/>
+            <text class="diagram-style-5" x="185" y="145">PC A</text>
+            <text class="diagram-style-6" x="185" y="178">IP: 192.168.1.10</text>
+            <text class="diagram-style-6" x="185" y="202">MAC: AA:AA:AA:AA:AA:AA</text>
+
+            <rect class="diagram-style-29" x="400" y="105" width="230" height="120" rx="16"/>
+            <text class="diagram-style-5" x="515" y="145">Switch</text>
+            <text class="diagram-style-6" x="515" y="178">Reenvía tramas</text>
+            <text class="diagram-style-6" x="515" y="202">según direcciones MAC</text>
+
+            <rect class="diagram-style-7" x="730" y="110" width="230" height="110" rx="16"/>
+            <text class="diagram-style-8" x="845" y="145">PC B</text>
+            <text class="diagram-style-6" x="845" y="178">IP: 192.168.1.20</text>
+            <text class="diagram-style-6" x="845" y="202">MAC: BB:BB:BB:BB:BB:BB</text>
+
+            <line class="diagram-style-86" x1="300" y1="150" x2="400" y2="150"/>
+            <polygon class="diagram-style-56" points="400,150 380,138 380,162"/>
+            <text class="diagram-style-87" x="350" y="128">Broadcast</text>
+
+            <line class="diagram-style-86" x1="630" y1="150" x2="730" y2="150"/>
+            <polygon class="diagram-style-56" points="730,150 710,138 710,162"/>
+
+            <line class="diagram-style-88" x1="730" y1="190" x2="630" y2="190"/>
+            <polygon class="diagram-style-57" points="630,190 650,178 650,202"/>
+            <line class="diagram-style-88" x1="400" y1="190" x2="300" y2="190"/>
+            <polygon class="diagram-style-57" points="300,190 320,178 320,202"/>
+            <text class="diagram-style-78" x="515" y="258">
+              Respuesta: la IP 192.168.1.20 corresponde a la MAC BB:BB:BB:BB:BB:BB
+            </text>
+
+            <rect class="diagram-style-89" x="180" y="300" width="670" height="70" rx="14"/>
+            <text class="diagram-style-90" x="515" y="330">
+              La PC A guarda la relación IP-MAC en la caché ARP durante un tiempo.
+            </text>
+            <text class="diagram-style-13" x="515" y="355">
+              Esto evita preguntar nuevamente en cada comunicación.
+            </text>
+          </g>
+        </svg>
+        <figcaption>
+          ARP utiliza broadcast para preguntar y luego una respuesta dirigida para informar la MAC correspondiente.
+        </figcaption>
+      </figure>
+
+      <div class="advertencia">
+        <strong>Actualización conceptual:</strong> ARP se usa en IPv4. En IPv6, una función equivalente se realiza mediante
+        <strong>Neighbor Discovery Protocol</strong> o <strong>NDP</strong>, que trabaja de otra manera y utiliza mensajes ICMPv6.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>8. Ejemplos prácticos para observar la MAC en una computadora</h2>
+
+      <p>
+        Los siguientes comandos permiten observar datos de red en una computadora. La consigna puede adaptarse según
+        el sistema operativo disponible en el laboratorio.
+      </p>
+
+      <div class="grid-2">
+        <div class="tarjeta">
+          <h3>En Windows</h3>
+          <pre><code>ipconfig /all
+
+getmac
+
+arp -a</code></pre>
+          <p class="mini">
+            <strong>ipconfig /all</strong> muestra información detallada de las interfaces.
+            <strong>getmac</strong> muestra direcciones MAC.
+            <strong>arp -a</strong> muestra la tabla ARP.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>En GNU/Linux o macOS</h3>
+          <pre><code>ip addr
+
+ifconfig
+
+arp -a
+
+ip neigh</code></pre>
+          <p class="mini">
+            Según la distribución o versión del sistema, algunos comandos pueden variar o requerir permisos.
+          </p>
+        </div>
+      </div>
+
+      <div class="actividad">
+        <h3>Actividad breve de laboratorio</h3>
+        <ol>
+          <li>Identificar la dirección MAC de la placa Wi-Fi o Ethernet del equipo.</li>
+          <li>Registrar la dirección IP del equipo.</li>
+          <li>Ejecutar <code>arp -a</code> y observar si aparecen otras direcciones MAC de la red local.</li>
+          <li>Responder: ¿por qué aparecen direcciones IP y direcciones MAC en la misma tabla?</li>
+          <li>Comparar los resultados con otro equipo del aula.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="bloque" id="actividades-consola-windows">
+      <h2>9. Actividades en consola – Windows</h2>
+
+      <p class="lead">
+        Esta sección práctica permite verificar desde la consola de Windows los conceptos abordados en la clase:
+        placa de red, dirección MAC, comunicación unicast, resolución ARP, interfaces disponibles y configuración IP.
+      </p>
+
+      <div class="advertencia">
+        <strong>Importante:</strong> antes de ejecutar comandos que puedan modificar la conectividad del equipo,
+        especialmente <code>ipconfig /release</code> e <code>ipconfig /renew</code>, se debe contar con la autorización del docente.
+      </div>
+
+      <article class="consola-lab">
+        <h3>Actividad 1 – Identificar la dirección MAC de tu adaptador de red</h3>
+
+        <div class="paso-comando">
+          <h4>Paso 1: abrir la consola de comandos</h4>
+          <p>
+            Presioná <strong>Windows + R</strong>, escribí <code>cmd</code> y presioná <strong>Enter</strong>.
+          </p>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Paso 2: escribir el siguiente comando</h4>
+          <pre><code>ipconfig /all</code></pre>
+          <p>
+            Este comando muestra información completa de los adaptadores de red instalados en el equipo.
+          </p>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Paso 3: buscar el adaptador utilizado</h4>
+          <p>
+            Identificá el adaptador activo. Puede aparecer como
+            <strong>Adaptador de LAN inalámbrica Wi-Fi</strong> o como <strong>Adaptador Ethernet</strong>.
+          </p>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Nombre del adaptador:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Dirección física o MAC:</strong> <span class="linea-respuesta"></span></p>
+          <p class="mini">Formato esperado: <code>00-1A-2B-3C-4D-5E</code></p>
+        </div>
+
+        <div class="destacado">
+          <strong>Conclusión de la actividad:</strong> la dirección MAC es propia de cada adaptador físico de red.
+          Tradicionalmente es asignada por el fabricante y permite identificar la interfaz dentro de una red local.
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 2 – Verificar conexión de red y pruebas con unicast</h3>
+
+        <div class="paso-comando">
+          <h4>Paso 1: verificar si tenés conectividad</h4>
+          <pre><code>ping google.com</code></pre>
+        </div>
+
+        <p>Observá las respuestas. Puede aparecer una línea similar a la siguiente:</p>
+
+        <div class="salida-ejemplo">
+          <code>Respuesta desde 142.250.78.206: bytes=32 tiempo=25ms TTL=117</code>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Describí el significado de cada elemento de la respuesta:</strong></p>
+          <p><strong>Respuesta desde:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>bytes:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>tiempo:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>TTL:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="destacado">
+          <strong>Relación con la teoría:</strong> este procedimiento representa una comunicación
+          <strong>unicast</strong>, ya que tu dispositivo se comunica con un destino específico.
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 3 – Analizar la tabla ARP como ejemplo de broadcast</h3>
+
+        <p>
+          Cuando el equipo no conoce la dirección MAC de una IP de destino dentro de la red local,
+          envía una solicitud ARP en broadcast. Esa consulta permite resolver qué MAC corresponde a una IP determinada.
+        </p>
+
+        <div class="paso-comando">
+          <h4>Paso 1: vaciar la caché ARP actual</h4>
+          <pre><code>arp -d</code></pre>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Paso 2: hacer ping a un dispositivo de la red local</h4>
+          <p>
+            Por ejemplo, podés hacer ping al router:
+          </p>
+          <pre><code>ping 192.168.1.1</code></pre>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Si no sabés la IP del router</h4>
+          <p>Ejecutá:</p>
+          <pre><code>ipconfig</code></pre>
+          <p>
+            Luego buscá el valor de <strong>Puerta de enlace predeterminada</strong>.
+          </p>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Paso 3: mostrar la tabla ARP</h4>
+          <pre><code>arp -a</code></pre>
+        </div>
+
+        <p>Podés ver una línea similar a esta:</p>
+
+        <div class="salida-ejemplo">
+          <code>192.168.1.1      00-14-22-01-23-45    dinámica</code>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>IP observada:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Dirección MAC asociada:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Tipo de entrada:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="destacado">
+          <strong>Interpretación:</strong> esta actividad muestra que la PC resolvió la IP a una dirección MAC mediante ARP.
+          Para iniciar ese proceso, el equipo utilizó broadcast y luego almacenó la MAC en la tabla ARP.
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 4 – Ver interfaces de red disponibles</h3>
+
+        <p>
+          Para ver todos los adaptadores de red y algunas de sus configuraciones, ejecutá:
+        </p>
+
+        <pre><code>netsh interface ipv4 show interfaces</code></pre>
+
+        <p>
+          El comando devuelve una tabla con identificadores, nombres, estados y MTU de cada interfaz.
+        </p>
+
+        <div class="campo-respuesta">
+          <p><strong>Nombre de una interfaz activa:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Estado:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>MTU:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+
+        <div class="pregunta">
+          <strong>Pregunta de análisis:</strong> ¿por qué una computadora puede mostrar varias interfaces de red,
+          aunque en ese momento esté usando una sola conexión?
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 5 – Explorar detalles avanzados del adaptador de red</h3>
+
+        <div class="paso-comando">
+          <h4>Paso 1: ver propiedades detalladas de una interfaz</h4>
+          <pre><code>netsh interface ipv4 show address name="Wi-Fi"</code></pre>
+          <p>
+            Sustituí <code>"Wi-Fi"</code> por el nombre de tu adaptador si usás Ethernet,
+            por ejemplo <code>"Ethernet"</code>.
+          </p>
+        </div>
+
+        <div class="paso-comando">
+          <h4>Paso 2: ver estadísticas del adaptador</h4>
+          <pre><code>netstat -e</code></pre>
+          <p>
+            Este comando muestra estadísticas de red: bytes enviados, bytes recibidos, errores, descartes, entre otros datos.
+          </p>
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Bytes recibidos:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Bytes enviados:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Errores observados:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+      </article>
+
+      <article class="consola-lab">
+        <h3>Actividad 6 – Ver configuraciones IP activas</h3>
+
+        <p>
+          Para observar la configuración IP activa del equipo, ejecutá:
+        </p>
+
+        <pre><code>ipconfig</code></pre>
+
+        <p>
+          Si querés forzar una nueva dirección IP por DHCP, y el docente lo autoriza, podés ejecutar:
+        </p>
+
+        <pre><code>ipconfig /release
+ipconfig /renew</code></pre>
+
+        <div class="advertencia">
+          <strong>Precaución:</strong> estos comandos requieren conexión activa a una red con servidor DHCP.
+          Al liberar la IP, el equipo puede quedarse momentáneamente sin conectividad.
+        </div>
+
+        <div class="campo-respuesta">
+          <p><strong>Dirección IPv4:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Máscara de subred:</strong> <span class="linea-respuesta"></span></p>
+          <p><strong>Puerta de enlace predeterminada:</strong> <span class="linea-respuesta"></span></p>
+        </div>
+      </article>
+
+      <h3>Resumen de comandos utilizados</h3>
+
+      <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table class="tabla-comandos">
+        <thead>
+          <tr>
+            <th>Comando</th>
+            <th>Función</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ipconfig /all</td>
+            <td>Muestra la configuración completa de red.</td>
+          </tr>
+          <tr>
+            <td>ping [IP o dominio]</td>
+            <td>Envía paquetes ICMP hacia un destino específico. Permite observar una comunicación unicast.</td>
+          </tr>
+          <tr>
+            <td>arp -d</td>
+            <td>Vacía la caché ARP actual del equipo.</td>
+          </tr>
+          <tr>
+            <td>arp -a</td>
+            <td>Muestra la tabla ARP. Permite observar relaciones entre direcciones IP y direcciones MAC.</td>
+          </tr>
+          <tr>
+            <td>netsh interface ipv4 show interfaces</td>
+            <td>Lista interfaces IPv4 y sus valores de MTU.</td>
+          </tr>
+          <tr>
+            <td>netsh interface ipv4 show address name="Wi-Fi"</td>
+            <td>Muestra información detallada de la interfaz seleccionada.</td>
+          </tr>
+          <tr>
+            <td>netstat -e</td>
+            <td>Muestra estadísticas de red.</td>
+          </tr>
+          <tr>
+            <td>ipconfig /release</td>
+            <td>Libera la dirección IP asignada por DHCP.</td>
+          </tr>
+          <tr>
+            <td>ipconfig /renew</td>
+            <td>Renueva la dirección IP asignada por DHCP.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </section>
+
+    <section class="bloque">
+      <h2>10. Caso integrador</h2>
+
+      <p>
+        En el laboratorio de informática hay una impresora de red con la IP <code>192.168.0.45</code>.
+        Una computadora necesita enviarle un documento para imprimir.
+      </p>
+
+      <ol class="pasos">
+        <li>La computadora reconoce la IP de destino: <code>192.168.0.45</code>.</li>
+        <li>Busca en su caché ARP si ya conoce la MAC de esa impresora.</li>
+        <li>Si no la conoce, envía una solicitud ARP en broadcast.</li>
+        <li>La impresora responde indicando su dirección MAC.</li>
+        <li>La computadora envía la trama correspondiente a la MAC de la impresora.</li>
+        <li>El switch utiliza su tabla de direcciones MAC para reenviar la trama por el puerto correcto.</li>
+      </ol>
+
+      <div class="pregunta">
+        <strong>Para debatir:</strong> ¿qué pasaría si dos equipos intentaran usar la misma dirección IP?
+        ¿Sería un problema de dirección MAC o de configuración lógica de red?
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>11. Síntesis conceptual</h2>
+
+      <div class="grid-3">
+        <div class="tarjeta">
+          <h3>Placa de red</h3>
+          <p>
+            Es el componente que permite conectar un dispositivo a una red. Puede ser Ethernet, Wi-Fi o de otro tipo.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Dirección MAC</h3>
+          <p>
+            Identifica una interfaz de red dentro de una red local. Se representa con 48 bits o 6 bytes en hexadecimal.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>Transmisión</h3>
+          <p>
+            Puede ser unicast, multicast o broadcast, según si el mensaje se dirige a un equipo, a un grupo o a todos.
+          </p>
+        </div>
+      </div>
+
+      <div class="destacado">
+        <strong>Conclusión:</strong> para que una red funcione, no alcanza con conectar cables o disponer de Wi-Fi.
+        Cada dispositivo necesita una interfaz de red, una identificación física mediante MAC y mecanismos que permitan
+        vincular esa identificación con las direcciones lógicas utilizadas por los protocolos de red.
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>12. Preguntas de repaso</h2>
+
+      <ol>
+        <li>¿Qué es una placa de red y por qué es necesaria?</li>
+        <li>¿Qué diferencia hay entre una placa Ethernet y una interfaz Wi-Fi?</li>
+        <li>¿Qué significa que una dirección MAC tenga 48 bits?</li>
+        <li>¿Qué parte de una dirección MAC permite identificar al fabricante u organización?</li>
+        <li>¿Por qué una notebook puede tener más de una dirección MAC?</li>
+        <li>¿Qué diferencia hay entre dirección MAC y dirección IP?</li>
+        <li>¿Cuándo se utiliza una transmisión broadcast?</li>
+        <li>¿Qué dirección MAC se reserva para broadcast?</li>
+        <li>¿Para qué sirve ARP en una red IPv4?</li>
+        <li>¿Por qué los sistemas modernos pueden usar direcciones MAC aleatorias?</li>
+      </ol>
+    </section>
+
+    <section class="bloque">
+      <h2>13. Glosario mínimo</h2>
+
+      <dl class="glosario">
+        <dt>NIC</dt>
+        <dd>Placa o interfaz de red que permite conectar un dispositivo a una red.</dd>
+
+        <dt>MAC</dt>
+        <dd>Dirección de control de acceso al medio. Identifica una interfaz de red dentro de una red local.</dd>
+
+        <dt>OUI</dt>
+        <dd>Identificador organizacional único. Se asocia a los primeros 24 bits de muchas direcciones MAC.</dd>
+
+        <dt>Trama</dt>
+        <dd>Unidad de información de la capa de enlace de datos.</dd>
+
+        <dt>Switch</dt>
+        <dd>Dispositivo de red que reenvía tramas según direcciones MAC.</dd>
+
+        <dt>ARP</dt>
+        <dd>Protocolo usado en IPv4 para asociar una dirección IP con una dirección MAC en la red local.</dd>
+
+        <dt>Broadcast</dt>
+        <dd>Transmisión dirigida a todos los dispositivos de una red local.</dd>
+
+        <dt>Multicast</dt>
+        <dd>Transmisión dirigida a un grupo específico de receptores.</dd>
+
+        <dt>Unicast</dt>
+        <dd>Transmisión dirigida a un único destinatario.</dd>
+      </dl>
+    </section>
+
+    <section class="bloque bibliografia">
+      <h2>Fuentes y lecturas sugeridas</h2>
+
+      <p>
+        Para profundizar, se recomienda consultar documentación técnica y organismos de estandarización:
+      </p>
+
+      <ul>
+        <li><a href="https://standards.ieee.org/products-programs/regauth/mac/" target="_blank" rel="noopener">IEEE Registration Authority: MAC Addresses</a></li>
+        <li><a href="https://standards.ieee.org/faqs/regauth/" target="_blank" rel="noopener">IEEE Registration Authority FAQs: EUI-48, EUI-64 y OUI</a></li>
+        <li><a href="https://standards.ieee.org/beyond-standards/ethernet-50th-anniversary/" target="_blank" rel="noopener">IEEE Standards Association: evolución de Ethernet</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc826" target="_blank" rel="noopener">IETF RFC 826: Address Resolution Protocol</a></li>
+        <li><a href="https://www.wi-fi.org/" target="_blank" rel="noopener">Wi-Fi Alliance: información sobre generaciones y certificaciones Wi-Fi</a></li>
+      </ul>
+    </section>
+
+  </main>
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 6: El modelo OSI y las redes LAN. Capas OSI, Ethernet, Wi-Fi, FDDI, protocolos de enlace y de red.">
+  <title>Clase 6 - El modelo OSI y las redes LAN</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase6">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 6</p>
+      <h1>El modelo OSI y las redes LAN</h1>
+      <p>
+        Recorrido conceptual y aplicado para comprender cómo se organiza la comunicación en red,
+        qué función cumple cada capa del modelo OSI y cómo se relacionan Ethernet, Wi-Fi, FDDI,
+        las direcciones MAC, las direcciones IP, switches y routers.
+      </p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">Modelo OSI</span>
+        <span class="hero-tag">7 capas</span>
+        <span class="hero-tag">Ethernet</span>
+        <span class="hero-tag">Wi-Fi</span>
+        <span class="hero-tag">FDDI</span>
+        <span class="hero-tag">MAC</span>
+        <span class="hero-tag">IP</span>
+        <span class="hero-tag">Switch y Router</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: capa 2, Ethernet, IP, router">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Recorrido de contenidos</h2>
+      <nav>
+        <a href="#presentacion">Presentación</a>
+        <a href="#objetivos">1. Objetivos de aprendizaje</a>
+        <a href="#osi">2. ¿Qué es el modelo OSI?</a>
+        <a href="#capas">3. Las siete capas</a>
+        <a href="#ejemplo">4. Ejemplo cotidiano</a>
+        <a href="#lan-osi">5. Tecnologías LAN y OSI</a>
+        <a href="#enlace-red">6. Enlace y red</a>
+        <a href="#actividad1">7. Actividad 1</a>
+        <a href="#actividad2">8. Actividad 2</a>
+        <a href="#actividad3">9. Actividad 3</a>
+        <a href="#ticket">10. Ticket de salida</a>
+        <a href="#sintesis">11. Síntesis conceptual</a>
+        <a href="#glosario">12. Glosario</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso de actividades</strong>
+        <div class="progress-track">
+          <progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress>
+        </div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>
+        No se encontraron módulos que coincidan con la búsqueda.
+      </div>
+
+      <section class="module" id="presentacion" data-search="presentación osi redes lan capas comunicación">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación de la clase</h2>
+            <p class="module-subtitle">Una herramienta conceptual para comprender cómo viaja la información en una red.</p>
+          </div>
+        </div>
+
+        <p>
+          El <strong>modelo OSI</strong> permite organizar conceptualmente el proceso de comunicación en red mediante
+          <strong>siete capas jerárquicas</strong>. Cada una cumple una función específica y, en conjunto, ayudan a interpretar
+          cómo los datos viajan desde una aplicación de origen hasta un dispositivo de destino.
+        </p>
+
+        <p>
+          En esta clase, el modelo se relacionará con tecnologías LAN concretas como <strong>Ethernet</strong>,
+          <strong>Wi-Fi (IEEE 802.11)</strong> y <strong>FDDI</strong>, además de dispositivos y conceptos que ya aparecen
+          habitualmente en una red: direcciones MAC, direcciones IP, switches, routers y medios de transmisión.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea de partida.</strong>
+          El modelo OSI no representa una red física concreta: funciona como una guía conceptual para separar funciones
+          y comprender mejor qué tarea cumple cada tecnología dentro de una comunicación.
+        </div>
+      </section>
+
+      <section class="module" id="objetivos" data-search="objetivos comprender identificar diferenciar protocolos enlace red ethernet wifi fddi">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>Objetivos de aprendizaje</h2>
+            <p class="module-subtitle">Qué se espera comprender al finalizar la clase.</p>
+          </div>
+        </div>
+
+        <div class="objectives">
+          <article class="mini-card">
+            <h3>Comprender</h3>
+            <p>
+              El modelo OSI como una herramienta conceptual para entender cómo funciona la comunicación en redes.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Identificar</h3>
+            <p>
+              La función de cada capa y relacionarla con tecnologías como Ethernet, Wi-Fi y FDDI.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Diferenciar</h3>
+            <p>
+              Protocolos y funciones del nivel de enlace de datos y del nivel de red a partir de ejemplos reales.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Aplicar</h3>
+            <p>
+              El modelo para interpretar situaciones concretas de una red LAN con switches, routers y distintos medios.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="osi" data-search="modelo osi open systems interconnection siete capas jerárquicas">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>¿Qué es el modelo OSI?</h2>
+            <p class="module-subtitle">Siete niveles para analizar una comunicación de red.</p>
+          </div>
+        </div>
+
+        <p>
+          El <strong>modelo OSI</strong> (<em>Open Systems Interconnection</em>) fue creado como una forma de
+          <strong>entender y diseñar sistemas de comunicación en red</strong>, dividiendo el proceso en
+          <strong>7 capas jerárquicas</strong>.
+        </p>
+
+        <p>
+          Cada capa posee una función específica. Al trabajar en conjunto, permiten interpretar cómo se preparan,
+          transportan, direccionan, encapsulan y transmiten los datos desde un dispositivo hacia otro, incluso cuando
+          participan tecnologías diferentes.
+        </p>
+
+        <div class="callout">
+          <strong>Una forma de pensarlo.</strong>
+          Cada capa resuelve una parte del problema. Las capas superiores se relacionan más con las aplicaciones y los datos;
+          las inferiores, con el direccionamiento, las tramas, el acceso al medio y la transmisión física.
+        </div>
+      </section>
+
+      <section class="module" id="capas" data-search="capa 7 aplicación 6 presentación 5 sesión 4 transporte 3 red 2 enlace 1 física">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Las siete capas del modelo OSI</h2>
+            <p class="module-subtitle">De la interacción con las aplicaciones a la transmisión de bits.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Capa</th>
+                <th>Nombre</th>
+                <th>¿Qué hace?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>7</strong></td>
+                <td>Aplicación</td>
+                <td>Interactúa con las aplicaciones del usuario, como navegadores, chats o correo.</td>
+              </tr>
+              <tr>
+                <td><strong>6</strong></td>
+                <td>Presentación</td>
+                <td>Prepara los datos: codifica, comprime o cifra la información.</td>
+              </tr>
+              <tr>
+                <td><strong>5</strong></td>
+                <td>Sesión</td>
+                <td>Abre, mantiene y cierra sesiones de comunicación.</td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td>Transporte</td>
+                <td>Divide los datos y participa en su entrega ordenada y completa.</td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td>Red</td>
+                <td>Trabaja con direccionamiento IP y con la elección de rutas entre redes.</td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td>Enlace de datos</td>
+                <td>Crea tramas, controla el acceso al medio y detecta errores.</td>
+              </tr>
+              <tr>
+                <td><strong>1</strong></td>
+                <td>Física</td>
+                <td>Envía bits como señales eléctricas, ópticas o de radio.</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h4>Capas 7, 6 y 5</h4>
+            <p>Se vinculan con las aplicaciones, el formato de los datos y el establecimiento de sesiones.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Capas 4 y 3</h4>
+            <p>Se ocupan del transporte y del direccionamiento entre redes.</p>
+          </article>
+          <article class="mini-card">
+            <h4>Capas 2 y 1</h4>
+            <p>Trabajan muy cerca de la red LAN: tramas, MAC, medios físicos y señales.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="ejemplo" data-search="ejemplo whatsapp foto mensaje capas osi wifi aplicación trama ip señal">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>Ejemplo cotidiano: enviar una foto</h2>
+            <p class="module-subtitle">Una misma acción atraviesa varias funciones antes de llegar a destino.</p>
+          </div>
+        </div>
+
+        <p>
+          Cuando enviás una foto mediante una aplicación de mensajería desde el Wi-Fi de tu casa,
+          diferentes capas intervienen en distintos momentos del proceso.
+        </p>
+
+        <ol class="steps">
+          <li><strong>Capa 7 – Aplicación:</strong> la aplicación permite seleccionar y enviar la imagen.</li>
+          <li><strong>Capas 6 y 5:</strong> preparan los datos y administran aspectos vinculados con su representación y sesión.</li>
+          <li><strong>Capa 4 – Transporte:</strong> organiza la entrega de los datos.</li>
+          <li><strong>Capa 3 – Red:</strong> interviene el direccionamiento IP y la comunicación entre redes.</li>
+          <li><strong>Capa 2 – Enlace:</strong> los datos se organizan en tramas propias de la tecnología utilizada.</li>
+          <li><strong>Capa 1 – Física:</strong> la información se transmite mediante señales; en Wi-Fi, a través de radio.</li>
+        </ol>
+
+        <div class="network-diagram">
+          <div class="network-line">
+            <span class="network-node">Aplicación</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Datos</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Segmento</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Paquete</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Trama</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Bits</span>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Para interpretar el modelo.</strong>
+          El objetivo no es memorizar una secuencia de palabras de manera aislada, sino reconocer qué función agrega
+          cada capa antes de que la información se transmita.
+        </div>
+      </section>
+
+      <section class="module" id="lan-osi" data-search="tecnologías lan capas 1 2 ethernet 802.3 wifi 802.11 fddi física enlace">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>¿Dónde se ubican las tecnologías LAN en el modelo OSI?</h2>
+            <p class="module-subtitle">Ethernet, Wi-Fi y FDDI operan principalmente en las capas física y de enlace.</p>
+          </div>
+        </div>
+
+        <p>
+          Las tecnologías LAN como <strong>Ethernet</strong>, <strong>IEEE 802.11</strong> y <strong>FDDI</strong>
+          operan principalmente en las <strong>capas 1 y 2</strong> del modelo OSI.
+        </p>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Tecnología</th>
+                <th>Capa 1: Física</th>
+                <th>Capa 2: Enlace de datos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ethernet (802.3)</strong></td>
+                <td>Cable UTP, conector RJ-45, fibra óptica.</td>
+                <td>Tramas Ethernet y mecanismos de acceso al medio.</td>
+              </tr>
+              <tr>
+                <td><strong>IEEE 802.11 (Wi-Fi)</strong></td>
+                <td>Señales de radio y frecuencias.</td>
+                <td>Control de acceso inalámbrico y tramas Wi-Fi.</td>
+              </tr>
+              <tr>
+                <td><strong>FDDI</strong></td>
+                <td>Fibra óptica y doble anillo.</td>
+                <td>Control de acceso mediante ficha o token.</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout success">
+          <strong>Conclusión importante.</strong>
+          Estas tecnologías permiten la conexión entre dispositivos dentro de una red local. El direccionamiento entre
+          redes diferentes corresponde a la capa 3, donde intervienen protocolos como IP.
+        </div>
+      </section>
+
+      <section class="module" id="enlace-red" data-search="protocolos enlace capa 2 red capa 3 mac ip ethernet wifi fddi icmp router switch">
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>Diferencias entre enlace de datos y red</h2>
+            <p class="module-subtitle">Dos capas cercanas, pero con responsabilidades diferentes.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Capa 2 · Enlace de datos</h3>
+            <ul>
+              <li>Trabaja principalmente dentro de una red local.</li>
+              <li>Utiliza direcciones MAC para identificar interfaces.</li>
+              <li>Organiza la información en tramas.</li>
+              <li>Se relaciona con Ethernet, Wi-Fi y FDDI.</li>
+              <li>Un switch actúa principalmente en esta capa.</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Capa 3 · Red</h3>
+            <ul>
+              <li>Permite la comunicación entre redes diferentes.</li>
+              <li>Utiliza direcciones lógicas, como las direcciones IP.</li>
+              <li>Trabaja con paquetes.</li>
+              <li>Se relaciona con protocolos como IP e ICMP.</li>
+              <li>Un router actúa principalmente en esta capa.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="network-diagram">
+          <div class="network-line">
+            <span class="network-node">PC</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Switch · Capa 2</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Router · Capa 3</span>
+            <span class="arrow">→</span>
+            <span class="network-node">Otra red</span>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Diferencia central.</strong>
+          La capa 2 se ocupa de la comunicación dentro del enlace o red local inmediata; la capa 3 permite identificar
+          destinos y encaminar información entre redes diferentes.
+        </div>
+      </section>
+
+      <section class="module" id="actividad1" data-search="actividad 1 cómo viaja mensaje tabla completar capas funciones bits trama paquete segmento datos">
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>Actividad 1 – ¿Cómo viaja un mensaje en una red?</h2>
+            <p class="module-subtitle">Completar las funciones y la forma que adopta el mensaje en cada capa.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-osi-1" data-task>
+            <label for="act-osi-1">Consigna individual</label>
+          </div>
+
+          <p>
+            A continuación se presentan las siete capas del modelo OSI. Completá para cada una la función correspondiente
+            y la forma que toma el mensaje.
+          </p>
+
+          <div class="table-wrap">
+            <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+              <thead>
+                <tr>
+                  <th>Nº</th>
+                  <th>Nombre de la capa</th>
+                  <th>¿Qué función cumple?</th>
+                  <th>¿Cómo se llama el mensaje?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>7</td><td>Aplicación</td><td>________________</td><td>________________</td></tr>
+                <tr><td>6</td><td>Presentación</td><td>________________</td><td>________________</td></tr>
+                <tr><td>5</td><td>Sesión</td><td>________________</td><td>________________</td></tr>
+                <tr><td>4</td><td>Transporte</td><td>________________</td><td>________________</td></tr>
+                <tr><td>3</td><td>Red</td><td>________________</td><td>________________</td></tr>
+                <tr><td>2</td><td>Enlace de datos</td><td>________________</td><td>________________</td></tr>
+                <tr><td>1</td><td>Física</td><td>________________</td><td>________________</td></tr>
+              </tbody>
+            </table>
+</div>
+          </div>
+
+          <h3>Opciones para las funciones</h3>
+          <ul>
+            <li>Establece, mantiene y finaliza sesiones de comunicación.</li>
+            <li>Codifica, cifra y/o comprime los datos.</li>
+            <li>Decide la ruta por la que viajan los paquetes según su IP.</li>
+            <li>Transforma los bits en señales eléctricas, ópticas o de radio.</li>
+            <li>Crea tramas, controla el acceso al medio y detecta errores.</li>
+            <li>Divide los datos en segmentos y asegura su correcta entrega.</li>
+            <li>Brinda servicios directos a las aplicaciones del usuario.</li>
+          </ul>
+
+          <h3>Opciones para la forma del mensaje</h3>
+          <div class="hero-tags tags-compact">
+            <span class="class-badge">Bits</span>
+            <span class="class-badge">Trama</span>
+            <span class="class-badge">Paquete</span>
+            <span class="class-badge">Segmento</span>
+            <span class="class-badge">Datos codificados</span>
+            <span class="class-badge">Datos de usuario</span>
+            <span class="class-badge">Sesión activa</span>
+          </div>
+
+          <textarea class="response" data-response="osi-1" placeholder="Escribí aquí la tabla resuelta o registrá tus respuestas por capa." aria-label="Escribí aquí la tabla resuelta o registrá tus respuestas por capa."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="actividad2" data-search="actividad 2 diagrama pc switch router notebook cable utp wifi caso red real">
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>Actividad 2 – Analizando un caso de red real</h2>
+            <p class="module-subtitle">Relacionar dispositivos, medios y capas del modelo OSI.</p>
+          </div>
+        </div>
+
+        <div class="network-diagram">
+          <div class="network-line">
+            <span class="network-node">PC1</span>
+            <span class="arrow">─ cable UTP ─</span>
+            <span class="network-node">Switch</span>
+            <span class="arrow">─ cable UTP ─</span>
+            <span class="network-node">Router</span>
+            <span class="arrow">─ Wi-Fi ─</span>
+            <span class="network-node">Notebook</span>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-osi-2" data-task>
+            <label for="act-osi-2">Consigna individual</label>
+          </div>
+
+          <ol>
+            <li>Identificá al menos tres tecnologías LAN utilizadas en esta red. ¿En qué parte del recorrido aparecen?</li>
+            <li>Para cada tecnología, indicá si actúa en la capa física o en la capa de enlace de datos.</li>
+            <li>¿Qué dispositivo actúa en la capa de red? ¿Qué protocolo usa?</li>
+            <li>¿Qué función cumple la capa de enlace de datos en esta red?</li>
+            <li>¿Qué diferencias hay entre lo que hace el switch y lo que hace el router, según las capas OSI?</li>
+          </ol>
+
+          <textarea class="response" data-response="osi-2" placeholder="Respondé las cinco preguntas utilizando el diagrama." aria-label="Respondé las cinco preguntas utilizando el diagrama."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="actividad3" data-search="actividad 3 asociación http ip mac router switch señal ethernet navegador wifi capa osi">
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>Actividad 3 – Asociación con las capas OSI</h2>
+            <p class="module-subtitle">Relacionar tecnologías, protocolos y dispositivos con la capa correspondiente.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-osi-3" data-task>
+            <label for="act-osi-3">Consigna individual</label>
+          </div>
+
+          <p>
+            Asociá cada elemento con la capa del modelo OSI que le corresponde y justificá la elección en una frase breve.
+          </p>
+
+          <div class="table-wrap">
+            <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+              <thead>
+                <tr>
+                  <th>Elemento</th>
+                  <th>Capa del modelo OSI</th>
+                  <th>Justificación breve</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1. HTTP</td><td>________________</td><td>________________</td></tr>
+                <tr><td>2. Dirección IP</td><td>________________</td><td>________________</td></tr>
+                <tr><td>3. MAC</td><td>________________</td><td>________________</td></tr>
+                <tr><td>4. Router</td><td>________________</td><td>________________</td></tr>
+                <tr><td>5. Switch</td><td>________________</td><td>________________</td></tr>
+                <tr><td>6. Señal eléctrica</td><td>________________</td><td>________________</td></tr>
+                <tr><td>7. Ethernet</td><td>________________</td><td>________________</td></tr>
+                <tr><td>8. Navegador web</td><td>________________</td><td>________________</td></tr>
+                <tr><td>9. Wi-Fi</td><td>________________</td><td>________________</td></tr>
+              </tbody>
+            </table>
+</div>
+          </div>
+
+          <textarea class="response" data-response="osi-3" placeholder="Registrá las asociaciones y justificá cada una." aria-label="Registrá las asociaciones y justificá cada una."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="ticket" data-search="ticket salida cierre tres oraciones enlace red ethernet">
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>Cierre – Ticket de salida</h2>
+            <p class="module-subtitle">Tres respuestas breves para revisar lo aprendido.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-ticket" data-task>
+            <label for="act-ticket">Ticket de salida</label>
+          </div>
+
+          <p>Respondé en tres oraciones breves:</p>
+          <ol>
+            <li>¿Qué parte del modelo OSI te resultó más fácil o más difícil de entender? ¿Por qué?</li>
+            <li>¿Qué diferencia hay entre las capas de enlace y red?</li>
+            <li>¿Dónde interviene el estándar Ethernet dentro del modelo OSI?</li>
+          </ol>
+
+          <textarea class="response" data-response="ticket" placeholder="Escribí tres respuestas breves." aria-label="Escribí tres respuestas breves."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="sintesis" data-search="síntesis modelo osi lan capa física enlace red ethernet wifi ip mac switch router">
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Síntesis conceptual</h2>
+            <p class="module-subtitle">Integración de las ideas centrales de la clase.</p>
+          </div>
+        </div>
+
+        <p>
+          El modelo OSI permite analizar una comunicación de red dividiendo sus funciones en siete capas.
+          Esta organización ayuda a comprender por qué diferentes tecnologías intervienen en momentos distintos
+          de una misma comunicación.
+        </p>
+
+        <p>
+          En una red LAN, tecnologías como <strong>Ethernet</strong>, <strong>Wi-Fi</strong> y <strong>FDDI</strong>
+          se vinculan principalmente con las capas <strong>1 y 2</strong>, mientras que el direccionamiento IP y la
+          comunicación entre redes se relacionan con la <strong>capa 3</strong>.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea de cierre.</strong>
+          Comprender qué hace cada capa permite interpretar mejor la función de un cable, una señal de radio, una dirección MAC,
+          una dirección IP, un switch o un router dentro de una misma red.
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario osi capa trama paquete segmento mac ip switch router ethernet wifi">
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Glosario</h2>
+            <p class="module-subtitle">Conceptos clave para revisar la clase.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>Modelo OSI</dt>
+          <dd>Modelo conceptual que organiza la comunicación de red en siete capas jerárquicas.</dd>
+
+          <dt>Capa física</dt>
+          <dd>Nivel que transmite bits mediante señales eléctricas, ópticas o de radio.</dd>
+
+          <dt>Capa de enlace</dt>
+          <dd>Nivel que organiza datos en tramas y trabaja con el acceso al medio y direcciones MAC.</dd>
+
+          <dt>Capa de red</dt>
+          <dd>Nivel encargado del direccionamiento lógico y del encaminamiento entre redes.</dd>
+
+          <dt>Trama</dt>
+          <dd>Unidad de información asociada a la capa de enlace de datos.</dd>
+
+          <dt>Paquete</dt>
+          <dd>Unidad de información asociada a la capa de red.</dd>
+
+          <dt>Segmento</dt>
+          <dd>Unidad de información asociada a la capa de transporte.</dd>
+
+          <dt>MAC</dt>
+          <dd>Dirección física utilizada para identificar interfaces dentro de la comunicación de enlace.</dd>
+
+          <dt>IP</dt>
+          <dd>Dirección lógica utilizada para identificar y comunicar dispositivos a través de redes.</dd>
+
+          <dt>Switch</dt>
+          <dd>Dispositivo que opera principalmente en la capa de enlace de datos y reenvía tramas dentro de una LAN.</dd>
+
+          <dt>Router</dt>
+          <dd>Dispositivo que opera principalmente en la capa de red y permite comunicar redes diferentes.</dd>
+
+          <dt>Ethernet</dt>
+          <dd>Tecnología LAN asociada principalmente con las capas física y de enlace de datos.</dd>
+
+          <dt>Wi-Fi</dt>
+          <dd>Tecnología inalámbrica de red local asociada a IEEE 802.11 y a las capas física y de enlace.</dd>
+        </dl>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Clase 6 · El modelo OSI y las redes LAN. Material teórico-práctico para relacionar capas,
+        protocolos, dispositivos y tecnologías de red.
+      </p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

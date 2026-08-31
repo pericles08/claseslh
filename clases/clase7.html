@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 7: Profundización, comparación y aplicaciones de redes LAN. Velocidad, medios, topologías, acceso al medio, Ethernet, Wi-Fi, FDDI y tendencias actuales.">
+  <title>Clase 7 - Profundización, Comparación y Aplicaciones LAN</title>
+
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase7">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 7</p>
+      <h1>Profundización, Comparación y Aplicaciones LAN</h1>
+      <p>
+        Análisis comparativo de estándares, medios, velocidades, topologías y métodos de acceso,
+        con aplicación a escenarios reales y tendencias de evolución en redes cableadas, inalámbricas e híbridas.
+      </p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">Ethernet</span>
+        <span class="hero-tag">Wi-Fi</span>
+        <span class="hero-tag">FDDI</span>
+        <span class="hero-tag">Topologías</span>
+        <span class="hero-tag">CSMA/CD</span>
+        <span class="hero-tag">CSMA/CA</span>
+        <span class="hero-tag">Fibra óptica</span>
+        <span class="hero-tag">Redes híbridas</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: Ethernet, topología, Wi-Fi 6, CSMA">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Recorrido de contenidos</h2>
+      <nav>
+        <a href="#presentacion">Presentación</a>
+        <a href="#criterios">1. Criterios de comparación</a>
+        <a href="#velocidad">2. Velocidad de transmisión</a>
+        <a href="#medios">3. Medio físico</a>
+        <a href="#topologias">4. Topologías</a>
+        <a href="#acceso">5. Acceso al medio</a>
+        <a href="#eleccion">6. Cómo elegir una tecnología</a>
+        <a href="#ethernet">7. Aplicaciones de Ethernet</a>
+        <a href="#wifi">8. Aplicaciones de Wi-Fi</a>
+        <a href="#fddi">9. FDDI: auge y reemplazo</a>
+        <a href="#tendencias">10. Tendencias actuales</a>
+        <a href="#altavelocidad">11. Gigabit y 10-Gigabit</a>
+        <a href="#wifi67">12. Wi-Fi 6 y Wi-Fi 7</a>
+        <a href="#hibridas">13. Redes híbridas</a>
+        <a href="#actividad">14. Actividad integradora</a>
+        <a href="#sintesis">15. Síntesis conceptual</a>
+        <a href="#glosario">16. Glosario</a>
+      </nav>
+
+      <div class="progress-card">
+        <strong>Progreso de actividades</strong>
+        <div class="progress-track">
+          <progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress>
+        </div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 0 actividades completadas</div>
+        <button class="btn reset-progress" id="resetBtn" type="button">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <div class="no-results" id="noResults" role="status" hidden>
+        No se encontraron módulos que coincidan con la búsqueda.
+      </div>
+
+      <section class="module" id="presentacion" data-search="presentación comparación aplicaciones lan necesidades velocidad estabilidad movilidad costo escalabilidad">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div>
+            <h2>Presentación de la clase</h2>
+            <p class="module-subtitle">De describir tecnologías a tomar decisiones fundamentadas.</p>
+          </div>
+        </div>
+
+        <p>
+          En esta clase se propone avanzar desde una comprensión básica de las redes LAN hacia un nivel de análisis
+          <strong>comparativo y aplicado</strong>. El objetivo ya no es solamente describir tecnologías, sino comprender
+          <strong>cómo y por qué se elige una determinada solución de red según el contexto</strong>.
+        </p>
+
+        <p>
+          De este modo, la red deja de pensarse únicamente como un conjunto de dispositivos y pasa a entenderse como una
+          <strong>infraestructura tecnológica que responde a necesidades concretas</strong>: velocidad, estabilidad,
+          movilidad, costo y escalabilidad.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea central.</strong>
+          No existe una única tecnología “mejor” para todos los escenarios. La elección depende de los requerimientos
+          concretos de cada red y de los recursos disponibles.
+        </div>
+      </section>
+
+      <section class="module" id="criterios" data-search="criterios comparación velocidad medio físico topología acceso al medio">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div>
+            <h2>Criterios para comparar redes LAN</h2>
+            <p class="module-subtitle">Cuatro dimensiones permiten analizar técnicamente una solución de red.</p>
+          </div>
+        </div>
+
+        <div class="objectives">
+          <article class="mini-card">
+            <h3>Velocidad</h3>
+            <p>Cuántos datos pueden transmitirse por segundo.</p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Medio físico</h3>
+            <p>Por dónde viaja la señal: cobre, fibra óptica o aire.</p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Topología</h3>
+            <p>Cómo se organizan y conectan los nodos de la red.</p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Acceso al medio</h3>
+            <p>Cómo se regula el uso compartido del canal de transmisión.</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Comparar antes de elegir.</strong>
+          Estos criterios permiten pasar de una descripción general de una tecnología a una decisión técnica fundamentada.
+        </div>
+      </section>
+
+      <section class="module" id="velocidad" data-search="velocidad 10base-t fast ethernet gigabit 10g fddi wifi mbps gbps">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div>
+            <h2>Velocidad de transmisión</h2>
+            <p class="module-subtitle">La cantidad de datos que pueden circular por segundo.</p>
+          </div>
+        </div>
+
+        <p>
+          La <strong>velocidad</strong> es uno de los parámetros centrales al evaluar una red LAN. Se mide habitualmente
+          en <strong>Mbps</strong> (megabits por segundo) o <strong>Gbps</strong> (gigabits por segundo).
+        </p>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Estándar</th>
+                <th>Velocidad típica</th>
+                <th>Observaciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Ethernet 10BASE-T (IEEE 802.3)</td><td>10 Mbps</td><td>Primera versión comercialmente extendida.</td></tr>
+              <tr><td>Fast Ethernet (100BASE-T)</td><td>100 Mbps</td><td>Multiplica por diez la velocidad anterior.</td></tr>
+              <tr><td>Gigabit Ethernet (1000BASE-T)</td><td>1 Gbps</td><td>Apta para redes domésticas y profesionales.</td></tr>
+              <tr><td>10G Ethernet</td><td>10 Gbps</td><td>Utilizada en centros de datos o redes troncales.</td></tr>
+              <tr><td>FDDI</td><td>100 Mbps</td><td>Alta velocidad para su época y basada en fibra.</td></tr>
+              <tr><td>Wi-Fi (802.11 a/b/g/n/ac/ax)</td><td>11 Mbps – 9,6 Gbps</td><td>Varía según versión, canal y condiciones.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout success">
+          <strong>Redes modernas.</strong>
+          Es frecuente combinar Wi-Fi para movilidad con Ethernet para velocidad, estabilidad y enlaces fijos.
+        </div>
+      </section>
+
+      <section class="module" id="medios" data-search="medio físico coaxial utp stp fibra aire inalámbrico radio">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div>
+            <h2>Medio físico</h2>
+            <p class="module-subtitle">El soporte por donde se transmite la señal condiciona alcance, velocidad y costo.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Medio</th>
+                <th>Características técnicas</th>
+                <th>Usos frecuentes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Cable coaxial</strong></td><td>Utilizado en los primeros Ethernet. Poco flexible.</td><td>Redes antiguas, cámaras CCTV.</td></tr>
+              <tr><td><strong>Par trenzado (UTP/STP)</strong></td><td>Barato, fácil de instalar y capaz de trabajar a altas velocidades.</td><td>Oficinas, escuelas y hogares.</td></tr>
+              <tr><td><strong>Fibra óptica</strong></td><td>Alta velocidad y gran distancia.</td><td>Backbones, data centers y enlaces troncales.</td></tr>
+              <tr><td><strong>Aire</strong></td><td>Transmisión mediante ondas de radio. Favorece la movilidad, pero puede sufrir interferencias.</td><td>Wi-Fi, dispositivos móviles y notebooks.</td></tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout">
+          <strong>Infraestructuras mixtas.</strong>
+          Las redes actuales suelen combinar cableado estructurado y Wi-Fi, e incorporar fibra óptica cuando se requieren
+          mayores distancias o capacidad.
+        </div>
+      </section>
+
+      <section class="module" id="topologias" data-search="topología bus estrella anillo switch hub fddi física lógica">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div>
+            <h2>Topologías de red</h2>
+            <p class="module-subtitle">La forma en que los nodos se conectan afecta mantenimiento, rendimiento y tolerancia a fallos.</p>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Bus</h3>
+            <p>Todos los nodos comparten un único cable. Fue simple y económica, pero quedó obsoleta por sus limitaciones y colisiones.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Estrella</h3>
+            <p>Cada equipo se conecta a un nodo central, como un switch. Es la forma dominante en Ethernet moderno.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Anillo</h3>
+            <p>Cada nodo se conecta al siguiente formando un circuito. Se utilizó, entre otras tecnologías, en FDDI.</p>
+          </article>
+        </div>
+
+        <div class="network-diagram">
+          <div class="network-line">
+            <span class="network-node">PC</span>
+            <span class="network-node">Notebook</span>
+            <span class="network-node">Impresora</span>
+          </div>
+          <div class="network-line">
+            <span class="arrow">↓</span>
+            <span class="network-node">Switch central · Topología estrella</span>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Topología física y lógica.</strong>
+          Ambas no siempre coinciden. Una red puede organizarse físicamente de una manera y comportarse lógicamente de otra.
+        </div>
+      </section>
+
+      <section class="module" id="acceso" data-search="acceso medio csma cd collision detection token passing csma ca wifi">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div>
+            <h2>Acceso al medio</h2>
+            <p class="module-subtitle">Cómo se regula el uso de un medio compartido.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Método</th>
+                <th>Descripción</th>
+                <th>Estándares asociados</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CSMA/CD</strong></td>
+                <td>Escucha antes de transmitir. Si existe una colisión, espera y reintenta.</td>
+                <td>Ethernet clásico.</td>
+              </tr>
+              <tr>
+                <td><strong>Token Passing</strong></td>
+                <td>Una ficha o “token” otorga permiso para transmitir.</td>
+                <td>Token Ring y FDDI.</td>
+              </tr>
+              <tr>
+                <td><strong>CSMA/CA</strong></td>
+                <td>Busca evitar colisiones comprobando el estado del canal antes de transmitir.</td>
+                <td>Wi-Fi (IEEE 802.11).</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Evolución de Ethernet.</strong>
+          Con el uso de switches y enlaces full-duplex, CSMA/CD dejó de ser necesario en las redes Ethernet conmutadas modernas.
+        </div>
+      </section>
+
+      <section class="module" id="eleccion" data-search="elección estándar necesidades velocidad medio escenario compatibilidad presupuesto movilidad">
+        <div class="module-header">
+          <div class="module-number">6</div>
+          <div>
+            <h2>¿Cómo elegir una tecnología LAN?</h2>
+            <p class="module-subtitle">La decisión debe responder al contexto y no a una preferencia aislada.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Preguntas técnicas</h3>
+            <ul>
+              <li>¿Qué velocidad necesitan las aplicaciones?</li>
+              <li>¿Qué medios físicos están disponibles?</li>
+              <li>¿Se necesita movilidad?</li>
+              <li>¿Cuántos usuarios y dispositivos habrá?</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Condicionantes</h3>
+            <ul>
+              <li>Presupuesto disponible.</li>
+              <li>Compatibilidad con equipos existentes.</li>
+              <li>Facilidad de mantenimiento.</li>
+              <li>Posibilidad de crecimiento futuro.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout success">
+          <strong>Diseñar implica decidir.</strong>
+          La comparación técnica permite elegir soluciones de manera fundamentada al implementar o actualizar una red local.
+        </div>
+      </section>
+
+      <section class="module" id="ethernet" data-search="aplicaciones ethernet estabilidad latencia seguridad servidores cámaras nas escuela empresa">
+        <div class="module-header">
+          <div class="module-number">7</div>
+          <div>
+            <h2>¿Cuándo usar Ethernet?</h2>
+            <p class="module-subtitle">Una opción prioritaria cuando se requiere rendimiento y estabilidad.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>Ethernet (IEEE 802.3)</strong> es uno de los estándares LAN más utilizados. Resulta especialmente apropiado
+          cuando se necesitan conexiones permanentes, baja latencia, estabilidad y altas velocidades.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Servidores</h3>
+            <p>Favorece enlaces estables para servicios internos, NAS y centros de datos.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Equipos fijos</h3>
+            <p>PC de escritorio, impresoras de red y equipamiento de laboratorio.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Troncales</h3>
+            <p>Switches, routers y puntos de acceso suelen conectarse mediante enlaces Ethernet.</p>
+          </article>
+        </div>
+
+        <div class="callout success">
+          <strong>Aplicación típica.</strong>
+          Ethernet es especialmente útil cuando se busca rendimiento y estabilidad en ambientes controlados.
+        </div>
+      </section>
+
+      <section class="module" id="wifi" data-search="wifi 802.11 movilidad flexibilidad hogar escuela byod oficinas espacios públicos iot">
+        <div class="module-header">
+          <div class="module-number">8</div>
+          <div>
+            <h2>¿Dónde se utiliza Wi-Fi?</h2>
+            <p class="module-subtitle">Movilidad y flexibilidad de instalación como ventajas principales.</p>
+          </div>
+        </div>
+
+        <p>
+          El estándar <strong>IEEE 802.11</strong> agrupa las tecnologías Wi-Fi utilizadas cotidianamente.
+          Su principal ventaja es la <strong>movilidad</strong>, dado que no requiere un cable físico entre el dispositivo
+          final y el punto de acceso.
+        </p>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Escenarios frecuentes</h3>
+            <ul>
+              <li>Hogares con múltiples dispositivos móviles.</li>
+              <li>Escuelas con notebooks y dispositivos personales.</li>
+              <li>Oficinas híbridas.</li>
+              <li>Espacios públicos.</li>
+              <li>Dispositivos IoT.</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Relación con Ethernet</h3>
+            <p>
+              Aun cuando un usuario se conecta mediante Wi-Fi, el punto de acceso puede enlazarse al resto de la infraestructura
+              mediante Ethernet. Por eso ambas tecnologías suelen coexistir.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Redes mixtas.</strong>
+          En la práctica, muchas redes actuales utilizan Wi-Fi para terminales móviles y Ethernet para enlaces fijos o críticos.
+        </div>
+      </section>
+
+      <section class="module" id="fddi" data-search="fddi historia fibra doble anillo 100 mbps backbone reemplazo ethernet">
+        <div class="module-header">
+          <div class="module-number">9</div>
+          <div>
+            <h2>FDDI: ¿por qué se usó y por qué fue reemplazado?</h2>
+            <p class="module-subtitle">Una tecnología históricamente importante para redes troncales.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>FDDI</strong> (<em>Fiber Distributed Data Interface</em>) fue desarrollado en las décadas de 1980 y 1990.
+          Utilizaba fibra óptica y una arquitectura en doble anillo para ofrecer confiabilidad y velocidades de hasta 100 Mbps
+          en una época en que Ethernet trabajaba a velocidades mucho menores.
+        </p>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Ventajas históricas</h3>
+            <ul>
+              <li>Alta velocidad para su época.</li>
+              <li>Redundancia mediante doble anillo.</li>
+              <li>Aplicación en backbones institucionales y universitarios.</li>
+            </ul>
+          </article>
+          <article class="mini-card">
+            <h3>Motivos del reemplazo</h3>
+            <ul>
+              <li>Fast Ethernet y Gigabit Ethernet superaron sus prestaciones.</li>
+              <li>Equipamiento más costoso y complejo.</li>
+              <li>Ethernet sobre fibra simplificó muchas implementaciones.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout warning">
+          <strong>Perspectiva histórica.</strong>
+          FDDI permite observar cómo una tecnología puede ser relevante durante un período y luego ser desplazada
+          por alternativas más rápidas, económicas o simples de mantener.
+        </div>
+      </section>
+
+      <section class="module" id="tendencias" data-search="tendencias actuales redes lan dispositivos videollamadas gaming iot trabajo remoto híbridas">
+        <div class="module-header">
+          <div class="module-number">10</div>
+          <div>
+            <h2>Tendencias actuales en redes LAN</h2>
+            <p class="module-subtitle">Mayor velocidad, mejor desempeño inalámbrico y soluciones híbridas.</p>
+          </div>
+        </div>
+
+        <p>
+          A medida que aumenta la cantidad de dispositivos y crecen las demandas de videollamadas, juegos en línea,
+          transmisión de datos, IoT y trabajo remoto, las redes LAN evolucionan hacia <strong>mayores velocidades</strong>,
+          <strong>mejor rendimiento inalámbrico</strong> y <strong>arquitecturas híbridas</strong>.
+        </p>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Más velocidad</h3>
+            <p>Gigabit Ethernet y opciones superiores amplían el ancho de banda disponible.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Más dispositivos</h3>
+            <p>Las tecnologías inalámbricas buscan administrar mejor entornos densos.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Más integración</h3>
+            <p>Ethernet y Wi-Fi se combinan según la función de cada dispositivo.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="altavelocidad" data-search="gigabit ethernet 1 gbps 10gbe 40gbe 100gbe 400gbe cat 6a nas virtualización">
+        <div class="module-header">
+          <div class="module-number">11</div>
+          <div>
+            <h2>Gigabit y 10-Gigabit Ethernet</h2>
+            <p class="module-subtitle">Evolución de las redes cableadas hacia mayor ancho de banda.</p>
+          </div>
+        </div>
+
+        <p>
+          <strong>Gigabit Ethernet (1 Gbps)</strong> se encuentra ampliamente extendido en redes domésticas e institucionales.
+          Cuando aumentan las necesidades de transferencia, aparecen alternativas como <strong>10-Gigabit Ethernet (10GbE)</strong>.
+        </p>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Ventajas</h3>
+            <ul>
+              <li>Mayor ancho de banda para múltiples usuarios.</li>
+              <li>Transferencias rápidas hacia servidores y NAS.</li>
+              <li>Baja latencia en conexiones críticas.</li>
+              <li>Mejor soporte para virtualización y grandes volúmenes de datos.</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Desafíos</h3>
+            <ul>
+              <li>Placas de red y switches compatibles.</li>
+              <li>Cableado adecuado según la distancia y velocidad.</li>
+              <li>Mayor costo de implementación.</li>
+              <li>Necesidad de justificar técnicamente la inversión.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Escalabilidad.</strong>
+          En redes troncales y centros de datos existen además variantes de 40, 100 y 400 Gbps, destinadas a escenarios
+          con requerimientos muy superiores a los de una LAN doméstica convencional.
+        </div>
+      </section>
+
+      <section class="module" id="wifi67" data-search="wifi 6 802.11ax wifi 7 802.11be ofdma mu-mimo latencia densidad">
+        <div class="module-header">
+          <div class="module-number">12</div>
+          <div>
+            <h2>Wi-Fi 6 y Wi-Fi 7</h2>
+            <p class="module-subtitle">Evolución inalámbrica para redes con más dispositivos y aplicaciones en tiempo real.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>Wi-Fi 6 · IEEE 802.11ax</h3>
+            <ul>
+              <li>Velocidades teóricas de hasta 9,6 Gbps.</li>
+              <li>Mejor desempeño en redes saturadas.</li>
+              <li>Mayor eficiencia en el uso del canal.</li>
+              <li>Tecnologías como OFDMA y MU-MIMO.</li>
+            </ul>
+          </article>
+
+          <article class="mini-card">
+            <h3>Wi-Fi 7 · IEEE 802.11be</h3>
+            <ul>
+              <li>Velocidades teóricas muy superiores a generaciones anteriores.</li>
+              <li>Menor latencia.</li>
+              <li>Mayor capacidad de uso del espectro.</li>
+              <li>Orientación a entornos densos y aplicaciones exigentes.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout success">
+          <strong>No se trata solamente de velocidad.</strong>
+          Las nuevas generaciones Wi-Fi también buscan administrar mejor múltiples dispositivos conectados
+          simultáneamente y reducir problemas de congestión.
+        </div>
+      </section>
+
+      <section class="module" id="hibridas" data-search="redes híbridas ethernet wifi fortalezas debilidades oficinas escuelas hogares mesh">
+        <div class="module-header">
+          <div class="module-number">13</div>
+          <div>
+            <h2>El futuro de las redes híbridas</h2>
+            <p class="module-subtitle">Combinar tecnologías permite aprovechar sus fortalezas en un mismo entorno.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" role="region" aria-label="Tabla de datos" tabindex="0">
+<table>
+            <thead>
+              <tr>
+                <th>Tecnología</th>
+                <th>Fortalezas</th>
+                <th>Debilidades</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ethernet</strong></td>
+                <td>Estabilidad, velocidad y seguridad.</td>
+                <td>Requiere cableado y ofrece menor flexibilidad física.</td>
+              </tr>
+              <tr>
+                <td><strong>Wi-Fi</strong></td>
+                <td>Movilidad, instalación flexible y escalabilidad.</td>
+                <td>Puede sufrir interferencias y variaciones de rendimiento.</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+        </div>
+
+        <div class="three-col">
+          <article class="mini-card">
+            <h3>Oficinas</h3>
+            <p>Estaciones fijas por cable y dispositivos móviles por Wi-Fi.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Escuelas</h3>
+            <p>PC de laboratorio cableadas y notebooks o celulares conectados inalámbricamente.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Hogares</h3>
+            <p>Router y equipos críticos por cable, más puntos de acceso o sistemas mesh inalámbricos.</p>
+          </article>
+        </div>
+
+        <div class="callout success">
+          <strong>Adaptación al contexto.</strong>
+          Una red híbrida puede distribuir sus recursos según las necesidades de cada equipo, optimizando estabilidad,
+          movilidad y mantenimiento.
+        </div>
+      </section>
+
+      <section class="module" id="actividad" data-search="actividad integradora comparar elegir tecnología escenario escuela oficina hogar ethernet wifi fddi">
+        <div class="module-header">
+          <div class="module-number">14</div>
+          <div>
+            <h2>Actividad integradora</h2>
+            <p class="module-subtitle">Tomar decisiones de diseño a partir de necesidades reales.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-lan-1" data-task>
+            <label for="act-lan-1">Actividad 1. Elegir una solución para una institución educativa</label>
+          </div>
+
+          <p>
+            Una institución necesita renovar su red. Tiene una sala con 30 PC de escritorio, notebooks docentes,
+            dispositivos móviles de estudiantes, una impresora de red, un servidor interno y conexión de fibra óptica a Internet.
+          </p>
+
+          <ol>
+            <li>¿Qué equipos conectarías mediante Ethernet y cuáles mediante Wi-Fi?</li>
+            <li>¿Qué velocidad mínima considerarías apropiada para la red cableada?</li>
+            <li>¿Qué topología utilizarías?</li>
+            <li>¿Qué ventajas tendría una solución híbrida?</li>
+            <li>¿Qué criterios utilizarías para justificar tu decisión?</li>
+          </ol>
+
+          <textarea class="response" data-response="lan-1" placeholder="Diseñá una propuesta y justificá técnicamente las decisiones." aria-label="Diseñá una propuesta y justificá técnicamente las decisiones."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-lan-2" data-task>
+            <label for="act-lan-2">Actividad 2. Comparación técnica</label>
+          </div>
+
+          <p>
+            Compará <strong>Ethernet, Wi-Fi y FDDI</strong> considerando velocidad, medio físico, topología,
+            acceso al medio, movilidad, costo y vigencia actual.
+          </p>
+
+          <textarea class="response" data-response="lan-2" placeholder="Elaborá una comparación técnica breve entre las tres tecnologías." aria-label="Elaborá una comparación técnica breve entre las tres tecnologías."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title">
+            <input type="checkbox" id="act-lan-3" data-task>
+            <label for="act-lan-3">Actividad 3. Decisión fundamentada</label>
+          </div>
+
+          <p>
+            Elegí uno de estos escenarios: <strong>hogar, escuela, oficina o centro de datos</strong>.
+            Indicá qué combinación de Ethernet, Wi-Fi y fibra utilizarías y justificá la propuesta a partir de velocidad,
+            estabilidad, movilidad, costo y escalabilidad.
+          </p>
+
+          <textarea class="response" data-response="lan-3" placeholder="Elegí un escenario y desarrollá la decisión técnica." aria-label="Elegí un escenario y desarrollá la decisión técnica."></textarea>
+        </div>
+
+        <details>
+          <summary>Preguntas para repasar</summary>
+          <div>
+            <ol>
+              <li>¿Qué cuatro criterios permiten comparar técnicamente redes LAN?</li>
+              <li>¿Qué diferencia existe entre topología bus y estrella?</li>
+              <li>¿Qué método de acceso al medio se asocia históricamente con Ethernet?</li>
+              <li>¿Qué método utiliza Wi-Fi para reducir colisiones?</li>
+              <li>¿Por qué FDDI fue importante en su momento?</li>
+              <li>¿Qué ventajas ofrece Ethernet frente a Wi-Fi?</li>
+              <li>¿Qué ventaja principal ofrece Wi-Fi?</li>
+              <li>¿Qué significa que una red sea híbrida?</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <section class="module" id="sintesis" data-search="síntesis velocidad eficiencia tráfico densidad híbridas criterios técnicos">
+        <div class="module-header">
+          <div class="module-number">15</div>
+          <div>
+            <h2>Síntesis conceptual</h2>
+            <p class="module-subtitle">Del conocimiento de tecnologías a la capacidad de diseñar una solución.</p>
+          </div>
+        </div>
+
+        <p>
+          Las redes LAN evolucionan hacia mayores velocidades, mejor gestión del tráfico y una integración cada vez más
+          frecuente entre conexiones cableadas e inalámbricas. Sin embargo, cada mejora técnica implica también nuevas
+          exigencias de equipamiento, infraestructura, presupuesto y mantenimiento.
+        </p>
+
+        <p>
+          Por eso, comprender estándares y tecnologías no consiste solamente en memorizar velocidades o nombres:
+          implica desarrollar <strong>criterios técnicos para seleccionar, combinar y justificar soluciones</strong>
+          de acuerdo con las necesidades del entorno.
+        </p>
+
+        <div class="callout success">
+          <strong>Idea de cierre.</strong>
+          Diseñar una red significa equilibrar rendimiento, estabilidad, movilidad, costo, compatibilidad y posibilidad
+          de crecimiento futuro.
+        </div>
+      </section>
+
+      <section class="module" id="glosario" data-search="glosario ethernet wifi fddi topología csma cd csma ca token backbone gigabit híbrida">
+        <div class="module-header">
+          <div class="module-number">16</div>
+          <div>
+            <h2>Glosario</h2>
+            <p class="module-subtitle">Conceptos fundamentales para revisar la clase.</p>
+          </div>
+        </div>
+
+        <dl class="glossary">
+          <dt>Ancho de banda</dt>
+          <dd>Capacidad de transmisión disponible en un enlace o red.</dd>
+
+          <dt>Backbone</dt>
+          <dd>Enlace o conjunto de enlaces troncales que transportan gran parte del tráfico de una red.</dd>
+
+          <dt>CSMA/CD</dt>
+          <dd>Método histórico de acceso al medio utilizado por Ethernet compartido para detectar y gestionar colisiones.</dd>
+
+          <dt>CSMA/CA</dt>
+          <dd>Método utilizado en redes Wi-Fi para intentar evitar colisiones antes de transmitir.</dd>
+
+          <dt>Ethernet</dt>
+          <dd>Familia de tecnologías LAN cableadas asociadas a IEEE 802.3.</dd>
+
+          <dt>FDDI</dt>
+          <dd>Tecnología histórica basada principalmente en fibra óptica y doble anillo, utilizada en redes troncales.</dd>
+
+          <dt>Gigabit Ethernet</dt>
+          <dd>Ethernet con velocidad nominal de 1 Gbps.</dd>
+
+          <dt>Red híbrida</dt>
+          <dd>Red que combina tecnologías cableadas e inalámbricas según las necesidades del entorno.</dd>
+
+          <dt>Token Passing</dt>
+          <dd>Método de acceso al medio en el que una ficha lógica autoriza a un dispositivo a transmitir.</dd>
+
+          <dt>Topología</dt>
+          <dd>Forma en que se organizan y conectan los nodos de una red.</dd>
+
+          <dt>Wi-Fi</dt>
+          <dd>Tecnología inalámbrica de red local asociada con la familia IEEE 802.11.</dd>
+        </dl>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Clase 7 · Profundización, Comparación y Aplicaciones LAN. Material teórico-práctico para analizar
+        estándares, medios, topologías, rendimiento y criterios de diseño en redes locales.
+      </p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Archivos locales que no forman parte del sitio.
+.codex/
+.agents/
+__pycache__/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+respuestas_*.txt
+Thumbs.db
+Desktop.ini
+.DS_Store
