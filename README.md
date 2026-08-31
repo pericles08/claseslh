@@ -18,6 +18,10 @@ El sitio no necesita Internet para cargar las clases, los estilos ni las activid
 
 ## Publicación en GitHub Pages
 
+Sitio: <https://pericles08.github.io/claseslh/>
+
+Repositorio: <https://github.com/pericles08/claseslh>
+
 Conservar `index.html`, `style.css` y `script.js` en la raíz del sitio, junto con las carpetas `clases/` y `assets/`. Los enlaces relativos permiten usar la misma estructura tanto localmente como dentro de la ruta de un repositorio publicado. El archivo `.nojekyll` indica que los archivos se sirven sin procesamiento de plantillas.
 
 GitHub Pages utiliza la raíz de la rama `main`. Los cambios se publican después de confirmarlos y enviarlos al repositorio. No guardar credenciales ni respuestas de estudiantes en el repositorio. Exportar las respuestas locales antes de pasar al sitio online, porque el almacenamiento del navegador no se comparte entre ambas direcciones.
