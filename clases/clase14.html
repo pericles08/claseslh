@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 14: dominio de colisión y dominio de broadcast, diferencias, dispositivos de segmentación e impacto en el rendimiento de una red.">
+  <title>Clase 14 - Dominio de colisión y dominio de broadcast</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase14">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 14</p>
+      <h1>Dominio de colisión y dominio de broadcast</h1>
+      <p>Una clase para diferenciar el alcance de ambos dominios, reconocer qué dispositivos los delimitan y comprender su impacto sobre el rendimiento de una red.</p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">Colisiones</span>
+        <span class="hero-tag">Broadcast</span>
+        <span class="hero-tag">Switch</span>
+        <span class="hero-tag">Router</span>
+        <span class="hero-tag">VLAN</span>
+        <span class="hero-tag">Segmentación</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <label class="search-box" aria-label="Buscar en el material">
+        <span aria-hidden="true">Buscar</span>
+        <input id="searchInput" type="search" placeholder="Ejemplo: colisión, broadcast, switch, router">
+      </label>
+      <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+      <button class="btn" id="printBtn" type="button">Imprimir</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Índice de la clase</h2>
+      <nav>
+        <a href="#objetivos">Objetivos</a>
+        <a href="#colision">1. Dominio de colisión</a>
+        <a href="#broadcast">2. Dominio de broadcast</a>
+        <a href="#diferencias">3. Diferencias clave</a>
+        <a href="#rendimiento">4. Impacto en el rendimiento</a>
+        <a href="#conclusiones">5. Conclusiones</a>
+      </nav>
+      <div class="progress-card">
+        <strong>Progreso de la clase</strong>
+        <div class="progress-track"><progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress></div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 5 actividades completadas</div>
+      </div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <p id="noResults" class="no-results" role="status" hidden>No se encontraron secciones para esa búsqueda.</p>
+
+      <section class="module" id="objetivos" data-search="objetivos explicar diferenciar alcance comportamiento dispositivos rendimiento segmentación">
+        <div class="module-header">
+          <div class="module-number">0</div>
+          <div><h2>Objetivo de la sesión</h2><p class="module-subtitle">Al finalizar esta clase podrás:</p></div>
+        </div>
+        <ul>
+          <li>Explicar qué es un <strong>dominio de colisión</strong> y un <strong>dominio de broadcast</strong>.</li>
+          <li>Diferenciar su alcance y comportamiento en la red.</li>
+          <li>Reconocer qué dispositivos reducen o eliminan cada uno.</li>
+          <li>Relacionar estos conceptos con el rendimiento y la segmentación de redes.</li>
+        </ul>
+      </section>
+
+      <section class="module" id="colision" data-search="dominio colisión medio compartido capa 2 enlace hub switch puertos">
+        <div class="module-header">
+          <div class="module-number">1</div>
+          <div><h2>¿Qué es un dominio de colisión?</h2><p class="module-subtitle">Un solo dispositivo puede transmitir datos a la vez en un medio compartido.</p></div>
+        </div>
+        <div class="callout"><strong>Definición:</strong> es la parte de una red en la que <strong>solo un dispositivo puede transmitir datos a la vez</strong>. Si dos dispositivos transmiten simultáneamente, ocurre una <strong>colisión</strong> y ambas transmisiones fallan, obligando a reenviar los datos.</div>
+        <h3>Características</h3>
+        <ul>
+          <li>Aplica en redes con acceso compartido al medio.</li>
+          <li>Se asocia principalmente con la capa <strong>Enlace de Datos</strong> del modelo OSI.</li>
+          <li>Antes, en redes Ethernet con <strong>hub</strong>, todos los puertos compartían el mismo dominio de colisión.</li>
+          <li>Un <strong>switch</strong> crea <strong>un dominio de colisión por cada puerto</strong>.</li>
+        </ul>
+        <div class="callout success"><strong>Ejemplo:</strong> si PC1 y PC2 transmiten al mismo tiempo en un hub de cuatro PCs, hay colisión. En un switch de cuatro PCs, cada enlace es independiente: no hay colisión entre PC1 y PC2.</div>
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-1" data-task><label for="act-1">Actividad 1. Comparar hub y switch</label></div>
+          <p>Explicá con tus palabras por qué cambia el riesgo de colisión al reemplazar un hub por un switch.</p>
+          <textarea class="response" data-response="act-1" placeholder="Escribí tu comparación." aria-label="Explicá por qué cambia el riesgo de colisión al reemplazar un hub por un switch."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="broadcast" data-search="dominio broadcast ethernet ff ipv4 arp dhcp router switch">
+        <div class="module-header">
+          <div class="module-number">2</div>
+          <div><h2>¿Qué es un dominio de broadcast?</h2><p class="module-subtitle">El conjunto de dispositivos que reciben un mensaje enviado a toda la red local.</p></div>
+        </div>
+        <div class="callout"><strong>Definición:</strong> es el conjunto de dispositivos que <strong>reciben un mensaje de broadcast</strong>, es decir, un mensaje enviado a todos en la red.</div>
+        <h3>Características</h3>
+        <ul>
+          <li>Un broadcast usa una dirección destino especial: en Ethernet, <code>FF:FF:FF:FF:FF:FF</code>; en IPv4, una dirección de broadcast como <code>192.168.1.255</code>.</li>
+          <li>Todos los dispositivos del mismo dominio de broadcast reciben el mensaje, aunque no sea para ellos.</li>
+          <li>Se utiliza para descubrir direcciones MAC mediante ARP y para asignar direcciones IP automáticamente mediante DHCP.</li>
+          <li>Los <strong>routers</strong> dividen los dominios de broadcast; los <strong>switches</strong> no.</li>
+        </ul>
+        <div class="callout success"><strong>Ejemplo:</strong> en una red local de diez PCs unidas por switches, un broadcast enviado por una PC llega a las otras nueve. Si hay un router entre dos grupos, el broadcast de un grupo no cruza al otro.</div>
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-2" data-task><label for="act-2">Actividad 2. Seguir el broadcast</label></div>
+          <p>Describí hasta dónde llegará un broadcast en una red con dos grupos de PCs separados por un router.</p>
+          <textarea class="response" data-response="act-2" placeholder="Indicá qué equipos lo reciben y dónde se detiene." aria-label="Describí hasta dónde llegará el broadcast y dónde se detiene."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="diferencias" data-search="diferencias alcance medio subred capa osi switch router choque congestión">
+        <div class="module-header">
+          <div class="module-number">3</div>
+          <div><h2>Diferencias clave entre ambos dominios</h2><p class="module-subtitle">Una comparación directa de alcance, dispositivo y efecto.</p></div>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Comparación entre dominio de colisión y dominio de broadcast" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Característica</th><th scope="col">Dominio de colisión</th><th scope="col">Dominio de broadcast</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Alcance</th><td>Medio compartido</td><td>Red lógica (subred)</td></tr>
+              <tr><th scope="row">Dispositivo que lo reduce</th><td>Switch (un dominio por puerto)</td><td>Router (un dominio por interfaz)</td></tr>
+              <tr><th scope="row">Problema principal</th><td>Choque de tramas</td><td>Congestión por mensajes masivos</td></tr>
+              <tr><th scope="row">Capa OSI</th><td>Capa 2</td><td>Capa 3</td></tr>
+              <tr><th scope="row">Estado actual</th><td>Poco frecuente por el uso de switches</td><td>Muy frecuente si no se segmenta</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-3" data-task><label for="act-3">Actividad 3. Diferenciar los dominios</label></div>
+          <p>Resumí la diferencia principal entre ambos dominios e indicá qué dispositivo delimita cada uno.</p>
+          <textarea class="response" data-response="act-3" placeholder="Escribí una comparación breve." aria-label="Resumí la diferencia entre ambos dominios y los dispositivos que los delimitan."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="rendimiento" data-search="impacto rendimiento retransmisiones red lenta congestión tráfico">
+        <div class="module-header">
+          <div class="module-number">4</div>
+          <div><h2>Impacto en el rendimiento</h2><p class="module-subtitle">Cómo el tamaño de los dominios afecta el tráfico.</p></div>
+        </div>
+        <ul>
+          <li><strong>Muchos equipos dentro de un mismo dominio de colisión:</strong> colisiones y retransmisiones que vuelven lenta la red.</li>
+          <li><strong>Un dominio de broadcast muy grande:</strong> exceso de tráfico no útil para todos los equipos y posible congestión.</li>
+        </ul>
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-4" data-task><label for="act-4">Actividad 4. Analizar el rendimiento</label></div>
+          <p>Explicá qué problema esperarías encontrar en cada uno de los dos casos anteriores.</p>
+          <textarea class="response" data-response="act-4" placeholder="Relacioná cada dominio con su efecto sobre la red." aria-label="Relacioná cada dominio con su efecto sobre el rendimiento."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="conclusiones" data-search="conclusiones switches routers vlan segmentación rendimiento seguridad">
+        <div class="module-header">
+          <div class="module-number">5</div>
+          <div><h2>Conclusiones</h2><p class="module-subtitle">Dispositivos y segmentación eficiente.</p></div>
+        </div>
+        <ul>
+          <li>Los <strong>switches</strong> eliminaron casi por completo los problemas de colisiones, pero <strong>no reducen broadcasts</strong>.</li>
+          <li>Los <strong>routers</strong> o las <strong>VLANs</strong> son la solución para limitar el alcance de los broadcasts.</li>
+          <li>La segmentación eficiente mejora el rendimiento y la seguridad.</li>
+        </ul>
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-5" data-task><label for="act-5">Actividad 5. Ticket de salida</label></div>
+          <p>¿Qué dispositivo elegirías para separar colisiones? ¿Cuál usarías para separar broadcasts? Justificá ambas decisiones.</p>
+          <textarea class="response" data-response="act-5" placeholder="Escribí tu respuesta final." aria-label="Indicá qué dispositivo usarías para separar cada dominio y justificá."></textarea>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><p>Clase 14 · Dominio de colisión y dominio de broadcast · Rendimiento y segmentación de redes.</p></div></footer>
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>
