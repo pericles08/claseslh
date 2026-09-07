@@ -49,12 +49,13 @@
         <a href="#broadcast">2. Dominio de broadcast</a>
         <a href="#diferencias">3. Diferencias clave</a>
         <a href="#rendimiento">4. Impacto en el rendimiento</a>
-        <a href="#conclusiones">5. Conclusiones</a>
+        <a href="#consola">5. Actividades en Windows</a>
+        <a href="#conclusiones">6. Conclusiones</a>
       </nav>
       <div class="progress-card">
         <strong>Progreso de la clase</strong>
         <div class="progress-track"><progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress></div>
-        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 5 actividades completadas</div>
+        <div class="progress-label" id="progressLabel" aria-live="polite">0 de 9 actividades completadas</div>
       </div>
     </aside>
 
@@ -156,9 +157,78 @@
         </div>
       </section>
 
-      <section class="module" id="conclusiones" data-search="conclusiones switches routers vlan segmentación rendimiento seguridad">
+      <section class="module" id="consola" data-search="actividades consola windows cmd ipconfig ping broadcast arp tracert packet tracer hub switch">
         <div class="module-header">
           <div class="module-number">5</div>
+          <div><h2>Actividades en Consola de Windows</h2><p class="module-subtitle">Identificar y analizar dominios de colisión y broadcast en la práctica.</p></div>
+        </div>
+
+        <div class="callout warning">
+          <strong>Antes de comenzar:</strong> realizá estas pruebas únicamente en una red autorizada por el docente. Windows, el router o el firewall pueden bloquear el ping dirigido a broadcast. La ausencia de respuestas no significa que el concepto sea incorrecto.
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-6" data-task><label for="act-6">Actividad 6. Detectar broadcast en la red</label></div>
+          <ol>
+            <li>Abrí <strong>CMD</strong>.</li>
+            <li>Consultá la configuración de red:</li>
+          </ol>
+          <div class="command-block" data-label="CMD"><pre><code>ipconfig</code></pre></div>
+          <ol start="3">
+            <li>Identificá tu dirección IPv4 y máscara de subred. A partir de ambos datos, calculá la dirección de broadcast; en una red <code>/24</code> como <code>192.168.1.0/24</code>, sería <code>192.168.1.255</code>.</li>
+            <li>Reemplazá el ejemplo por la dirección de broadcast de tu propia red y ejecutá:</li>
+          </ol>
+          <div class="command-block" data-label="CMD"><pre><code>ping 192.168.1.255</code></pre></div>
+          <ol start="5"><li>Observá si recibís respuestas múltiples. Algunos sistemas las bloquean por seguridad.</li></ol>
+          <p><strong>Pregunta:</strong> ¿por qué todas las PCs dentro de la misma red pueden recibir este mensaje?</p>
+          <textarea class="response" data-response="act-6" placeholder="Registrá la IP, máscara, broadcast, resultado y explicación." aria-label="Registrá el resultado de la prueba de broadcast y respondé la pregunta."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-7" data-task><label for="act-7">Actividad 7. Observar la tabla ARP</label></div>
+          <ol>
+            <li>Abrí CMD con permisos de administrador y limpiá la tabla ARP:</li>
+          </ol>
+          <div class="command-block" data-label="CMD (ADMINISTRADOR)"><pre><code>arp -d *</code></pre></div>
+          <ol start="2">
+            <li>Repetí el ping a la dirección de broadcast utilizada en la actividad anterior.</li>
+            <li>Revisá la tabla ARP:</li>
+          </ol>
+          <div class="command-block" data-label="CMD"><pre><code>arp -a</code></pre></div>
+          <div class="accuracy-note"><strong>Qué observar:</strong> compará las entradas antes y después de generar tráfico. El resultado depende del sistema operativo, de los equipos que respondan y de las políticas de la red; un ping de broadcast no garantiza que aparezcan varias entradas dinámicas.</div>
+          <p><strong>Pregunta:</strong> ¿qué direcciones IP y MAC aparecen y cómo pudieron incorporarse a la tabla?</p>
+          <textarea class="response" data-response="act-7" placeholder="Anotá las entradas observadas y explicá su posible origen." aria-label="Registrá y explicá las entradas observadas en la tabla ARP."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-8" data-task><label for="act-8">Actividad 8. Identificar el router como separador de broadcast</label></div>
+          <ol>
+            <li>Ejecutá:</li>
+          </ol>
+          <div class="command-block" data-label="CMD"><pre><code>tracert 8.8.8.8</code></pre></div>
+          <ol start="2">
+            <li>Observá el primer salto, que normalmente corresponde al router o gateway de tu red local.</li>
+          </ol>
+          <p><strong>Pregunta:</strong> ¿por qué un broadcast de la red local no llega más allá de ese router?</p>
+          <textarea class="response" data-response="act-8" placeholder="Anotá el primer salto y explicá el límite del broadcast." aria-label="Registrá el primer salto y explicá por qué el broadcast no cruza el router."></textarea>
+        </div>
+
+        <div class="activity">
+          <div class="activity-title"><input type="checkbox" id="act-9" data-task><label for="act-9">Actividad 9. Analizar colisiones en el laboratorio</label></div>
+          <div class="callout"><strong>Nota:</strong> en redes modernas con switches es difícil observar colisiones. Packet Tracer permite representar un medio compartido mediante un hub.</div>
+          <ol>
+            <li>En Packet Tracer, conectá tres PCs a un hub.</li>
+            <li>Configurá las direcciones IP y generá pings simultáneos entre diferentes pares de PCs.</li>
+            <li>Usá el modo <strong>Simulation</strong> para observar que el hub replica las señales por todos sus puertos.</li>
+          </ol>
+          <p><strong>Pregunta:</strong> ¿por qué este comportamiento no se produce del mismo modo con un switch?</p>
+          <textarea class="response" data-response="act-9" placeholder="Describí lo observado y comparalo con el funcionamiento de un switch." aria-label="Describí la simulación con hub y comparala con un switch."></textarea>
+        </div>
+      </section>
+
+      <section class="module" id="conclusiones" data-search="conclusiones switches routers vlan segmentación rendimiento seguridad">
+        <div class="module-header">
+          <div class="module-number">6</div>
           <div><h2>Conclusiones</h2><p class="module-subtitle">Dispositivos y segmentación eficiente.</p></div>
         </div>
         <ul>
