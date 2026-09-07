@@ -1,6 +1,6 @@
 /* ==========================================================
 LABORATORIO DE HARDWARE DE REDES - ESTILOS GENERALES
-Archivo compartido por Index y Clases 5 a 12
+Archivo compartido por el índice y todas las clases
 ========================================================== */
 
 :root {
@@ -2453,6 +2453,29 @@ body[data-page] { padding-bottom: 80px; }
 .table-compact { min-width: 420px; }
 .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
 .table-scroll table { margin: 0; }
+.network-diagram { margin: 20px 0; overflow-x: auto; border: 1px solid var(--gris-200); border-radius: 16px; background: #f8fbfd; }
+.network-diagram svg { display: block; min-width: 720px; width: 100%; height: auto; font-family: inherit; }
+.network-diagram .diagram-flat > rect, .network-diagram .diagram-segmented > rect { fill: #fff; stroke: #cfe1ec; stroke-width: 2; }
+.network-diagram .device { fill: var(--azul-700); stroke: var(--azul-900); stroke-width: 2; }
+.network-diagram .router { fill: var(--verde-700); stroke: #155b3a; stroke-width: 2; }
+.network-diagram .node circle { fill: var(--celeste-100); stroke: var(--azul-700); stroke-width: 3; }
+.network-diagram .link, .network-diagram .vlan10 path, .network-diagram .vlan20 path, .network-diagram .trunk { fill: none; stroke: var(--gris-600); stroke-width: 5; }
+.network-diagram .vlan10 circle { fill: #d9f4ff; stroke: var(--azul-700); stroke-width: 3; }
+.network-diagram .vlan20 circle { fill: #fff1c9; stroke: #a87800; stroke-width: 3; }
+.network-diagram .vlan10 path { stroke: var(--azul-700); } .network-diagram .vlan20 path { stroke: #a87800; }
+.network-diagram text { fill: var(--gris-950); font-size: 17px; font-weight: 700; }
+.network-diagram .device + text, .network-diagram .router + text { fill: #fff; }
+.network-diagram .diagram-title { fill: var(--azul-900); font-size: 24px; }
+.network-diagram .diagram-caption { fill: var(--gris-600); font-size: 14px; font-weight: 600; }
+.media-grid, .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 20px 0; }
+.media-card, .video-card { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--gris-200); border-radius: 16px; background: var(--blanco); }
+.media-card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.media-card figcaption, .video-card > :not(.video-frame) { margin-right: 18px; margin-left: 18px; }
+.media-card figcaption { padding: 14px 0 18px; color: var(--gris-600); }
+.video-frame { position: relative; aspect-ratio: 16 / 9; background: var(--azul-900); }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-card h3 { margin-top: 16px; } .video-card .btn { display: inline-flex; margin-bottom: 18px; }
+@media (max-width: 760px) { .media-grid, .video-grid { grid-template-columns: 1fr; } }
 .contenedor .table-scroll { margin: 16px 0; }
 .contenedor table { min-width: 580px; }
 .grid-2 > *, .grid-3 > *, .two-col > *, .three-col > * { min-width: 0; }

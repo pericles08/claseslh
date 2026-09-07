@@ -9,7 +9,8 @@
     clase11: { prefix: 'cmd-redes-windows-v1:', title: 'COMANDOS DE RED, DIAGNÓSTICO Y MANTENIMIENTO EN WINDOWS', filename: 'respuestas_cmd_redes.txt' },
     clase12: { prefix: 'clase12-ip-v2:', title: 'CLASE 12 - DIRECCIONAMIENTO IP, SUBREDES Y ENRUTAMIENTO', filename: 'respuestas_clase12_ip.txt' },
     clase13: { prefix: 'clase13-dispositivos-v1:', title: 'CLASE 13 - DISPOSITIVOS DE RED: HUB, SWITCH Y ROUTER', filename: 'respuestas_clase13_dispositivos_red.txt' },
-    clase14: { prefix: 'clase14-dominios-v1:', title: 'CLASE 14 - DOMINIO DE COLISIÓN Y DOMINIO DE BROADCAST', filename: 'respuestas_clase14_dominios.txt' }
+    clase14: { prefix: 'clase14-dominios-v1:', title: 'CLASE 14 - DOMINIO DE COLISIÓN Y DOMINIO DE BROADCAST', filename: 'respuestas_clase14_dominios.txt' },
+    clase15: { prefix: 'clase15-segmentacion-v1:', title: 'CLASE 15 - SEGMENTACIÓN DE REDES', filename: 'respuestas_clase15_segmentacion.txt' }
   };
   const config = settings[document.body.dataset.page];
   if (!config) return;

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clase 15: segmentación física, lógica mediante VLAN y por subredes, con prácticas en Windows y Cisco Packet Tracer.">
+  <title>Clase 15 - Segmentación de redes</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+
+<body id="inicio" data-page="clase15">
+  <a class="skip-link" href="#contenido">Ir al contenido principal</a>
+  <nav class="site-nav" aria-label="Navegación general"><a class="volver" href="../index.html">Volver al índice</a></nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Redes de computadoras · Clase 15</p>
+      <h1>Segmentación de redes</h1>
+      <p>Cómo dividir una red en partes más pequeñas para controlar el tráfico, mejorar el rendimiento y aplicar políticas de seguridad.</p>
+      <div class="hero-tags" aria-label="Temas principales">
+        <span class="hero-tag">Segmentación física</span><span class="hero-tag">VLAN</span>
+        <span class="hero-tag">Subnetting</span><span class="hero-tag">Broadcast</span>
+        <span class="hero-tag">Packet Tracer</span><span class="hero-tag">Router-on-a-stick</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap"><div class="toolbar">
+    <label class="search-box" aria-label="Buscar en el material"><span aria-hidden="true">Buscar</span><input id="searchInput" type="search" placeholder="Ejemplo: VLAN, subred, router, broadcast"></label>
+    <button class="btn btn-primary" id="exportBtn" type="button">Exportar respuestas</button>
+    <button class="btn" id="printBtn" type="button">Imprimir</button>
+  </div></div>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Índice del material">
+      <h2>Índice de la clase</h2>
+      <nav>
+        <a href="#objetivos">Objetivos</a><a href="#concepto">1. Qué es segmentar</a>
+        <a href="#beneficios">2. Por qué segmentar</a><a href="#formas">3. Formas de segmentación</a>
+        <a href="#visual">4. Ejemplo visual</a><a href="#windows">5. Actividades en Windows</a>
+        <a href="#packet-tracer">6. Packet Tracer</a><a href="#videos">7. Videos</a>
+        <a href="#conclusiones">8. Conclusiones</a>
+      </nav>
+      <div class="progress-card"><strong>Progreso de la clase</strong><div class="progress-track"><progress class="progress-fill" id="progressFill" max="100" value="0" aria-labelledby="progressLabel"></progress></div><div class="progress-label" id="progressLabel" aria-live="polite">0 de 8 actividades completadas</div></div>
+    </aside>
+
+    <main id="contenido" tabindex="-1">
+      <p id="noResults" class="no-results" role="status" hidden>No se encontraron secciones para esa búsqueda.</p>
+
+      <section class="module" id="objetivos" data-search="objetivos segmentar física lógica subredes rendimiento seguridad">
+        <div class="module-header"><div class="module-number">0</div><div><h2>Objetivo de la sesión</h2><p class="module-subtitle">Al finalizar esta clase podrás:</p></div></div>
+        <ul><li>Comprender qué es segmentar una red y por qué es importante.</li><li>Identificar distintas formas de segmentación: física, lógica y por subredes.</li><li>Reconocer los beneficios y limitaciones de cada tipo.</li><li>Aplicar la segmentación para optimizar el rendimiento y la seguridad.</li></ul>
+      </section>
+
+      <section class="module" id="concepto" data-search="segmentación dividir red partes pequeñas tráfico rendimiento seguridad broadcast políticas">
+        <div class="module-header"><div class="module-number">1</div><div><h2>¿Qué es segmentar una red?</h2><p class="module-subtitle">Dividir para controlar mejor la comunicación.</p></div></div>
+        <div class="callout"><strong>Definición:</strong> la <strong>segmentación de redes</strong> consiste en dividir una red en partes más pequeñas para controlar el tráfico, mejorar el rendimiento y aumentar la seguridad.</div>
+        <p>Según el método utilizado, en cada segmento se puede:</p>
+        <ul><li>Reducir el alcance de los <strong>dominios de broadcast</strong>.</li><li>Controlar mejor quién se comunica con quién.</li><li>Aplicar políticas y configuraciones diferentes.</li></ul>
+        <div class="accuracy-note"><strong>Precisión:</strong> dividir puertos en un switch no reduce por sí solo el dominio de broadcast. Para conseguirlo se requieren VLANs, subredes y un límite de capa 3.</div>
+      </section>
+
+      <section class="module" id="beneficios" data-search="beneficios congestión seguridad gestión rendimiento ancho banda administración ventas">
+        <div class="module-header"><div class="module-number">2</div><div><h2>¿Por qué segmentar?</h2><p class="module-subtitle">Beneficios operativos y de seguridad.</p></div></div>
+        <ol><li><strong>Menos congestión:</strong> el tráfico local se limita al segmento correspondiente.</li><li><strong>Más seguridad:</strong> permite aislar grupos y controlar el tráfico entre ellos.</li><li><strong>Gestión más simple:</strong> cada segmento puede administrarse y monitorearse de forma independiente.</li><li><strong>Mejor rendimiento:</strong> disminuye el tráfico innecesario que recibe cada equipo.</li></ol>
+        <div class="callout success"><strong>Ejemplo:</strong> si Administración y Ventas comparten un único dominio de broadcast, ambos reciben las difusiones. Al separarlos en VLANs y subredes, cada grupo conserva su propio dominio y el tráfico entre ambos puede controlarse.</div>
+      </section>
+
+      <section class="module" id="formas" data-search="formas segmentación física lógica vlan subnetting router switch multilayer administrable">
+        <div class="module-header"><div class="module-number">3</div><div><h2>Formas de segmentación</h2><p class="module-subtitle">Tres enfoques que pueden combinarse.</p></div></div>
+        <div class="grid-3">
+          <article class="concept-card"><h3>3.1. Física</h3><p>Separa equipos mediante infraestructura, enlaces o interfaces diferentes. Para separar dominios IP y de broadcast se emplea un router o switch multicapa.</p><ul><li>Separación visible.</li><li>Puede requerir más hardware y cableado.</li><li>Útil entre edificios, pisos u oficinas.</li></ul></article>
+          <article class="concept-card"><h3>3.2. Lógica: VLAN</h3><p>Un switch administrable agrupa puertos en redes virtuales independientes, aunque compartan el mismo equipo físico.</p><ul><li>Flexible respecto de la ubicación.</li><li>Aísla el tráfico de capa 2.</li><li>Requiere capa 3 para comunicar VLANs.</li></ul></article>
+          <article class="concept-card"><h3>3.3. Subredes</h3><p>Divide el espacio de direcciones IP en rangos más pequeños, cada uno con su dirección de red y broadcast.</p><ul><li>Asigna un rango por sector.</li><li>Exige calcular prefijo y máscara.</li><li>Necesita enrutamiento entre subredes.</li></ul></article>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Comparación de formas de segmentación" tabindex="0"><table><thead><tr><th scope="col">Método</th><th scope="col">Dónde se aplica</th><th scope="col">Ventaja</th><th scope="col">Limitación</th></tr></thead><tbody><tr><th scope="row">Física</th><td>Infraestructura y enlaces</td><td>Separación directa</td><td>Más hardware</td></tr><tr><th scope="row">VLAN</th><td>Switch administrable</td><td>Flexibilidad</td><td>Requiere configuración</td></tr><tr><th scope="row">Subred</th><td>Direccionamiento IP</td><td>Uso ordenado de direcciones</td><td>Requiere cálculo y router</td></tr></tbody></table></div>
+      </section>
+
+      <section class="module" id="visual" data-search="ejemplo visual red inicial segmentada administración ventas vlan 10 vlan 20 router">
+        <div class="module-header"><div class="module-number">4</div><div><h2>De una red plana a una red segmentada</h2><p class="module-subtitle">El mismo switch puede alojar varios dominios lógicos.</p></div></div>
+        <div class="network-diagram" role="img" aria-label="Comparación entre una red plana y una red segmentada en VLAN 10 y VLAN 20 conectadas a un router">
+          <svg viewBox="0 0 1000 390" xmlns="http://www.w3.org/2000/svg">
+            <title>Red plana y red segmentada</title>
+            <g class="diagram-flat"><rect x="20" y="20" width="410" height="340" rx="24"/><text x="225" y="58" text-anchor="middle" class="diagram-title">Red plana</text><rect x="160" y="155" width="130" height="70" rx="12" class="device"/><text x="225" y="196" text-anchor="middle">SWITCH</text><g class="node"><circle cx="75" cy="110" r="30"/><circle cx="75" cy="275" r="30"/><circle cx="375" cy="110" r="30"/><circle cx="375" cy="275" r="30"/></g><g class="link"><path d="M100 125L160 170M100 260L160 210M290 170L350 125M290 210L350 260"/></g><text x="225" y="330" text-anchor="middle" class="diagram-caption">1 dominio de broadcast</text></g>
+            <g class="diagram-segmented"><rect x="460" y="20" width="520" height="340" rx="24"/><text x="720" y="58" text-anchor="middle" class="diagram-title">Red segmentada</text><rect x="655" y="80" width="130" height="62" rx="12" class="router"/><text x="720" y="117" text-anchor="middle">ROUTER</text><rect x="655" y="205" width="130" height="70" rx="12" class="device"/><text x="720" y="246" text-anchor="middle">SWITCH</text><path d="M720 142V205" class="trunk"/><text x="738" y="178" class="diagram-caption">trunk</text><g class="vlan10"><circle cx="535" cy="285" r="30"/><circle cx="615" cy="315" r="30"/><path d="M555 265L655 245M638 296L675 275"/><text x="565" y="345" text-anchor="middle">VLAN 10 · Administración</text></g><g class="vlan20"><circle cx="825" cy="315" r="30"/><circle cx="905" cy="285" r="30"/><path d="M805 296L765 275M885 265L785 245"/><text x="865" y="345" text-anchor="middle">VLAN 20 · Ventas</text></g></g>
+          </svg>
+        </div>
+        <div class="media-grid"><figure class="media-card"><img src="../assets/clase13/switch.jpg" alt="Switch Ethernet utilizado para conectar y segmentar equipos" loading="lazy"><figcaption>El switch administrable permite crear VLANs y asignar puertos a cada grupo.</figcaption></figure><figure class="media-card"><img src="../assets/clase13/router.jpg" alt="Router utilizado para comunicar redes diferentes" loading="lazy"><figcaption>El router permite comunicar subredes y aplicar decisiones de capa 3.</figcaption></figure></div>
+      </section>
+
+      <section class="module" id="windows" data-search="actividades consola windows cmd ipconfig broadcast ping subred aislamiento diseño">
+        <div class="module-header"><div class="module-number">5</div><div><h2>Actividades en Consola de Windows</h2><p class="module-subtitle">Analizar la configuración IP y comprobar el efecto de distintas subredes.</p></div></div>
+        <div class="callout warning"><strong>Laboratorio autorizado:</strong> no cambies la configuración IP de un equipo de uso diario. Realizá los cambios en Packet Tracer, máquinas virtuales o PCs de laboratorio y registrá la configuración original antes de comenzar.</div>
+        <div class="activity"><div class="activity-title"><input type="checkbox" id="act-1" data-task><label for="act-1">Actividad 1. Identificar tu red y broadcast</label></div><p>Abrí CMD, ejecutá el comando y anotá la dirección IPv4 y la máscara.</p><div class="command-block" data-label="CMD"><pre><code>ipconfig</code></pre></div><p>Calculá la dirección de red, la dirección de broadcast y la cantidad de hosts utilizables. Luego analizá qué cambiaría con un prefijo <code>/26</code> o <code>/28</code>.</p><textarea class="response" data-response="act-1" placeholder="Registrá los datos, cálculos y respuestas." aria-label="Registrá la red, broadcast, cantidad de hosts y comparación de máscaras."></textarea></div>
+        <div class="activity"><div class="activity-title"><input type="checkbox" id="act-2" data-task><label for="act-2">Actividad 2. Simular aislamiento por subred</label></div><ol><li>Ubicá PC1 en <code>192.168.10.0/24</code> y PC2 en <code>192.168.20.0/24</code>, usando direcciones válidas de host.</li><li>Intentá hacer ping entre ellas.</li><li>Determiná por qué no se comunican directamente y qué dispositivo necesitan.</li></ol><textarea class="response" data-response="act-2" placeholder="Anotá las IP asignadas, resultado y explicación." aria-label="Documentá la simulación de aislamiento entre subredes."></textarea></div>
+        <div class="activity"><div class="activity-title"><input type="checkbox" id="act-3" data-task><label for="act-3">Actividad 3. Detectar broadcast por subred</label></div><p>Reemplazá el marcador por el broadcast calculado para tu red:</p><div class="command-block" data-label="CMD"><pre><code>ping [dirección_broadcast_de_tu_red]</code></pre></div><p>Observá el resultado, repetí la prueba en otra subred y explicá si los broadcasts atraviesan el router. Los equipos o firewalls pueden no responder a esta prueba.</p><textarea class="response" data-response="act-3" placeholder="Compará ambas pruebas y explicá el alcance del broadcast." aria-label="Compará los broadcasts de dos subredes."></textarea></div>
+        <div class="activity"><div class="activity-title"><input type="checkbox" id="act-4" data-task><label for="act-4">Actividad 4. Reto de diseño</label></div><p>Diseñá una red de doce PCs para tres departamentos, con cuatro PCs por departamento. Indicá si usarías VLANs, subredes, separación física o una combinación y justificá la elección.</p><textarea class="response response-project" data-response="act-4" placeholder="Describí la topología, rangos IP y criterio de segmentación." aria-label="Diseñá y justificá una red segmentada para tres departamentos."></textarea></div>
+      </section>
+
+      <section class="module packet-tracer" id="packet-tracer" data-search="packet tracer segmentación física router vlan subnetting reto integración router on a stick">
+        <div class="module-header"><div class="module-number">6</div><div><h2>Actividades en Cisco Packet Tracer</h2><p class="module-subtitle">Practicar segmentación física, lógica y por subredes.</p></div></div>
+        <div class="pt-stage"><h3>Actividad 5. Segmentación física con router</h3><ol><li>Colocá un router, dos switches y cuatro PCs, dos por switch.</li><li>Conectá cada switch a una interfaz diferente del router.</li><li>Usá <code>192.168.10.10</code> y <code>.11/24</code> con gateway <code>192.168.10.1</code> en el primer grupo; <code>192.168.20.10</code> y <code>.11/24</code> con gateway <code>192.168.20.1</code> en el segundo.</li><li>Verificá los nombres reales de las interfaces del modelo elegido con <code>show ip interface brief</code> y adaptá la configuración si no usa FastEthernet.</li></ol><div class="command-block" data-label="ROUTER CLI"><pre><code>enable
+configure terminal
+interface fa0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+interface fa0/1
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+end
+show ip interface brief</code></pre></div><p>Probá primero dentro de cada red y luego entre ambas.</p><div class="activity-title"><input type="checkbox" id="act-5" data-task><label for="act-5">Actividad 5 completada</label></div><textarea class="response" data-response="act-5" placeholder="Documentá topología, interfaces y pruebas de conectividad." aria-label="Documentá la actividad de segmentación física."></textarea></div>
+
+        <div class="pt-stage"><h3>Actividad 6. Segmentación lógica con VLANs</h3><p>Conectá cuatro PCs a un switch administrable y configurá dos puertos para Administración y dos para Ventas.</p><div class="command-block" data-label="SWITCH CLI"><pre><code>enable
+configure terminal
+vlan 10
+ name Administracion
+exit
+vlan 20
+ name Ventas
+exit
+interface range fa0/1-2
+ switchport mode access
+ switchport access vlan 10
+exit
+interface range fa0/3-4
+ switchport mode access
+ switchport access vlan 20
+end
+show vlan brief</code></pre></div><p>Asigná direcciones <code>192.168.10.x/24</code> a VLAN 10 y <code>192.168.20.x/24</code> a VLAN 20. Las PCs de la misma VLAN deben comunicarse; entre VLANs se necesita enrutamiento.</p><div class="activity-title"><input type="checkbox" id="act-6" data-task><label for="act-6">Actividad 6 completada</label></div><textarea class="response" data-response="act-6" placeholder="Registrá puertos, VLANs y resultados de ping." aria-label="Documentá la actividad de VLANs."></textarea></div>
+
+        <div class="pt-stage"><h3>Actividad 7. Segmentación por subredes</h3><ol><li>Conectá cuatro PCs a un switch.</li><li>Asigná <code>192.168.1.10</code> y <code>192.168.1.20/25</code> a la subred A.</li><li>Asigná <code>192.168.1.130</code> y <code>192.168.1.140/25</code> a la subred B.</li><li>Comprobá la conectividad dentro de cada subred y el aislamiento entre ellas.</li><li>Añadí un router con una interfaz lógica o física en cada subred, configurá gateways y repetí la prueba.</li></ol><div class="activity-title"><input type="checkbox" id="act-7" data-task><label for="act-7">Actividad 7 completada</label></div><textarea class="response" data-response="act-7" placeholder="Anotá rangos, broadcasts, gateways y pruebas." aria-label="Documentá la actividad de división en subredes."></textarea></div>
+
+        <div class="pt-stage"><h3>Actividad 8. Reto de integración</h3><p>Diseñá tres VLANs: Administración, VLAN 10 y red <code>192.168.10.0/24</code>; Ventas, VLAN 20 y red <code>192.168.20.0/24</code>; Soporte Técnico, VLAN 30 y red <code>192.168.30.0/24</code>.</p><p>Usá router-on-a-stick: configurá el enlace switch-router como trunk, una subinterfaz <code>dot1Q</code> por VLAN y la dirección gateway correspondiente. Comprobá conectividad directa dentro de cada VLAN y enrutada entre VLANs.</p><div class="activity-title"><input type="checkbox" id="act-8" data-task><label for="act-8">Actividad 8 completada</label></div><textarea class="response response-project" data-response="act-8" placeholder="Documentá el esquema, configuración, pruebas y conclusiones." aria-label="Documentá el reto de router-on-a-stick."></textarea></div>
+      </section>
+
+      <section class="module" id="videos" data-search="videos youtube vlan subnetting router on a stick packet tracer">
+        <div class="module-header"><div class="module-number">7</div><div><h2>Videos para acompañar la práctica</h2><p class="module-subtitle">Demostraciones externas seleccionadas para repasar los procedimientos.</p></div></div>
+        <div class="video-grid">
+          <article class="video-card"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/-pUQ6CcydIk" title="Creación de subredes en Cisco Packet Tracer" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><h3>Creación de subredes en Packet Tracer</h3><p>Ejemplo en español para calcular redes, máscaras y rangos y llevarlos al simulador.</p><a class="btn" href="https://www.youtube.com/watch?v=-pUQ6CcydIk" target="_blank" rel="noopener noreferrer">Abrir en YouTube</a></article>
+          <article class="video-card"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/GOXudQcsdxY" title="Configuración de router-on-a-stick" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><h3>Inter-VLAN con router-on-a-stick</h3><p>Demostración de subinterfaces para permitir comunicación entre VLANs diferentes.</p><a class="btn" href="https://www.youtube.com/watch?v=GOXudQcsdxY" target="_blank" rel="noopener noreferrer">Abrir en YouTube</a></article>
+        </div>
+      </section>
+
+      <section class="module" id="conclusiones" data-search="conclusiones medianas grandes rendimiento seguridad vlans subredes">
+        <div class="module-header"><div class="module-number">8</div><div><h2>Conclusiones</h2><p class="module-subtitle">Planificar antes de configurar.</p></div></div>
+        <ul><li>Segmentar no siempre es obligatorio, pero resulta esencial en redes medianas y grandes.</li><li>Una segmentación adecuada reduce tráfico innecesario y permite mejorar la seguridad.</li><li>VLANs y subredes suelen emplearse juntas: la VLAN separa en capa 2 y la subred organiza capa 3.</li><li>La comunicación entre segmentos debe pasar por un router o switch multicapa, donde pueden aplicarse controles.</li></ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><p>Clase 15 · Segmentación de redes · VLANs, subredes, Windows y Cisco Packet Tracer.</p></div></footer>
+  <a class="back-to-top" href="#inicio" aria-label="Volver arriba" title="Volver arriba"><span aria-hidden="true">↑</span></a>
+</body>
+</html>
