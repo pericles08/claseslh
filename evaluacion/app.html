@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluación · Laboratorio de Hardware</title><link rel="stylesheet" href="exam.css"></head>
+<body><a class="skip" href="#main">Ir al contenido</a>
+<header><div class="wrap"><p class="eyebrow">5.º año · Laboratorio de Hardware</p><h1>De los conceptos a la red</h1><p>Evaluación integradora · M1 a M4</p><div class="chips"><span>28 SEP · 13:10–17:20</span><span>Un intento por parte</span><span>70 % en cada parte y en el total</span></div></div></header>
+<main id="main" class="wrap">
+<section id="login" class="card"><h2>Ingresá con tu código</h2><p>El código es personal. Permite recuperar tu avance desde otro dispositivo. No lo compartas.</p>
+<form id="login-form"><label for="code">Código entregado por el docente</label><input id="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24" placeholder="XXXX-XXXX-XXXX" required><button type="submit">Ingresar</button></form>
+<p>El tiempo empieza al comenzar cada parte. Si cerrás la página, el reloj continúa. Podés descansar entre partes, dentro del horario de evaluación.</p><p>Las respuestas se guardan en el registro del examen. Si falla Internet, se conserva una copia local: reconectate antes del vencimiento para que llegue al registro. El cierre general es a las 17:20.</p></section>
+<p id="message" role="status" aria-live="polite"></p>
+<section id="dashboard" hidden><div class="student"><h2 id="student-name"></h2><button id="logout" class="secondary">Salir</button></div><div id="parts" class="parts"></div><div id="overall" class="card"></div></section>
+<section id="exam" hidden><div class="exam-bar"><h2 id="part-title"></h2><div><span>Tiempo restante</span><strong id="timer" role="timer">--:--</strong></div><p id="save-status" role="status"></p></div><p id="instructions">Cada pregunta vale un punto. Marcá una sola opción o escribí una respuesta breve. Podés revisar las respuestas antes de entregar.</p><form id="questions"></form><button id="submit">Entregar esta parte</button></section>
+<section id="review" class="card" hidden></section><section id="practical" class="card" hidden></section>
+</main><dialog id="confirm-dialog" aria-labelledby="confirm-title"><h2 id="confirm-title">Confirmar acción</h2><p id="confirm-text"></p><form method="dialog"><button value="cancel" class="secondary">Volver</button> <button value="accept">Confirmar</button></form></dialog><footer class="wrap">Laboratorio de Hardware · Hora argentina (UTC−3). El bloqueo de copiar y pegar es disuasorio; la web no impide capturas del dispositivo.</footer><script src="exam.js"></script></body></html>

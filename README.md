@@ -1,5 +1,7 @@
 # Laboratorio de Hardware de Redes
 
+La evaluación M1–M4 del 28/09/2026 se encuentra en `evaluacion/`. Su entrada pública está enlazada desde el inicio. El registro central de intentos y la corrección se ejecutan en Google Apps Script; el banco de preguntas, la nómina y los códigos permanecen privados en Drive. Consultar `evaluacion/README.md` para instalación, criterios y límites. Mientras falte la activación de Google, la entrada muestra explícitamente ese estado.
+
 Sitio estático en español, preparado para funcionar localmente y en GitHub Pages. No requiere instalación de paquetes, compilación ni un servidor de aplicación.
 
 ## Ejecutar
