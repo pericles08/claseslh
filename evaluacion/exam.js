@@ -59,7 +59,7 @@
     } catch { /* La copia central sigue disponible. */ }
     $('exam').hidden = false; $('part-title').textContent = p.title; $('questions').replaceChildren();
     p.questions.forEach((q, index) => {
-      const field = el('fieldset'); field.append(el('legend', `${index + 1}. ${q.prompt}`), el('p', q.topic, 'topic'));
+      const field = el('fieldset'); field.append(el('legend', `${index + 1}. ${q.prompt}`));
       if (q.type === 'short') {
         const label = el('label', 'Respuesta breve'); const input = el('input'); input.type = 'text'; input.id = q.id; input.maxLength = 120; input.autocomplete = 'off'; input.spellcheck = false;
         input.value = answers[q.id] || ''; label.htmlFor = q.id;

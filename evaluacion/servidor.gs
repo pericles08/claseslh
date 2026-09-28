@@ -62,7 +62,7 @@ function view_(state, data, name, now) {
     if (!a) return base;
     if (a.submittedAt) return Object.assign(base, { submittedAt: a.submittedAt, reason: a.reason, result: grade_(part, a) });
     return Object.assign(base, { startedAt: a.startedAt, deadline: a.deadline, revision: a.revision,
-      answers: a.answers, questions: part.questions.map(q => ({ id: q.id, topic: q.topic, prompt: q.prompt, type: q.type, options: q.options || null })) });
+      answers: a.answers, questions: part.questions.map(q => ({ id: q.id, prompt: q.prompt, type: q.type, options: q.options || null })) });
   });
   const allDone = parts.every(p => p.status === 'submitted');
   const earned = parts.reduce((sum, p) => sum + (p.result ? p.result.points : 0), 0);
