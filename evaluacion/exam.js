@@ -40,7 +40,7 @@
     $('overall').replaceChildren(el('h2', s.total.complete ? 'Resultado integral' : 'Tu recorrido'));
     $('overall').append(el('p', s.total.complete ? `${s.total.points}/${s.total.max} puntos · ${percent(s.total.percent)} · ${s.total.passed ? 'Aprobado integral' : 'No aprobado integral'}` : 'Avanzá en orden. Cada parte requiere al menos 70 %; una parte desaprobada no se compensa con otra.'));
     if (s.total.complete && !s.total.passed) $('overall').append(el('p', 'Revisá las devoluciones de las partes pendientes de aprobación. Podés realizar igualmente el trabajo práctico, que tendrá otra nota.'));
-    if (s.now < s.opens) message('El examen se habilita el 28/09/2026 a las 13:10, hora argentina. Volvé a ingresar a partir de ese horario.');
+    if (s.now < s.opens) message('El examen se habilita el 28/09/2026 a las 18:00, hora argentina. Volvé a ingresar a partir de ese horario.');
     if (s.now >= s.closes && !s.total.complete) message('El horario del examen terminó. Las partes no iniciadas quedan pendientes; consultá al docente.');
     const current = s.parts.findIndex(p => p.status === 'active');
     if (current >= 0) showQuestions(current); else { active = -1; $('exam').hidden = true; }
@@ -75,7 +75,7 @@
   function change(id, value) { answers[id] = value; dirty = true; localSave(); $('save-status').textContent = 'Cambios pendientes de guardar…'; clearTimeout(saveDelay); saveDelay = setTimeout(() => save(), 700); }
   async function begin(i) {
     if (busy) return;
-    if (state.parts[i].status === 'ready' && !await confirmAction(`Vas a comenzar ${state.parts[i].title}. Tendrás hasta ${state.parts[i].minutes} minutos, con cierre máximo a las 17:20. El reloj no se detiene al salir. ¿Comenzar?`)) return;
+    if (state.parts[i].status === 'ready' && !await confirmAction(`Vas a comenzar ${state.parts[i].title}. Tendrás hasta ${state.parts[i].minutes} minutos, con cierre máximo a las 22:00. El reloj no se detiene al salir. ¿Comenzar?`)) return;
     busy = true; message('');
     try { render(await call('start', { part: i })); $('exam').scrollIntoView({ behavior: 'smooth' }); }
     catch (err) { message(err.message || String(err)); } finally { busy = false; }

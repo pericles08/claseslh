@@ -90,8 +90,8 @@ function exam(request) {
       if (!Number.isInteger(i) || i < 0 || i >= data.parts.length) throw new Error('Parte no válida.');
       let a = state.parts[i];
       if (action === 'start' && !a) {
-        if (now < Date.parse(data.opens)) throw new Error('Se habilita el 28/09 a las 13:10 (Argentina).');
-        if (now >= Date.parse(data.closes)) throw new Error('El horario de evaluación terminó a las 17:20.');
+        if (now < Date.parse(data.opens)) throw new Error('Se habilita el 28/09 a las 18:00 (Argentina).');
+        if (now >= Date.parse(data.closes)) throw new Error('El horario de evaluación terminó a las 22:00.');
         if (i > 0 && (!state.parts[i - 1] || !state.parts[i - 1].submittedAt)) throw new Error('Primero entregá la parte anterior.');
         a = { startedAt: now, deadline: Math.min(now + data.parts[i].minutes * 60000, Date.parse(data.closes)), answers: {}, revision: 0 };
         state.parts[i] = a;

@@ -4,9 +4,9 @@ Entrada pública: `index.html`. La aplicación real se ejecuta en Google Apps Sc
 
 ## Material y criterios
 
-M1: clases 1–4 públicas de Drive; M2: clases 5–7; M3: clases 8–11; M4: clases 12–15. Se excluyen libros y guías de apoyo. El banco privado contiene una fuente por pregunta, variantes de respuestas cortas y retroalimentación. Hay 30, 30, 50 y 48 preguntas, respectivamente. Duraciones: 35, 35, 55 y 55 minutos (180 minutos totales dentro de 250 disponibles).
+M1: clases 1–4 públicas de Drive; M2: clases 5–7; M3: clases 8–11; M4: clases 12–15. Se excluyen libros y guías de apoyo. El banco privado contiene una fuente por pregunta, variantes de respuestas cortas y retroalimentación. Hay 30, 30, 50 y 48 preguntas, respectivamente. Duraciones: 35, 35, 55 y 55 minutos (180 minutos totales dentro de 240 disponibles).
 
-Apertura 2026-09-28 13:10, cierre 17:20, America/Argentina/Buenos_Aires. Fechas ISO con UTC−3 en la configuración privada. Todas las preguntas valen un punto. Aprobación exacta sin redondear: al menos 70 % por módulo **y** 70 % de los 158 puntos totales. Mínimos: 21/30, 21/30, 35/50, 34/48; global 111/158. Un módulo desaprobado impide el aprobado integral aunque el porcentaje global alcance 70 %. Se permite continuar y desbloquear el práctico al entregar los cuatro módulos.
+Apertura 2026-09-28 18:00, cierre 22:00, America/Argentina/Buenos_Aires. Fechas ISO con UTC−3 en la configuración privada. Todas las preguntas valen un punto. Aprobación exacta sin redondear: al menos 70 % por módulo **y** 70 % de los 158 puntos totales. Mínimos: 21/30, 21/30, 35/50, 34/48; global 111/158. Un módulo desaprobado impide el aprobado integral aunque el porcentaje global alcance 70 %. Se permite continuar y desbloquear el práctico al entregar los cuatro módulos.
 
 ## Instalación
 
