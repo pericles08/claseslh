@@ -18,6 +18,8 @@ Apertura 2026-09-28 18:00, cierre 22:00, America/Argentina/Buenos_Aires. Fechas 
 
 ## Operación docente
 
+En la aplicación, abrir **Acceso docente · Resultados** e ingresar el PIN privado acordado. El panel muestra estados y notas por estudiante, permite desplegar las respuestas entregadas y descargar un CSV. Para actualizarlo se vuelve a ingresar el PIN; **Cerrar registro docente** elimina la vista. Funciona también fuera del horario de respuesta. El PIN se verifica en el servidor contra `teacherHash` del JSON privado y no se publica en GitHub. Cinco errores bloquean el acceso docente durante quince minutos, sin bloquear los códigos de estudiantes.
+
 Los códigos ya generados no deben regenerarse. La lista de entrega y la revisión docente están en Drive como archivos privados. El archivo de revisión contiene claves: no compartirlo con estudiantes.
 
 Para ajustar la duración antes del examen, editar `parts[i].minutes` en la configuración privada. El plazo de una parte se fija al comenzar: cambios posteriores no modifican intentos en curso. Mantener el ID estable; cambiarlo crea otro conjunto de intentos. No sobrescribir el banco después de iniciar el examen, porque la corrección utiliza ese banco.
