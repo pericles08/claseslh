@@ -129,6 +129,26 @@
     try { message(''); render(await call('status')); }
     catch (err) { message(err.message || String(err)); } finally { busy = false; }
   };
+  $('teacher-form').onsubmit = e => {
+    e.preventDefault();
+    const pin = $('teacher-pin').value; $('teacher-pin').value = '';
+    const button = $('teacher-form').querySelector('button'); button.disabled = true; message('Consultando resultados…');
+    google.script.run.withFailureHandler(err => { button.disabled = false; message(err.message || String(err)); }).withSuccessHandler(report => {
+      button.disabled = false; message(''); $('teacher-panel').hidden = false;
+      const panel = $('teacher-panel'); panel.replaceChildren(el('h2', 'Registro docente'), el('p', 'Actualizado: ' + new Date(report.generatedAt).toLocaleString('es-AR')));
+      const rows = [['Estudiante','M1','M2','M3','M4','Total','Estado']];
+      const status = { ready: 'Sin iniciar', locked: 'Pendiente', active: 'En curso', submitted: 'Entregado' };
+      report.students.forEach(s => rows.push([s.name, ...s.parts.map(p => p.result ? `${p.result.points}/${p.result.max} · ${percent(p.result.percent)} · ${p.result.passed ? 'Aprobado' : 'No aprobado'}` : status[p.status]), percent(s.total.percent), s.total.complete ? (s.total.passed ? 'Aprobado integral' : 'No aprobado integral') : 'Incompleto']));
+      const scroll = el('div'); scroll.style.overflowX = 'auto'; const table = el('table');
+      rows.forEach((row, i) => { const tr = el('tr'); row.forEach(value => { const cell = el(i ? 'td' : 'th', value); cell.style.padding = '0.6rem'; tr.append(cell); }); table.append(tr); }); scroll.append(table); panel.append(scroll);
+      const download = el('button', 'Descargar resultados CSV'); download.onclick = () => {
+        const csv = rows.map(row => row.map(value => '"' + String(value).replace(/^[=+@-]/, "'").replace(/"/g, '""') + '"').join(';')).join('\r\n');
+        const url = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' })); const a = el('a'); a.href = url; a.download = 'resultados_lh.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }; panel.append(download);
+      report.students.forEach(s => { const detail = el('details'); detail.append(el('summary', 'Respuestas · ' + s.name)); s.parts.filter(p => p.result).forEach(p => { detail.append(el('h3', p.title)); p.result.review.forEach(q => detail.append(el('p', q.prompt + ' — Respuesta: ' + (q.answer || 'Sin responder') + ' — ' + (q.ok ? 'Correcta' : 'Esperada: ' + q.correct)))); }); panel.append(detail); });
+      const close = el('button', 'Cerrar registro docente', 'secondary'); close.onclick = () => { panel.replaceChildren(); panel.hidden = true; }; panel.append(close); panel.scrollIntoView();
+    }).teacherReport(pin);
+  };
   $('logout').onclick = async () => {
     if (busy) return; if (dirty) await save(); if (dirty && !await confirmAction('Hay respuestas sin confirmar en el registro. ¿Salir de todos modos?')) return;
     code = ''; state = null; active = -1; answers = {}; dirty = false; $('code').value = ''; $('login').hidden = false;

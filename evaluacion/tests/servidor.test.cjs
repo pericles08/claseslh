@@ -16,6 +16,22 @@ function fixture() {
   return {data,ctx,props,call:(action='status',extra={})=>ctx.exam({code,action,...extra}),time:v=>now=typeof v==='number'?v:Date.parse(v),now:()=>now};
 }
 const answers = count => Object.fromEntries(Array.from({length:count},(_,i)=>['q'+i,' SESION ']));
+test('panel docente exige PIN, limita intentos y no inicia exámenes',()=>{
+  const f=fixture(), pin='test-pin'; f.data.teacherHash=crypto.createHash('sha256').update(pin).digest('hex');
+  for(let i=0;i<5;i++) assert.throws(()=>f.ctx.teacherReport('incorrecto'),/incorrecto/);
+  assert.throws(()=>f.ctx.teacherReport(pin),/bloqueado/);
+  f.time(f.now()+900001);
+  const report=f.ctx.teacherReport(pin);
+  assert.equal(report.students.length,1); assert.equal(report.students[0].parts[0].status,'ready');
+  assert.equal([...f.props.keys()].filter(k=>k.startsWith('attempt:')).length,0);
+  assert.equal(JSON.stringify(report).includes(f.data.teacherHash),false);
+});
+test('panel refleja entrega y vencimiento sin alterar respuestas',()=>{
+  const f=fixture(), pin='test-pin'; f.data.teacherHash=crypto.createHash('sha256').update(pin).digest('hex');
+  f.call('start',{part:0}); f.call('save',{part:0,revision:0,answers:answers(7)});
+  f.time(f.now()+36*60000); const p=f.ctx.teacherReport(pin).students[0].parts[0];
+  assert.equal(p.status,'submitted'); assert.equal(p.result.points,7); assert.equal(p.result.passed,true);
+});
 test('rechaza código incorrecto, acción y parte inválidas',()=>{const f=fixture();assert.throws(()=>f.ctx.exam({code:'ZZZZZZZZZZZZ'}),/incorrecto/);assert.throws(()=>f.call('hack'),/Acción/);assert.throws(()=>f.call('start',{part:8}),/Parte/);});
 test('apertura y secuencia se controlan en servidor',()=>{const f=fixture();f.time('2026-09-28T13:09:59-03:00');assert.throws(()=>f.call('start',{part:0}),/habilita/);f.time('2026-09-28T13:10:00-03:00');assert.throws(()=>f.call('start',{part:1}),/anterior/);const s=f.call('start',{part:0});assert.equal(s.parts[0].status,'active');assert.equal(s.parts[0].questions[0].accept,undefined);assert.equal(s.parts[0].questions[0].feedback,undefined);assert.equal(s.practical,null);});
 test('retoma en otro cliente sin reiniciar el tiempo; rechaza escritura atrasada',()=>{const f=fixture();const a=f.call('start',{part:0});f.time(f.now()+300000);const b=f.call('save',{part:0,revision:0,answers:answers(3)});assert.equal(b.parts[0].deadline,a.parts[0].deadline);assert.throws(()=>f.call('save',{part:0,revision:0,answers:answers(2)}),/CONFLICT/);const c=f.call('start',{part:0});assert.equal(c.parts[0].revision,1);assert.equal(Object.keys(c.parts[0].answers).length,3);});

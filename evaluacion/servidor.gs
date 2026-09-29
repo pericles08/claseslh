@@ -115,6 +115,31 @@ function exam(request) {
     return view_(state, data, student.name, now);
   } finally { lock.releaseLock(); }
 }
+// El PIN se verifica en el servidor y nunca forma parte de la página pública.
+function teacherReport(pin) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) throw new Error('Registro ocupado. Reintentá.');
+  try {
+    const props = PropertiesService.getScriptProperties(), now = Date.now();
+    let guard = JSON.parse(props.getProperty('teacherGuard') || '{}');
+    if (guard.failures >= 5 && guard.until > now) throw new Error('Acceso temporalmente bloqueado. Reintentá en 15 minutos.');
+    if (!guard.until || guard.until <= now) guard = { failures: 0, until: now + 900000 };
+    const data = data_();
+    if (!data.teacherHash || hash_(String(pin || '')) !== data.teacherHash) {
+      guard.failures++;
+      props.setProperty('teacherGuard', JSON.stringify(guard));
+      throw new Error('Código docente incorrecto.');
+    }
+    props.setProperty('teacherGuard', '{}');
+    return { generatedAt: now, students: Object.keys(data.students).map(hash => {
+      const key = 'attempt:' + data.id + ':' + hash;
+      const state = readState_(props, key, data.parts.length);
+      expire_(state, data, now); writeState_(props, key, state);
+      const v = view_(state, data, data.students[hash], now);
+      return { name: v.name, parts: v.parts.map(p => ({ title: p.title, status: p.status, result: p.result || null })), total: v.total };
+    }) };
+  } finally { lock.releaseLock(); }
+}
 // Ejecutar solo desde el editor: genera un informe privado sin publicar códigos.
 function informeDocente_() {
   const data = data_(), props = PropertiesService.getScriptProperties();
